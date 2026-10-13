@@ -109,7 +109,6 @@ function navigate(path: string) {
       :padding="12"
       :gap="12"
       :header-height="64"
-      :footer-height="48"
       min-height="100dvh"
       :responsive="false"
       v-model:aside-outside-collapsed="outsideCollapsed"
@@ -265,14 +264,6 @@ function navigate(path: string) {
           </KeepAlive>
         </RouterView>
       </div>
-      <template #footer>
-      <div class="admin-footer text-11px text-muted">
-        <span
-          >© {{ new Date().getFullYear() }} Sax Admin. Crafted for your next
-          idea.</span
-        ><span>Vue 3 · Sax Design Vue</span>
-      </div>
-      </template>
     </SLayout>
     <SDialog v-model="searchOpen" :title="t('shell.searchTitle')" width="520px"
       ><SInput
@@ -330,7 +321,6 @@ function navigate(path: string) {
 .admin-sidebar { display: flex; flex-direction: column; height: 100%; min-height: 0; }
 .admin-shell :deep(.s-layout__content > .s-layout-body) { padding: 0; scrollbar-gutter: stable; }
 .admin-header { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 16px; }
-.admin-footer { display: flex; flex-wrap: wrap; justify-content: space-between; width: 100%; gap: 8px; }
 .admin-page { width: 100%; padding-inline: 20px; padding-bottom: 64px; }
 @media (max-width: 1023px) {
   .admin-shell :deep(.s-layout__content > .s-layout-aside) { position: fixed; inset: 12px auto 12px 12px; height: calc(100dvh - 24px); width: 248px !important; z-index: 40; visibility: hidden; transform: translateX(calc(-100% - 180px)); }
