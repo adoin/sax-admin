@@ -185,7 +185,7 @@ export const mockFetch: typeof fetch = async (input, init) => {
     const role = body.username === "admin" ? "admin" : "viewer";
     const session: Session = {
       token: `mock-${role}-session`,
-      name: role === "admin" ? "Alex Morgan" : "Guest",
+      name: role === "admin" ? "Adoin Wang" : "Guest",
       role,
     };
     sessions.set(session.token, session);

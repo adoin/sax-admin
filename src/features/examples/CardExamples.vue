@@ -25,12 +25,12 @@ const selected = shallowRef(false),
     ><SCard
       class="admin-card"
       type="profile"
-      title="Alex Morgan"
+      title="Adoin Wang"
       :subtitle="t('examples.profileCard')"
       ><template #img
         ><div class="flex justify-center p-6 bg-blue-50 dark:bg-slate-800">
           <SAvatar :size="64" shape="circle"
-            ><template #text>Alex Morgan</template></SAvatar
+            ><template #text>Adoin Wang</template></SAvatar
           >
         </div></template
       ><template #text

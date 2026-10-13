@@ -15,7 +15,14 @@ function readSession(): Session | null {
       typeof value.name === "string" &&
       ["admin", "editor", "viewer"].includes(String(value.role))
     )
-      return value as Session;
+    {
+      const session = value as Session;
+      if (session.token === "mock-admin-session" && session.name === "Alex Morgan") {
+        session.name = "Adoin Wang";
+        sessionStorage.setItem("sax-session", JSON.stringify(session));
+      }
+      return session;
+    }
   } catch {
     sessionStorage.removeItem("sax-session");
   }

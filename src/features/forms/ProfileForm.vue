@@ -12,8 +12,8 @@ interface Profile {
   notifications: boolean;
 }
 const model = reactive<Profile>({
-    name: "Alex Morgan",
-    email: "alex@example.com",
+    name: "Adoin Wang",
+    email: "adoin@example.com",
     department: "engineering",
     bio: "",
     notifications: true,

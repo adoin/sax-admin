@@ -96,10 +96,7 @@ async function login() {
         }}
       </SButton>
       <div class="w-full max-w-92">
-        <span
-          class="inline-flex w-11 h-11 bg-brand rounded-3 items-center justify-center text-white font-800 text-2xl mb-9"
-          >s.</span
-        >
+        <img src="/sax-logo-mark.svg" alt="" class="w-11 h-11 mb-9" />
         <p class="text-xs text-muted tracking-widest">WELCOME BACK</p>
         <h2 class="text-8 font-700 tracking-tight mb-2 mt-3">
           {{ t("login.welcome") }}

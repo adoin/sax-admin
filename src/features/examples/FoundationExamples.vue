@@ -38,7 +38,7 @@ onBeforeUnmount(() => clearTimeout(timer));
       </div></SCard
     ><SCard class="admin-card" :title="t('examples.avatars')"
       ><div class="flex gap-5 items-center flex-wrap">
-        <SAvatar shape="circle"><template #text>Alex Morgan</template></SAvatar
+        <SAvatar shape="circle"><template #text>Adoin Wang</template></SAvatar
         ><SAvatar color="success"><template #text>Sax</template></SAvatar
         ><SAvatar shape="square"><template #text>Team</template></SAvatar
         ><SBadge :value="12"
