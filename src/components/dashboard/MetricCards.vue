@@ -28,7 +28,7 @@ const cards = computed(() =>
 </script>
 <template>
   <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-5">
-    <article v-for="m in cards" :key="m.label" class="relative overflow-hidden">
+    <article v-for="m in cards" :key="m.label" class="relative">
       <SCard class="admin-card">
         <div class="flex items-center justify-between">
           <span class="text-13px text-muted">{{ t(m.label) }}</span
