@@ -90,7 +90,9 @@ function favorite(id: number) {
           :size="32"
           shape="circle"
           :title="name"
-          ><template #text>{{ name }}</template></SAvatar
+          role="img"
+          :aria-label="name"
+          ><span style="font-size: 12px; line-height: 1; white-space: nowrap">{{ name.slice(-2) }}</span></SAvatar
         >
       </div>
       <template #footer
@@ -128,9 +130,12 @@ function favorite(id: number) {
         <SAvatar
           v-for="name in selected.members"
           :key="name"
+          :size="36"
           shape="circle"
           :title="name"
-          ><template #text>{{ name }}</template></SAvatar
+          role="img"
+          :aria-label="name"
+          ><span style="font-size: 12px; line-height: 1; white-space: nowrap">{{ name.slice(-2) }}</span></SAvatar
         >
       </div></template
     ></SDialog
