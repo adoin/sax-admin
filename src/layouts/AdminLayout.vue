@@ -9,7 +9,6 @@ import {
   SAvatar,
   SBadge,
   SScrollbar,
-  SCard,
   STag,
   SLayout,
   SLayoutHeader,
@@ -26,7 +25,6 @@ import {
   Search,
   Bell,
   ChevronRight,
-  ArrowUpRight,
   LogOut,
   ShoppingBag,
   FolderKanban,
@@ -171,19 +169,6 @@ function navigate(path: string) {
           </div>
         </nav></SScrollbar
       >
-      <SCard v-if="!preferences.collapsed" class="admin-card mb-5">
-        <span class="text-10px tracking-widest text-brand font-700"
-          >BUILT FOR BETTER WORK</span
-        >
-        <p class="font-600 text-sm mt-2 mb-2">{{ t("shell.tagline") }}</p>
-        <a
-          href="https://adoin.github.io/sax-design-vue/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-12px text-brand flex items-center gap-2"
-          >{{ t("shell.docs") }} <ArrowUpRight :size="14"
-        /></a>
-      </SCard>
       <div class="flex items-center gap-3 px-2">
         <SAvatar :size="36" shape="circle"
           ><template #text>{{ session.current?.name }}</template></SAvatar
@@ -278,7 +263,7 @@ function navigate(path: string) {
         </div>
       </SLayoutHeader>
       <WorkspaceTabs />
-      <div class="px-5 py-7 md:px-8 md:py-8 max-w-400 mx-auto admin-page">
+      <div class="py-7 md:py-8 admin-page">
         <RouterView v-slot="{ Component }" :cache-component-name="cacheName">
           <KeepAlive :include="workspace.cacheNames">
             <component :is="Component" />
@@ -353,7 +338,7 @@ function navigate(path: string) {
 .admin-shell :deep(.s-layout__content > .s-layout-body) { padding: 0; border-radius: 0; scrollbar-gutter: stable; }
 .admin-header { justify-content: space-between; border-radius: 0; }
 .admin-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; border-radius: 0; margin-bottom: 44px; }
-.admin-page { min-height: calc(100dvh - 230px); }
+.admin-page { width: 100%; padding-inline: 20px; min-height: calc(100dvh - 230px); }
 @media (max-width: 1023px) {
   .admin-shell :deep(.s-layout__content > .s-layout-aside) { position: fixed; inset: 0 auto 0 0; width: 248px !important; z-index: 40; visibility: hidden; transform: translateX(calc(-100% - 180px)); }
   .admin-shell.is-mobile-open :deep(.s-layout__content > .s-layout-aside) { visibility: visible; transform: translateX(0); }

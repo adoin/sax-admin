@@ -34,7 +34,7 @@ async function closeAll() {
   </div>
 </template>
 <style scoped>
-.workspace-bar { display: flex; align-items: center; gap: 12px; padding: 12px 20px 0; max-width: 1600px; margin: auto; }
+.workspace-bar { display: flex; align-items: center; gap: 12px; padding: 12px 20px 0; width: 100%; }
 .workspace-tabs { flex: 1; min-width: 0; }
 .workspace-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 .workspace-tabs :deep(.s-tabs__content) { display: none; }
