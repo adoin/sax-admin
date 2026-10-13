@@ -267,7 +267,7 @@ function navigate(path: string) {
       <SLayoutHeader class="workspace-tab-surface" :padding="0">
         <WorkspaceTabs />
       </SLayoutHeader>
-      <SScrollbar ref="pageScrollbar" class="s-layout-body admin-page-scroll" height="100%" placement="outside" :wrap-style="{ overscrollBehavior: 'contain' }" @scroll="rememberScroll">
+      <SScrollbar ref="pageScrollbar" class="admin-page-scroll" wrap-class="s-layout-body" height="100%" placement="outside" :gap="3" :wrap-style="{ overscrollBehavior: 'contain' }" @scroll="rememberScroll">
       <div class="py-7 md:py-8 admin-page">
         <RouterView v-slot="{ Component }" :cache-component-name="cacheName">
           <KeepAlive :include="workspace.cacheNames">
@@ -334,7 +334,9 @@ function navigate(path: string) {
 .admin-sidebar { display: flex; flex-direction: column; height: 100%; min-height: 0; }
 .admin-shell :deep(.s-layout__content > .s-layout-body) { display: flex; flex-direction: column; gap: 12px; padding: 0; overflow: visible; background: transparent; box-shadow: none; border-radius: 0; }
 .workspace-tab-surface { flex-shrink: 0; }
-.admin-page-scroll { flex: 1; min-height: 0; padding: 0; }
+.admin-page-scroll { flex: 1; min-height: 0; width: calc(100% + 9px); max-width: none; overflow: visible; }
+.admin-page-scroll.is-outside { grid-template-columns: minmax(0, 1fr) 9px; }
+.admin-page-scroll :deep(> .s-scrollbar__wrap) { padding: 0; }
 .admin-header { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 16px; }
 .admin-page { width: 100%; padding-inline: 20px; padding-bottom: 64px; }
 @media (max-width: 1023px) {
