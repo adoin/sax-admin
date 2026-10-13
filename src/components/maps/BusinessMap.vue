@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { t, cityLabel, locale } from "@/i18n";
-import { onBeforeUnmount, onMounted, shallowRef, watch } from "vue";
+import { onActivated, onBeforeUnmount, onMounted, shallowRef, watch } from "vue";
 import { Deck, MapView } from "@deck.gl/core";
 import {
   GeoJsonLayer,
@@ -129,6 +129,7 @@ watch(
   () => deck?.setProps({ layers: layers() }),
 );
 onBeforeUnmount(() => deck?.finalize());
+onActivated(() => requestAnimationFrame(() => deck?.redraw("workspace activated")));
 </script>
 <template>
   <div class="relative h-125 rounded-4 overflow-hidden bg-[#101c31]">

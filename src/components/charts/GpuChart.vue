@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { t } from "@/i18n";
-import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from "vue";
+import { computed, onActivated, onDeactivated, onBeforeUnmount, onMounted, shallowRef, watch } from "vue";
 import { ChartGPU } from "chartgpu";
 import { preferencesStore } from "@/stores/preferences";
 export interface ChartSeries {
@@ -24,6 +24,8 @@ const preferences = preferencesStore();
 let instance: Awaited<ReturnType<typeof ChartGPU.create>> | undefined,
   observer: ResizeObserver | undefined,
   disposed = false,
+  active = true,
+  needsRender = false,
   revision = 0;
 const paths = computed(() => {
   const all = props.series.flatMap((s) => s.data),
@@ -43,6 +45,8 @@ const paths = computed(() => {
   }));
 });
 async function render() {
+  if (!active) { needsRender = true; return; }
+  needsRender = false;
   const ticket = ++revision;
   instance?.dispose();
   instance = undefined;
@@ -86,6 +90,16 @@ onMounted(() => {
   if (host.value) observer.observe(host.value);
 });
 watch(() => [props.series, props.type, preferences.dark], render);
+onActivated(() => {
+  active = true;
+  if (host.value) observer?.observe(host.value);
+  if (needsRender) render();
+  else requestAnimationFrame(() => { if (active && !disposed) instance?.resize(); });
+});
+onDeactivated(() => {
+  active = false;
+  observer?.disconnect();
+});
 onBeforeUnmount(() => {
   disposed = true;
   revision++;

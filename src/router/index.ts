@@ -1,7 +1,16 @@
 import { createRouter, createWebHistory } from "vue-smart-router";
 import { pinia } from "@/stores";
 import { sessionStore } from "@/stores/session";
+import { workspaceStore } from "@/stores/workspace";
+import { registerDraftRoute } from "./workspace";
 export const navigation = [
+  {
+    path: "/workspace",
+    label: "nav.workspace",
+    icon: "Blocks",
+    section: "section.examples",
+    caption: "workspace.caption",
+  },
   {
     path: "/dashboard",
     label: "nav.dashboard",
@@ -78,9 +87,16 @@ export const router = createRouter({
     },
     {
       path: "/",
+      name: "admin",
       component: () => import("@/layouts/AdminLayout.vue"),
       redirect: "/dashboard",
       children: [
+        {
+          path: "workspace",
+          name: "workspace",
+          component: () => import("@/pages/WorkspacePage.vue"),
+          meta: { title: "nav.workspace" },
+        },
         {
           path: "orders",
           name: "orders",
@@ -143,6 +159,10 @@ export const router = createRouter({
       meta: { public: true, title: "notFound.title" },
     },
   ],
+});
+registerDraftRoute(router);
+router.afterEach((to, _from, failure) => {
+  if (!failure) workspaceStore(pinia).visit(to);
 });
 router.beforeEach((to) => {
   if (!to.meta.public && !sessionStore(pinia).authenticated)

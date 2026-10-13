@@ -13,6 +13,6 @@ import type { MessageKey } from "./i18n/messages";
 preferencesStore(pinia).persistTheme();
 watchEffect(() => {
   document.documentElement.lang = locale.value;
-  document.title = `${t((router.currentRoute.value.meta.title || "section.workspace") as MessageKey)} · Sax Admin`;
+  document.title = `${t((router.currentRoute.value.meta.title || "section.workspace") as MessageKey, { id: String(router.currentRoute.value.params.id || "") })} · Sax Admin`;
 });
 createApp(App).use(pinia).use(i18n).use(router).use(SaxDesign).mount("#app");

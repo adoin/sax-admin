@@ -37,6 +37,11 @@ import { navigation } from "@/router";
 import { sessionStore } from "@/stores/session";
 import { preferencesStore } from "@/stores/preferences";
 import { mockEnabled } from "@/api/client";
+import WorkspaceTabs from "@/components/common/WorkspaceTabs.vue";
+import { workspaceStore } from "@/stores/workspace";
+import type { RouteLocationNormalizedLoaded } from "vue-smart-router";
+const workspace = workspaceStore();
+const cacheName = (page: RouteLocationNormalizedLoaded) => workspace.cacheName(page.fullPath);
 const route = useRoute(),
   router = useRouter(),
   session = sessionStore(),
@@ -71,6 +76,7 @@ const active = computed(() =>
 );
 function logout() {
   session.clear();
+  workspace.reset();
   router.push("/login");
 }
 function navigate(path: string) {
@@ -219,7 +225,7 @@ function navigate(path: string) {
             :size="13"
             class="text-slate-300 hidden sm:block"
           /><span class="font-500 text-13px">{{
-            active ? t(active.label) : ""
+            active ? t(active.label) : t('workspace.draft', { id: String(route.params.id || '') })
           }}</span>
         </div>
         <div class="flex items-center gap-2 md:gap-4">
@@ -270,8 +276,13 @@ function navigate(path: string) {
           }}</STag>
         </div>
       </header>
+      <WorkspaceTabs />
       <main class="px-5 py-7 md:px-8 md:py-8 max-w-400 mx-auto">
-        <RouterView />
+        <RouterView v-slot="{ Component }" :cache-component-name="cacheName">
+          <KeepAlive :include="workspace.cacheNames">
+            <component :is="Component" />
+          </KeepAlive>
+        </RouterView>
       </main>
       <footer
         class="px-8 pb-6 flex flex-wrap gap-2 justify-between text-11px text-muted"
