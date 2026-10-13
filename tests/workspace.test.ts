@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 import { createMemoryHistory, createRouter } from "vue-smart-router";
-import { workspaceStore } from "../src/stores/workspace";
+import { workspaceStore, tabCloseTargets } from "../src/stores/workspace";
 
 beforeEach(() => setActivePinia(createPinia()));
 function testRouter() {
@@ -11,6 +11,15 @@ function testRouter() {
   ] }] });
 }
 describe("workspace cache lifecycle", () => {
+  it("closes relative to the clicked tab while protecting pinned tabs", () => {
+    const tabs = ['home', 'one', 'two', 'three'].map((fullPath, index) => ({ fullPath, title: 'nav.dashboard' as const, pinned: index === 0, revision: 0 }));
+    expect(tabCloseTargets(tabs, 'two', 'left')).toEqual(['one']);
+    expect(tabCloseTargets(tabs, 'two', 'right')).toEqual(['three']);
+    expect(tabCloseTargets(tabs, 'two', 'others')).toEqual(['one', 'three']);
+    expect(tabCloseTargets(tabs, 'two', 'all')).toEqual(['one', 'two', 'three']);
+    expect(tabCloseTargets(tabs, 'home', 'current')).toEqual([]);
+    expect(tabCloseTargets(tabs, 'missing', 'all')).toEqual([]);
+  });
   it("keeps independent cache names for two instances of the same route", async () => {
     const router = testRouter(), workspace = workspaceStore();
     for (const path of ["/drafts/1", "/drafts/2", "/drafts/1"]) {

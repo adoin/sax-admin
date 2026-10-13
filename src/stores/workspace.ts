@@ -9,6 +9,18 @@ export interface WorkspaceTab {
   pinned: boolean;
   revision: number;
 }
+export type TabCloseAction = "current" | "left" | "right" | "others" | "all";
+export function tabCloseTargets(tabs: WorkspaceTab[], path: string, action: TabCloseAction): string[] {
+  const index = tabs.findIndex((tab) => tab.fullPath === path);
+  if (index < 0) return [];
+  return tabs.filter((tab, position) => !tab.pinned && (
+    action === "all" ||
+    (action === "current" && position === index) ||
+    (action === "left" && position < index) ||
+    (action === "right" && position > index) ||
+    (action === "others" && position !== index)
+  )).map((tab) => tab.fullPath);
+}
 const home = (): WorkspaceTab => ({ fullPath: "/dashboard", title: "nav.dashboard", pinned: true, revision: 0 });
 export const workspaceStore = defineStore("workspace", {
   state: () => ({ tabs: [home()] as WorkspaceTab[], editorEnabled: true, nextDraft: 3 }),
