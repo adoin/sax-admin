@@ -74,7 +74,7 @@ async function selectContext(item: ContextMenuItem) {
   <SContextMenu ref="contextMenu" :items="menuItems" @select="selectContext" />
 </template>
 <style scoped>
-.workspace-bar { display: flex; align-items: center; gap: 12px; padding: 12px 20px 0; width: 100%; }
+.workspace-bar { display: flex; align-items: center; gap: 12px; padding: 8px 16px; width: 100%; }
 .workspace-tabs { flex: 1; min-width: 0; }
 .workspace-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 .workspace-tabs :deep(.s-tabs__content) { display: none; }

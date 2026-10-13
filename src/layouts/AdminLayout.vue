@@ -11,6 +11,7 @@ import {
   SScrollbar,
   STag,
   SLayout,
+  SLayoutHeader,
 } from "sax-design-vue";
 import {
   LayoutDashboard,
@@ -37,8 +38,9 @@ import WorkspaceTabs from "@/components/common/WorkspaceTabs.vue";
 import AsideTools from "@/components/common/AsideTools.vue";
 import { workspaceStore } from "@/stores/workspace";
 import type { RouteLocationNormalizedLoaded } from "vue-smart-router";
+import type { ScrollbarInstance } from "sax-design-vue";
 const workspace = workspaceStore();
-const layout = shallowRef<InstanceType<typeof SLayout>>();
+const pageScrollbar = shallowRef<ScrollbarInstance>();
 const outsideCollapsed = shallowRef(false);
 const scrollPositions = new globalThis.Map<string, number>();
 const cacheName = (page: RouteLocationNormalizedLoaded) => workspace.cacheName(page.fullPath);
@@ -74,14 +76,21 @@ const matches = computed(() =>
 const active = computed(() =>
   navigation.find((item) => item.path === route.path),
 );
-watch(() => route.fullPath, async (path, previous) => {
-  const root = layout.value?.$el as HTMLElement | undefined;
-  const body = root?.querySelector<HTMLElement>(':scope > .s-layout__content > .s-layout-body');
-  if (!body) return;
-  scrollPositions.set(previous, body.scrollTop);
+let displayedPath = route.fullPath, restoringScroll = false, scrollRevision = 0;
+function rememberScroll({ scrollTop }: { scrollTop: number }) {
+  if (!restoringScroll) scrollPositions.set(displayedPath, scrollTop);
+}
+watch(() => route.fullPath, async (path) => {
+  const revision = ++scrollRevision;
+  restoringScroll = true;
   await nextTick();
-  body.scrollTop = scrollPositions.get(path) || 0;
-});
+  if (revision !== scrollRevision) return;
+  displayedPath = path;
+  pageScrollbar.value?.setScrollTop(scrollPositions.get(path) || 0);
+  pageScrollbar.value?.update();
+  await nextTick();
+  if (revision === scrollRevision) restoringScroll = false;
+}, { flush: 'sync' });
 function logout() {
   session.clear();
   workspace.reset();
@@ -94,7 +103,7 @@ function navigate(path: string) {
 }
 </script>
 <template>
-  <div class="min-h-screen">
+  <div class="admin-root">
     <button
       v-if="preferences.mobileOpen"
       class="fixed inset-0 z-35 bg-black/30 border-0 lg:hidden"
@@ -102,7 +111,6 @@ function navigate(path: string) {
       @click="preferences.mobileOpen = false"
     />
     <SLayout
-      ref="layout"
       class="admin-shell"
       :class="{ 'is-mobile-open': preferences.mobileOpen }"
       :aside-width="preferences.collapsed ? 84 : 248"
@@ -256,7 +264,10 @@ function navigate(path: string) {
         </div>
       </div>
       </template>
-      <WorkspaceTabs />
+      <SLayoutHeader class="workspace-tab-surface" :padding="0">
+        <WorkspaceTabs />
+      </SLayoutHeader>
+      <SScrollbar ref="pageScrollbar" class="s-layout-body admin-page-scroll" height="100%" :wrap-style="{ overscrollBehavior: 'contain' }" @scroll="rememberScroll">
       <div class="py-7 md:py-8 admin-page">
         <RouterView v-slot="{ Component }" :cache-component-name="cacheName">
           <KeepAlive :include="workspace.cacheNames">
@@ -264,6 +275,7 @@ function navigate(path: string) {
           </KeepAlive>
         </RouterView>
       </div>
+      </SScrollbar>
     </SLayout>
     <SDialog v-model="searchOpen" :title="t('shell.searchTitle')" width="520px"
       ><SInput
@@ -313,13 +325,16 @@ function navigate(path: string) {
   </div>
 </template>
 <style scoped>
+.admin-root { height: 100dvh; overflow: hidden; }
 .admin-shell { height: 100dvh; }
 .admin-shell :deep(.s-layout__content > .s-layout-aside) {
   min-width: 0; height: 100%; z-index: 30;
 }
 .admin-shell :deep(.s-layout-aside__content) { height: 100%; overflow: hidden; }
 .admin-sidebar { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-.admin-shell :deep(.s-layout__content > .s-layout-body) { padding: 0; scrollbar-gutter: stable; }
+.admin-shell :deep(.s-layout__content > .s-layout-body) { display: flex; flex-direction: column; gap: 12px; padding: 0; overflow: visible; background: transparent; box-shadow: none; border-radius: 0; }
+.workspace-tab-surface { flex-shrink: 0; }
+.admin-page-scroll { flex: 1; min-height: 0; padding: 0; overflow: hidden; }
 .admin-header { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 16px; }
 .admin-page { width: 100%; padding-inline: 20px; padding-bottom: 64px; }
 @media (max-width: 1023px) {

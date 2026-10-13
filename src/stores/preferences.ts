@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-export const tabStyles = ["line", "pill", "card", "connected-card", "editable-card"] as const;
+export const tabStyles = ["line", "pill", "card", "editable-card"] as const;
 export const tabSizes = ["small", "default", "large"] as const;
 type TabStyle = (typeof tabStyles)[number];
 type TabSize = (typeof tabSizes)[number];
