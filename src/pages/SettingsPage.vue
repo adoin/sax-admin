@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { SCard } from "sax-design-vue";
+import { computed } from "vue";
 import { t, locale, setLocale } from "@/i18n";
 import { SSwitch, SSelect } from "sax-design-vue";
 import {
@@ -8,13 +9,16 @@ import {
   PanelLeft,
   ShieldCheck,
   ExternalLink,
+  PanelsTopLeft,
 } from "lucide-vue-next";
-import { preferencesStore } from "@/stores/preferences";
+import { preferencesStore, tabStyles, tabSizes } from "@/stores/preferences";
 import { sessionStore } from "@/stores/session";
 import { mockEnabled } from "@/api/client";
 import PageHeading from "@/components/common/PageHeading.vue";
 const preferences = preferencesStore(),
   session = sessionStore();
+const styleOptions = computed(() => tabStyles.map((value) => ({ value, label: t(`tabs.${value}`) })));
+const sizeOptions = computed(() => tabSizes.map((value) => ({ value, label: t(`tabs.${value}`) })));
 </script>
 <template>
   <PageHeading
@@ -46,6 +50,19 @@ const preferences = preferencesStore(),
           />
         </div>
         <h2 class="section-title m-0 mb-6">{{ t("settings.appearance") }}</h2>
+        <div class="flex items-center gap-4 py-5">
+          <PanelsTopLeft :size="21" class="text-brand" />
+          <div class="flex-1">
+            <b class="text-sm">{{ t('settings.tabStyle') }}</b>
+            <p class="text-12px text-muted mb-0 mt-2">{{ t('settings.tabStyleCaption') }}</p>
+          </div>
+          <SSelect :model-value="preferences.tabStyle" :options="styleOptions" :aria-label="t('settings.tabStyle')" @update:model-value="preferences.setTabStyle" />
+        </div>
+        <div class="flex items-center gap-4 py-5">
+          <PanelsTopLeft :size="21" class="text-brand" />
+          <div class="flex-1"><b class="text-sm">{{ t('settings.tabSize') }}</b></div>
+          <SSelect :model-value="preferences.tabSize" :options="sizeOptions" :aria-label="t('settings.tabSize')" @update:model-value="preferences.setTabSize" />
+        </div>
         <div class="flex items-center gap-4 py-5">
           <Moon :size="21" class="text-brand" />
           <div class="flex-1">

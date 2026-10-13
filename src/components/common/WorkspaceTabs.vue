@@ -3,8 +3,10 @@ import { STabs, STab, SButton } from "sax-design-vue";
 import { RefreshCw } from "lucide-vue-next";
 import { useRoute, useRouter } from "vue-smart-router";
 import { workspaceStore } from "@/stores/workspace";
+import { preferencesStore } from "@/stores/preferences";
 import { t } from "@/i18n";
 const workspace = workspaceStore(), route = useRoute(), router = useRouter();
+const preferences = preferencesStore();
 async function close(value: string | number) {
   const path = String(value);
   const index = workspace.tabs.findIndex((tab) => tab.fullPath === path);
@@ -23,7 +25,7 @@ async function closeAll() {
 </script>
 <template>
   <div class="workspace-bar">
-    <STabs class="workspace-tabs" :model-value="route.fullPath" type="editable-card" size="small" overflow="scroll" hide-add :animated="false" :aria-label="t('workspace.tabs')" @update:model-value="(path) => router.push(String(path))" @remove="close">
+    <STabs class="workspace-tabs" :model-value="route.fullPath" :type="preferences.tabStyle" :size="preferences.tabSize" overflow="collapse" editable hide-add :animated="false" :aria-label="t('workspace.tabs')" @update:model-value="(path) => router.push(String(path))" @remove="close">
       <STab v-for="tab in workspace.tabs" :key="tab.fullPath" :name="tab.fullPath" :label="t(tab.title, tab.titleId ? { id: tab.titleId } : {})" :closable="!tab.pinned" />
     </STabs>
     <div class="workspace-actions">
