@@ -20,6 +20,15 @@ export const router = createRouter({
       component: () => import("@/layouts/AdminLayout.vue"),
       redirect: "/dashboard",
       children: [
+        { path: 'roles', name: 'roles', component: () => import('@/pages/RolesPage.vue'), meta: { title: 'nav.roles' } },
+        { path: 'departments', name: 'departments', component: () => import('@/pages/DepartmentsPage.vue'), meta: { title: 'nav.departments' } },
+        { path: 'dictionaries', name: 'dictionaries', component: () => import('@/pages/DictionariesPage.vue'), meta: { title: 'nav.dictionaries' } },
+        { path: 'audit', name: 'audit', component: () => import('@/pages/AuditPage.vue'), meta: { title: 'nav.audit' } },
+        { path: 'table-lab', name: 'table-lab', component: () => import('@/pages/TableLabPage.vue'), meta: { title: 'nav.tableLab' } },
+        { path: 'card-lab', name: 'card-lab', component: () => import('@/pages/CardLabPage.vue'), meta: { title: 'nav.cardLab' } },
+        { path: 'agent', name: 'agent', component: () => import('@/pages/AgentPage.vue'), meta: { title: 'nav.agent' } },
+        { path: 'virtual', name: 'virtual', component: () => import('@/pages/VirtualPage.vue'), meta: { title: 'nav.virtual' } },
+        { path: 'files', name: 'files', component: () => import('@/pages/FilesPage.vue'), meta: { title: 'nav.files' } },
         { path: "menus", name: "menus", component: () => import("@/pages/MenusPage.vue"), meta: { title: "nav.menus" } },
         {
           path: "icons",

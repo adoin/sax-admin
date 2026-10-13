@@ -1,5 +1,6 @@
 import Mock from "mockjs";
 import { menuBackend } from "./menu-backend";
+import { adminBackend, recordAudit } from './admin-backend';
 import type { Order } from "./contracts";
 import { t, departmentLabel } from "../i18n";
 import type {
@@ -197,15 +198,31 @@ export const mockFetch: typeof fetch = async (input, init) => {
     "";
   const role = roleForToken(token);
   if (!role) return json(null, 401, t("error.expired"));
+  if (url.pathname.endsWith('/audit-logs') && method === 'GET') return json(adminBackend.audit(url.searchParams));
+  if (url.pathname.endsWith('/assistant/reply') && method === 'POST') {
+    if (typeof body.prompt !== 'string' || !body.prompt.trim()) return json(null, 400, t('business.invalid'));
+    return json({ content: t('agent.response', { prompt: body.prompt.slice(0, 200) }) });
+  }
+  const adminRequest = /\/(roles|departments|dictionaries)(?:\/([^/]+))?$/.exec(url.pathname);
+  if (adminRequest) {
+    const kind = adminRequest[1] as import('./admin-contracts').ResourceKind, id = adminRequest[2];
+    if (method === 'GET' && !id) return json(adminBackend.list(kind, url.searchParams));
+    if (role !== 'admin') return json(null, 403, t('error.permission'));
+    try {
+      if (method === 'POST' && !id) return json(adminBackend.save(kind, body));
+      if (method === 'PUT' && id) return json(adminBackend.save(kind, body, id));
+      if (method === 'DELETE' && id) { adminBackend.remove(kind, id); return json(null); }
+    } catch (error) { return json(null, 400, error instanceof Error ? t(error.message as import('../i18n/messages').MessageKey) : t('error.request')); }
+  }
   const menuRequest = /\/menus(?:\/([^/]+))?$/.exec(url.pathname);
   if (menuRequest) {
     const id = menuRequest[1] ? decodeURIComponent(menuRequest[1]) : undefined;
     if (method === "GET" && !id) return json(menuBackend.list());
     if (role !== "admin") return json(null, 403, t("error.permission"));
     try {
-      if (method === "POST" && !id) return json(menuBackend.create(body, random.guid()));
-      if (method === "PUT" && id) return json(menuBackend.update(id, body));
-      if (method === "DELETE" && id) { menuBackend.remove(id); return json(null); }
+      if (method === "POST" && !id) { const row = menuBackend.create(body, random.guid()); recordAudit('menus', 'create', row.titleZh, row.titleEn); return json(row); }
+      if (method === "PUT" && id) { const row = menuBackend.update(id, body); recordAudit('menus', 'update', row.titleZh, row.titleEn); return json(row); }
+      if (method === "DELETE" && id) { menuBackend.remove(id); recordAudit('menus', 'delete', id, id); return json(null); }
     } catch (error) {
       return json(null, 400, error instanceof Error ? t(error.message as import('../i18n/messages').MessageKey) : t('error.request'));
     }

@@ -1,4 +1,13 @@
 export const navigation = [
+  { path: '/roles', label: 'nav.roles', icon: 'Users', section: 'section.system', caption: 'roles.caption' },
+  { path: '/departments', label: 'nav.departments', icon: 'FolderKanban', section: 'section.system', caption: 'departments.caption' },
+  { path: '/dictionaries', label: 'nav.dictionaries', icon: 'ListChecks', section: 'section.system', caption: 'dictionaries.caption' },
+  { path: '/audit', label: 'nav.audit', icon: 'ListChecks', section: 'section.system', caption: 'audit.caption' },
+  { path: '/table-lab', label: 'nav.tableLab', icon: 'Blocks', section: 'section.examples', caption: 'tableLab.caption' },
+  { path: '/card-lab', label: 'nav.cardLab', icon: 'Blocks', section: 'section.examples', caption: 'cardLab.caption' },
+  { path: '/agent', label: 'nav.agent', icon: 'Blocks', section: 'section.examples', caption: 'agent.caption' },
+  { path: '/virtual', label: 'nav.virtual', icon: 'Blocks', section: 'section.examples', caption: 'virtual.caption' },
+  { path: '/files', label: 'nav.files', icon: 'FolderKanban', section: 'section.workspace', caption: 'files.caption' },
   { path: "/menus", label: "nav.menus", icon: "Settings2", section: "section.system", caption: "menus.caption" },
   {
     path: "/icons",

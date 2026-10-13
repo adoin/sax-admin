@@ -13,7 +13,7 @@ function create() { open(workspace.nextDraft++); }
 <template>
   <PageHeading :title="t('nav.workspace')" :caption="t('workspace.caption')" eyebrow="WORKSPACE" />
   <SCard class="admin-card" :title="t('workspace.route')" :subtitle="t('workspace.routeCaption')">
-    <STag :color="workspace.editorEnabled ? 'success' : 'warning'">{{ t(workspace.editorEnabled ? 'workspace.enabled' : 'workspace.disabled') }}</STag>
+    <STag :color="workspace.editorEnabled ? 'success' : 'warn'">{{ t(workspace.editorEnabled ? 'workspace.enabled' : 'workspace.disabled') }}</STag>
     <div class="workspace-controls">
       <SButton v-if="!workspace.editorEnabled" @click="enable">{{ t('workspace.enable') }}</SButton>
       <SButton v-else color="danger" type="flat" @click="removeDraftRoute(router)">{{ t('workspace.disable') }}</SButton>

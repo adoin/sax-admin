@@ -1,5 +1,6 @@
 import { http } from "./client";
 export { menusApi } from "./menus";
+export { resourcesApi, auditApi, assistantApi } from './admin';
 import type { Order, OrderQuery } from "./contracts";
 export const ordersApi = {
   list: (query: OrderQuery) =>

@@ -50,7 +50,7 @@ function parentName(id: string) { const row = store.records.find((row) => row.id
     <template #kind="{ row }">{{ t(row.kind === 'group' ? 'menus.group' : 'menus.page') }}</template>
     <template #parent="{ row }">{{ parentName(row.parentId) }}</template>
     <template #icon="{ row }"><SIcon :name="row.icon" :size="20" /></template>
-    <template #enabled="{ row }"><STag :color="row.enabled ? 'success' : 'warning'">{{ t(row.enabled ? 'menus.enabled' : 'menus.hidden') }}</STag></template>
+    <template #enabled="{ row }"><STag :color="row.enabled ? 'success' : 'warn'">{{ t(row.enabled ? 'menus.enabled' : 'menus.hidden') }}</STag></template>
     <template #actions="{ row }"><div class="menu-actions"><SButton size="small" type="flat" :disabled="!session.isAdmin" @click="edit(row)">{{ t('menus.edit') }}</SButton><SButton size="small" type="flat" color="danger" :disabled="!session.isAdmin" @click="removing = row; error = ''">{{ t('menus.remove') }}</SButton></div></template>
   </STable></SCard>
   <SAlert class="menu-notice" color="primary">{{ t('menus.storage') }}</SAlert>

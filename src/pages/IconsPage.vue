@@ -42,14 +42,14 @@ async function register() {
       <div class="icon-row">
         <div class="icon-sample"><SIcon name="demo:rocket" :size="40" color="primary" :label="t('icons.rocket')" /><span>{{ t('icons.rocket') }}</span></div>
         <div class="icon-sample"><SIcon name="demo:badge-check" :size="40" color="success" :label="t('icons.verified')" /><span>{{ t('icons.verified') }}</span></div>
-        <div class="icon-sample"><SIcon :icon-data="iconBuildProbe" :size="40" :rotate="45" color="warning" :label="t('icons.explicit')" /><span>{{ t('icons.explicit') }}</span></div>
+        <div class="icon-sample"><SIcon :icon-data="iconBuildProbe" :size="40" :rotate="45" color="warn" :label="t('icons.explicit')" /><span>{{ t('icons.explicit') }}</span></div>
       </div>
     </SCard>
     <SCard class="admin-card" :title="t('icons.dynamic')" :subtitle="t('icons.dynamicCaption')">
       <div class="icon-row"><SSelect v-model="selected" :options="options" :aria-label="t('icons.select')" /><SIcon :name="selected" :size="48" color="primary" :label="t('icons.select')" /><code>{{ selected }}</code></div>
     </SCard>
     <SCard class="admin-card" :title="t('icons.runtime')" :subtitle="t('icons.runtimeCaption')">
-      <div class="icon-row"><SIcon :key="String(registered)" :name="runtimeName" :size="48" color="primary" :label="t('icons.brand')"><span>?</span></SIcon><STag :color="registered ? 'success' : 'warning'">{{ t(registered ? 'icons.registered' : 'icons.unregistered') }}</STag><SButton :loading="busy" :disabled="registered" @click="register">{{ t('icons.register') }}</SButton></div>
+      <div class="icon-row"><SIcon :key="String(registered)" :name="runtimeName" :size="48" color="primary" :label="t('icons.brand')"><span>?</span></SIcon><STag :color="registered ? 'success' : 'warn'">{{ t(registered ? 'icons.registered' : 'icons.unregistered') }}</STag><SButton :loading="busy" :disabled="registered" @click="register">{{ t('icons.register') }}</SButton></div>
     </SCard>
     <SCard class="admin-card" :title="t('icons.fallback')" :subtitle="t('icons.fallbackCaption')">
       <div class="icon-row"><SIcon :name="missing" :size="36" :label="t('icons.missing')"><span>?</span></SIcon><code>{{ missing }}</code></div>
