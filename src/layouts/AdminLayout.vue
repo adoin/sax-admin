@@ -265,7 +265,7 @@ function navigate(path: string) {
             >
               <Bell :size="19" /></SButton
           ></SBadge>
-          <STag color="success" class="hidden md:block">{{
+          <STag color="success" class="hidden md:inline-flex">{{
             mockEnabled ? t("shell.demo") : t("shell.api")
           }}</STag>
         </div>
