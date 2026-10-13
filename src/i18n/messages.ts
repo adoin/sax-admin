@@ -1,8 +1,10 @@
 import { exampleZh, exampleEn } from "./examples";
 import { workspaceZh, workspaceEn } from "./workspace";
+import { iconsZh, iconsEn } from "./icons";
 export const zh = {
   ...exampleZh,
   ...workspaceZh,
+  ...iconsZh,
   "nav.dashboard": "工作台",
   "nav.users": "用户管理",
   "nav.charts": "图表分析",
@@ -265,6 +267,7 @@ export type MessageKey = keyof typeof zh;
 export const en: Record<MessageKey, string> = {
   ...exampleEn,
   ...workspaceEn,
+  ...iconsEn,
   "nav.dashboard": "Overview",
   "nav.users": "Members",
   "nav.charts": "Analytics",

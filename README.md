@@ -36,6 +36,8 @@ pnpm preview
 
 ## 目录与配置式开发
 
+“图标示例”页面使用 `SIcon` 和 `sax-design-vue-iconify`。`sax-icons.config.ts` 配置本地 Lucide 集合与动态图标 safelist，Vite 在构建阶段提取单个 SVG，集合 JSON 不进入客户端。运行时自定义图标在 `src/icons/runtime-brand.ts` 注册；注册表不是响应式的，演示在注册后重新挂载图标。`scripts/icon-build-audit.ts` 在生产构建中验证静态/白名单图标存在、未使用的显式导入被树摇移除、完整 JSON 没有打包，输出 `dist/icon-build-report.json`，验证失败将中断构建。
+
 应用外壳使用 `SLayout` 的 `header`、`aside`、`aside-outside`、默认内容插槽，保留组件自带的圆角和柔和阴影，以 12px 外壳留白和区域间距建立无装饰边框的层次。设置入口、语言切换和 `SSwitch` 主题开关位于 Aside 外置底部工具区，展开/收起使用组件自带控件；侧栏菜单与页面内容分别使用 `SScrollbar`；左侧导航、页头与独立胶囊标签栏保持固定，仅内容超出时滚动，切换标签恢复对应的内容滚动位置。应用仅补充全屏尺寸与移动端导航抽屉的布局适配。全局不提供 Footer，仅在需要的页面内部添加局部页脚。
 
 后台使用多标签工作区：菜单访问自动打开标签，工作台固定保留，支持关闭、刷新当前页、关闭其他和关闭全部。`STabs` 提供标签交互，Pinia 管理打开的完整路径；`RouterView.cacheComponentName` 根据路径和刷新版本生成独立缓存名，`KeepAlive.include` 与未关闭的标签同步。切换页面保留查询和表单状态，关闭标签释放对应实例；退出登录清空工作区。缓存只保留在当前浏览器会话的运行内存中，整页刷新后重新初始化。

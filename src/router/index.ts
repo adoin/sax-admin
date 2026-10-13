@@ -5,6 +5,13 @@ import { workspaceStore } from "@/stores/workspace";
 import { registerDraftRoute } from "./workspace";
 export const navigation = [
   {
+    path: "/icons",
+    label: "nav.icons",
+    icon: "Blocks",
+    section: "section.examples",
+    caption: "icons.caption",
+  },
+  {
     path: "/workspace",
     label: "nav.workspace",
     icon: "Blocks",
@@ -91,6 +98,12 @@ export const router = createRouter({
       component: () => import("@/layouts/AdminLayout.vue"),
       redirect: "/dashboard",
       children: [
+        {
+          path: "icons",
+          name: "icons",
+          component: () => import("@/pages/IconsPage.vue"),
+          meta: { title: "nav.icons" },
+        },
         {
           path: "workspace",
           name: "workspace",

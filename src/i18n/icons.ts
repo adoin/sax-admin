@@ -1,0 +1,26 @@
+export const iconsZh = {
+  'nav.icons': '图标示例', 'icons.caption': '静态按需提取、动态名称与运行时图标注册。',
+  'icons.static': '静态图标与显式导入', 'icons.staticCaption': '静态 name 由插件提取单个 SVG；显式虚拟模块导入也只包含对应图标。',
+  'icons.rocket': '火箭', 'icons.verified': '认证', 'icons.house': '首页', 'icons.settings': '设置', 'icons.analytics': '分析',
+  'icons.dynamic': '动态名称', 'icons.dynamicCaption': '动态名称通过 safelist 预注册，切换选择即可更新图标，浏览器无需请求图标服务。',
+  'icons.select': '选择动态图标', 'icons.runtime': '运行时注册', 'icons.runtimeCaption': '按需加载自定义 SVG 并注册到共享图标表。注册表不是响应式的，注册后重新挂载图标即可显示。',
+  'icons.register': '注册品牌图标', 'icons.registered': '已注册', 'icons.unregistered': '尚未注册',
+  'icons.fallback': '未注册名称的回退', 'icons.fallbackCaption': '未知名称不会自动联网下载；通过默认插槽提供回退内容。',
+  'icons.missing': '未注册图标', 'icons.brand': '品牌图标',
+  'icons.audit': '生产构建验证', 'icons.auditCaption': '构建检查完整集合没有进入浏览器，并检查一个已导入但未使用的图标已被树摇移除；验证失败会使构建失败。',
+  'icons.auditNote': '运行 pnpm build，报告输出到 dist/icon-build-report.json。使用生产预览可下载报告。',
+  'icons.report': '下载构建报告', 'icons.explicit': '显式虚拟模块导入',
+} as const;
+export const iconsEn: Record<keyof typeof iconsZh, string> = {
+  'nav.icons': 'Icon examples', 'icons.caption': 'Static per-icon extraction, dynamic names, and runtime registration.',
+  'icons.static': 'Static icons and explicit imports', 'icons.staticCaption': 'The plugin extracts one SVG for each static name. Explicit virtual imports also contain only the requested artwork.',
+  'icons.rocket': 'Rocket', 'icons.verified': 'Verified', 'icons.house': 'Home', 'icons.settings': 'Settings', 'icons.analytics': 'Analytics',
+  'icons.dynamic': 'Dynamic names', 'icons.dynamicCaption': 'Safelisted names are preregistered. Select another name to update the icon without browser requests to icon services.',
+  'icons.select': 'Choose a dynamic icon', 'icons.runtime': 'Runtime registration', 'icons.runtimeCaption': 'Lazy-load custom SVG data into the shared registry. The registry is not reactive; remount the icon after registration to display it.',
+  'icons.register': 'Register brand icon', 'icons.registered': 'Registered', 'icons.unregistered': 'Not registered yet',
+  'icons.fallback': 'Unregistered name fallback', 'icons.fallbackCaption': 'Unknown names do not trigger network downloads. Provide fallback content through the default slot.',
+  'icons.missing': 'Unregistered icon', 'icons.brand': 'Brand icon',
+  'icons.audit': 'Production build verification', 'icons.auditCaption': 'The build verifies that collection JSON stays out of browser bundles and an imported but unused icon is removed. A failed audit fails the build.',
+  'icons.auditNote': 'Run pnpm build to write dist/icon-build-report.json. Download the report in production preview.',
+  'icons.report': 'Download build report', 'icons.explicit': 'Explicit virtual import',
+};
