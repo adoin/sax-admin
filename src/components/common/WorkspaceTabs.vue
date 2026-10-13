@@ -23,7 +23,7 @@ async function closeAll() {
 </script>
 <template>
   <div class="workspace-bar">
-    <STabs class="workspace-tabs" :model-value="route.fullPath" type="editable-card" overflow="scroll" hide-add :animated="false" :aria-label="t('workspace.tabs')" @update:model-value="(path) => router.push(String(path))" @remove="close">
+    <STabs class="workspace-tabs" :model-value="route.fullPath" type="editable-card" size="small" overflow="scroll" hide-add :animated="false" :aria-label="t('workspace.tabs')" @update:model-value="(path) => router.push(String(path))" @remove="close">
       <STab v-for="tab in workspace.tabs" :key="tab.fullPath" :name="tab.fullPath" :label="t(tab.title, tab.titleId ? { id: tab.titleId } : {})" :closable="!tab.pinned" />
     </STabs>
     <div class="workspace-actions">
