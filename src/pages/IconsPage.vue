@@ -9,7 +9,21 @@ const selected = shallowRef('demo:house');
 const registered = shallowRef(Boolean(getIconData('custom:brand-mark')));
 const busy = shallowRef(false);
 const missing = 'custom:not-registered', runtimeName = 'custom:brand-mark';
-const production = import.meta.env.PROD;
+const localConfig = `defineSaxIconConfig({
+  mode: 'local',
+  collections: { demo: 'lucide' },
+  safelist: ['demo:house']
+})`;
+const apiConfig = `defineSaxIconConfig({
+  mode: 'api',
+  collections: { demo: 'lucide' },
+  api: { baseUrl: 'http://icons.intranet:3000/' },
+  safelist: ['demo:house']
+})`;
+const svgConfig = `addIconData('custom:mark', {
+  attributes: { viewBox: '0 0 24 24' },
+  body: '<path d="M4 12h16" fill="none" stroke="currentColor"/>'
+})`;
 const options = computed(() => [
   { label: t('icons.house'), value: 'demo:house' },
   { label: t('icons.settings'), value: 'demo:settings' },
@@ -40,9 +54,16 @@ async function register() {
     <SCard class="admin-card" :title="t('icons.fallback')" :subtitle="t('icons.fallbackCaption')">
       <div class="icon-row"><SIcon :name="missing" :size="36" :label="t('icons.missing')"><span>?</span></SIcon><code>{{ missing }}</code></div>
     </SCard>
-    <SCard class="admin-card" :title="t('icons.audit')" :subtitle="t('icons.auditCaption')">
-      <SAlert color="primary">{{ t('icons.auditNote') }}</SAlert>
-      <a v-if="production" href="/icon-build-report.json" download>{{ t('icons.report') }}</a>
+    <SCard class="admin-card" :title="t('icons.localSource')" :subtitle="t('icons.localSourceCaption')">
+      <SAlert color="primary">{{ t('icons.localSourceNote', { package: '@iconify-json/lucide' }) }}</SAlert>
+      <pre class="source-code"><code>{{ localConfig }}</code></pre>
+    </SCard>
+    <SCard class="admin-card" :title="t('icons.privateApi')" :subtitle="t('icons.privateApiCaption')">
+      <SAlert color="primary">{{ t('icons.privateApiNote') }}</SAlert>
+      <pre class="source-code"><code>{{ apiConfig }}</code></pre>
+    </SCard>
+    <SCard class="admin-card" :title="t('icons.svgSource')" :subtitle="t('icons.svgSourceCaption')">
+      <pre class="source-code"><code>{{ svgConfig }}</code></pre>
     </SCard>
   </div>
 </template>
@@ -50,4 +71,5 @@ async function register() {
 .icon-examples { display: grid; gap: 20px; }
 .icon-row { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; padding-top: 20px; }
 .icon-sample { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 12px; box-shadow: inset 0 2px 10px rgb(0 0 0 / 0.05); }
+.source-code { margin: 20px 0 0; padding: 16px; border-radius: 12px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; box-shadow: inset 0 2px 10px rgb(0 0 0 / 0.05); font-size: 13px; line-height: 1.8; }
 </style>

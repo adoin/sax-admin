@@ -3,85 +3,7 @@ import { pinia } from "@/stores";
 import { sessionStore } from "@/stores/session";
 import { workspaceStore } from "@/stores/workspace";
 import { registerDraftRoute } from "./workspace";
-export const navigation = [
-  {
-    path: "/icons",
-    label: "nav.icons",
-    icon: "Blocks",
-    section: "section.examples",
-    caption: "icons.caption",
-  },
-  {
-    path: "/workspace",
-    label: "nav.workspace",
-    icon: "Blocks",
-    section: "section.examples",
-    caption: "workspace.caption",
-  },
-  {
-    path: "/dashboard",
-    label: "nav.dashboard",
-    icon: "LayoutDashboard",
-    section: "section.workspace",
-    caption: "dashboard.caption",
-  },
-  {
-    path: "/users",
-    label: "nav.users",
-    icon: "Users",
-    section: "section.workspace",
-    caption: "users.caption",
-  },
-  {
-    path: "/charts",
-    label: "nav.charts",
-    icon: "ChartNoAxesCombined",
-    section: "section.insights",
-    caption: "charts.caption",
-  },
-  {
-    path: "/orders",
-    label: "nav.orders",
-    icon: "ShoppingBag",
-    section: "section.workspace",
-    caption: "orders.caption",
-  },
-  {
-    path: "/projects",
-    label: "nav.projects",
-    icon: "FolderKanban",
-    section: "section.workspace",
-    caption: "projects.caption",
-  },
-  {
-    path: "/forms",
-    label: "nav.forms",
-    icon: "ListChecks",
-    section: "section.examples",
-    caption: "forms.caption",
-  },
-  {
-    path: "/components",
-    label: "nav.components",
-    icon: "Blocks",
-    section: "section.examples",
-    caption: "examples.caption",
-  },
-  {
-    path: "/maps",
-    label: "nav.maps",
-    icon: "Map",
-    section: "section.insights",
-    caption: "maps.caption",
-  },
-  {
-    path: "/settings",
-    label: "nav.settings",
-    icon: "Settings2",
-    section: "section.system",
-    caption: "settings.caption",
-  },
-] as const;
+export { navigation } from "./navigation";
 export const router = createRouter({
   history: createWebHistory(),
   scrollBehavior: () => ({ top: 0 }),
@@ -98,6 +20,7 @@ export const router = createRouter({
       component: () => import("@/layouts/AdminLayout.vue"),
       redirect: "/dashboard",
       children: [
+        { path: "menus", name: "menus", component: () => import("@/pages/MenusPage.vue"), meta: { title: "nav.menus" } },
         {
           path: "icons",
           name: "icons",

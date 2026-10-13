@@ -1,0 +1,16 @@
+export const menusZh = {
+  'nav.menus': '菜单管理', 'menus.caption': '配置左侧导航，保存到 Mock 后端，刷新后仍保留。',
+  'menus.new': '新增菜单', 'menus.edit': '编辑菜单', 'menus.remove': '删除菜单', 'menus.titleZh': '中文名称', 'menus.titleEn': '英文名称',
+  'menus.kind': '类型', 'menus.group': '分组', 'menus.page': '页面', 'menus.parent': '上级分组', 'menus.root': '顶层', 'menus.path': '目标页面', 'menus.icon': '图标', 'menus.order': '排序', 'menus.enabled': '显示', 'menus.hidden': '隐藏',
+  'menus.saved': '菜单已保存，侧栏已同步更新。', 'menus.deleted': '菜单已删除。', 'menus.confirmDelete': '删除“{name}”？',
+  'menus.invalid': '请填写完整的中英文名称和有效配置。', 'menus.invalidPath': '请选择已有的目标页面。', 'menus.invalidParent': '上级必须是存在的分组。', 'menus.cycle': '分组不能放到自身或自己的后代中。', 'menus.hasChildren': '请先移走或删除该分组下的菜单。', 'menus.missing': '菜单不存在。',
+  'menus.storage': 'Mock 后端通过 localStorage 保存菜单配置。真实项目可关闭 Mock 并接入同样的 API；菜单隐藏不替代服务端权限校验。',
+};
+export const menusEn: Record<keyof typeof menusZh, string> = {
+  'nav.menus': 'Menu management', 'menus.caption': 'Configure sidebar navigation, save to the mock backend, and keep changes after reload.',
+  'menus.new': 'Add menu', 'menus.edit': 'Edit menu', 'menus.remove': 'Delete menu', 'menus.titleZh': 'Chinese name', 'menus.titleEn': 'English name',
+  'menus.kind': 'Type', 'menus.group': 'Group', 'menus.page': 'Page', 'menus.parent': 'Parent group', 'menus.root': 'Top level', 'menus.path': 'Target page', 'menus.icon': 'Icon', 'menus.order': 'Order', 'menus.enabled': 'Visible', 'menus.hidden': 'Hidden',
+  'menus.saved': 'Menu saved and sidebar updated.', 'menus.deleted': 'Menu deleted.', 'menus.confirmDelete': 'Delete “{name}”?',
+  'menus.invalid': 'Enter both names and a valid configuration.', 'menus.invalidPath': 'Choose an existing target page.', 'menus.invalidParent': 'The parent must be an existing group.', 'menus.cycle': 'A group cannot become its own descendant.', 'menus.hasChildren': 'Move or delete this group’s child menus first.', 'menus.missing': 'Menu not found.',
+  'menus.storage': 'The mock backend stores menu settings in localStorage. Disable mocks to use the same API with a real server. Hidden menus do not replace server authorization.',
+};

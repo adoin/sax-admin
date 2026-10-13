@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { t } from "@/i18n";
-import { computed, shallowRef, watch, nextTick } from "vue";
+import { computed, shallowRef, watch, nextTick, onMounted } from "vue";
 import { RouterLink, RouterView, useRoute, useRouter } from "vue-smart-router";
 import {
   SButton,
@@ -12,23 +12,15 @@ import {
   STag,
   SLayout,
   SLayoutHeader,
+  SMenu,
 } from "sax-design-vue";
 import {
-  LayoutDashboard,
-  Users,
-  ChartNoAxesCombined,
-  Map,
-  Settings2,
   PanelLeftClose,
   Menu,
   Search,
   Bell,
   ChevronRight,
   LogOut,
-  ShoppingBag,
-  FolderKanban,
-  ListChecks,
-  Blocks,
 } from "lucide-vue-next";
 import { navigation } from "@/router";
 import { sessionStore } from "@/stores/session";
@@ -37,9 +29,14 @@ import { mockEnabled } from "@/api/client";
 import WorkspaceTabs from "@/components/common/WorkspaceTabs.vue";
 import AsideTools from "@/components/common/AsideTools.vue";
 import { workspaceStore } from "@/stores/workspace";
+import { menusStore, menuLabel } from "@/stores/menus";
 import type { RouteLocationNormalizedLoaded } from "vue-smart-router";
-import type { ScrollbarInstance } from "sax-design-vue";
+import type { ScrollbarInstance, MenuKey } from "sax-design-vue";
 const workspace = workspaceStore();
+const menus = menusStore();
+const menuOpenKeys = shallowRef<MenuKey[]>(menus.records.filter((row) => row.kind === 'group').map((row) => row.id));
+let inlineMenuKeys = [...menuOpenKeys.value];
+onMounted(() => menus.refresh());
 const pageScrollbar = shallowRef<ScrollbarInstance>();
 const outsideCollapsed = shallowRef(false);
 const scrollPositions = new globalThis.Map<string, number>();
@@ -48,34 +45,29 @@ const route = useRoute(),
   router = useRouter(),
   session = sessionStore(),
   preferences = preferencesStore();
-const icons = {
-  LayoutDashboard,
-  Users,
-  ChartNoAxesCombined,
-  Map,
-  Settings2,
-  ShoppingBag,
-  FolderKanban,
-  ListChecks,
-  Blocks,
-};
-const sections = [
-  "section.workspace",
-  "section.insights",
-  "section.examples",
-  "section.system",
-] as const;
+watch(() => preferences.collapsed && !preferences.mobileOpen, (collapsed) => {
+  if (collapsed) { inlineMenuKeys = [...menuOpenKeys.value]; menuOpenKeys.value = []; }
+  else menuOpenKeys.value = [...inlineMenuKeys];
+}, { immediate: true });
 const searchOpen = shallowRef(false),
   notifications = shallowRef(false),
   keyword = shallowRef("");
 const matches = computed(() =>
-  navigation.filter((item) =>
-    `${t(item.label)} ${t(item.caption)}`.includes(keyword.value),
+  menus.visiblePages.filter((item) =>
+    `${item.titleZh} ${item.titleEn} ${item.path}`.toLowerCase().includes(keyword.value.toLowerCase()),
   ),
 );
 const active = computed(() =>
   navigation.find((item) => item.path === route.path),
 );
+const selectedMenu = computed(() => {
+  const selected = menus.records.find((row) => row.id === menus.selectedId && row.path === route.path);
+  return (selected || menus.records.find((row) => row.kind === 'page' && row.path === route.path))?.id;
+});
+function selectMenu(value: string | number) {
+  const row = menus.records.find((row) => row.id === String(value));
+  if (row?.kind === 'page') { menus.selectedId = row.id; navigate(row.path); }
+}
 let displayedPath = route.fullPath, restoringScroll = false, scrollRevision = 0;
 function rememberScroll({ scrollTop }: { scrollTop: number }) {
   if (!restoringScroll) scrollPositions.set(displayedPath, scrollTop);
@@ -137,42 +129,7 @@ function navigate(path: string) {
           >
         </div></RouterLink
       >
-      <SScrollbar class="flex-1 min-h-0" height="100%"
-        ><nav :aria-label="t('shell.navigation')">
-          <div v-for="section in sections" :key="section" class="mb-7">
-            <p
-              v-if="!preferences.collapsed"
-              class="text-11px text-muted px-3 mb-3"
-            >
-              {{ t(section) }}
-            </p>
-            <RouterLink
-              v-for="item in navigation.filter((n) => n.section === section)"
-              :key="item.path"
-              :to="item.path"
-              :title="t(item.label)"
-              class="flex items-center gap-3 px-3 py-3 rounded-3 mb-1.5 text-13px font-500 hover:bg-slate-50 dark:hover:bg-slate-800"
-              :class="
-                route.path === item.path
-                  ? 'bg-blue-50 text-brand dark:bg-blue-500/15'
-                  : 'text-muted'
-              "
-              :aria-current="route.path === item.path ? 'page' : undefined"
-              @click="preferences.mobileOpen = false"
-              ><component
-                :is="icons[item.icon]"
-                :size="19"
-                :stroke-width="1.8"
-              /><span v-if="!preferences.collapsed">{{ t(item.label) }}</span
-              ><span
-                v-if="item.path === '/charts' && !preferences.collapsed"
-                class="ml-auto text-9px px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 rounded text-brand"
-                >GPU</span
-              ></RouterLink
-            >
-          </div>
-        </nav></SScrollbar
-      >
+      <SScrollbar class="flex-1 min-h-0" height="100%"><SMenu class="admin-menu" :options="menus.options" :model-value="selectedMenu" :collapse="preferences.collapsed && !preferences.mobileOpen" :open-keys="menuOpenKeys" :unique-open="preferences.collapsed && !preferences.mobileOpen" variant="plain" :aria-label="t('shell.navigation')" @update:open-keys="menuOpenKeys = $event" @select="selectMenu" /></SScrollbar>
       <div class="flex items-center gap-3 px-2">
         <SAvatar :size="36" shape="circle"
           ><template #text>{{ session.current?.name }}</template></SAvatar
@@ -230,7 +187,7 @@ function navigate(path: string) {
             :size="13"
             class="text-slate-300 hidden sm:block"
           /><span class="font-500 text-13px">{{
-            active ? t(active.label) : t('workspace.draft', { id: String(route.params.id || '') })
+            selectedMenu ? menuLabel(menus.records.find((row) => row.id === selectedMenu)!) : active ? t(active.label) : t('workspace.draft', { id: String(route.params.id || '') })
           }}</span>
         </div>
         <div class="flex items-center gap-2 md:gap-4">
@@ -286,13 +243,13 @@ function navigate(path: string) {
           type="transparent"
           :debounce="false"
           v-for="item in matches"
-          :key="item.path"
+          :key="item.id"
           class="border-0 bg-slate-50 dark:bg-slate-800 rounded-3 p-4 flex items-center justify-between text-left"
-          @click="navigate(item.path)"
+          @click="menus.selectedId = item.id; navigate(item.path)"
         >
           <div>
-            <b>{{ t(item.label) }}</b>
-            <p class="text-12px text-muted mb-0 mt-1">{{ t(item.caption) }}</p>
+            <b>{{ menuLabel(item) }}</b>
+            <p class="text-12px text-muted mb-0 mt-1">{{ item.path }}</p>
           </div>
           <ChevronRight :size="16" />
         </SButton>
@@ -329,6 +286,7 @@ function navigate(path: string) {
 }
 .admin-shell :deep(.s-layout-aside__content) { height: 100%; overflow: hidden; }
 .admin-sidebar { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.admin-menu.s-menu { width: 100%; }
 .admin-shell :deep(.s-layout__content > .s-layout-body) { display: flex; flex-direction: column; gap: 12px; padding: 0; overflow: visible; background: transparent; box-shadow: none; border-radius: 0; }
 .workspace-tab-surface { flex-shrink: 0; }
 .admin-page-scroll { flex: 1; min-height: 0; width: calc(100% + 9px); max-width: none; overflow: visible; }

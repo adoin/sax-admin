@@ -1,10 +1,12 @@
 import { exampleZh, exampleEn } from "./examples";
 import { workspaceZh, workspaceEn } from "./workspace";
 import { iconsZh, iconsEn } from "./icons";
+import { menusZh, menusEn } from "./menus";
 export const zh = {
   ...exampleZh,
   ...workspaceZh,
   ...iconsZh,
+  ...menusZh,
   "nav.dashboard": "工作台",
   "nav.users": "用户管理",
   "nav.charts": "图表分析",
@@ -268,6 +270,7 @@ export const en: Record<MessageKey, string> = {
   ...exampleEn,
   ...workspaceEn,
   ...iconsEn,
+  ...menusEn,
   "nav.dashboard": "Overview",
   "nav.users": "Members",
   "nav.charts": "Analytics",

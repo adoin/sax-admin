@@ -1,4 +1,5 @@
 import Mock from "mockjs";
+import { menuBackend } from "./menu-backend";
 import type { Order } from "./contracts";
 import { t, departmentLabel } from "../i18n";
 import type {
@@ -196,6 +197,19 @@ export const mockFetch: typeof fetch = async (input, init) => {
     "";
   const role = roleForToken(token);
   if (!role) return json(null, 401, t("error.expired"));
+  const menuRequest = /\/menus(?:\/([^/]+))?$/.exec(url.pathname);
+  if (menuRequest) {
+    const id = menuRequest[1] ? decodeURIComponent(menuRequest[1]) : undefined;
+    if (method === "GET" && !id) return json(menuBackend.list());
+    if (role !== "admin") return json(null, 403, t("error.permission"));
+    try {
+      if (method === "POST" && !id) return json(menuBackend.create(body, random.guid()));
+      if (method === "PUT" && id) return json(menuBackend.update(id, body));
+      if (method === "DELETE" && id) { menuBackend.remove(id); return json(null); }
+    } catch (error) {
+      return json(null, 400, error instanceof Error ? t(error.message as import('../i18n/messages').MessageKey) : t('error.request'));
+    }
+  }
   if (url.pathname.endsWith("/orders") && method === "GET") {
     const keyword = (url.searchParams.get("keyword") || "").toLowerCase(),
       status = url.searchParams.get("status") || "";

@@ -23,5 +23,6 @@ describe("Chinese and English localization", () => {
     expect(cityLabel("Shanghai")).toBe("Shanghai");
     expect(departmentLabel("engineering")).toBe("Engineering");
     expect(t("users.edit", { name: "Alex" })).toBe("Edit Alex");
+    expect(t('icons.localSourceNote', { package: '@iconify-json/lucide' })).toContain('@iconify-json/lucide');
   });
 });

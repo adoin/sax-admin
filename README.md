@@ -36,6 +36,8 @@ pnpm preview
 
 ## 目录与配置式开发
 
+左侧导航使用 `SMenu` 的配置式 `options`、选中项、分组与折叠菜单能力。“菜单管理”通过 Alova 请求 `GET/POST /api/menus` 和 `PUT/DELETE /api/menus/:id`，支持中英文名称、分组层级、目标页面、图标、排序与显示状态。Mock 后端独占配置存储，使用 localStorage 持久化并校验分组循环、父节点、目标页面和写入权限；页面与 Pinia 仅通过 API 读取和保存。保存后立即重新加载菜单并更新侧栏。菜单隐藏只控制导航展示，路由认证仍由原有守卫负责。
+
 “图标示例”页面使用 `SIcon` 和 `sax-design-vue-iconify`。`sax-icons.config.ts` 配置本地 Lucide 集合与动态图标 safelist，Vite 在构建阶段提取单个 SVG，集合 JSON 不进入客户端。运行时自定义图标在 `src/icons/runtime-brand.ts` 注册；注册表不是响应式的，演示在注册后重新挂载图标。`scripts/icon-build-audit.ts` 在生产构建中验证静态/白名单图标存在、未使用的显式导入被树摇移除、完整 JSON 没有打包，输出 `dist/icon-build-report.json`，验证失败将中断构建。
 
 应用外壳使用 `SLayout` 的 `header`、`aside`、`aside-outside`、默认内容插槽，保留组件自带的圆角和柔和阴影，以 12px 外壳留白和区域间距建立无装饰边框的层次。设置入口、语言切换和 `SSwitch` 主题开关位于 Aside 外置底部工具区，展开/收起使用组件自带控件；侧栏菜单与页面内容分别使用 `SScrollbar`；左侧导航、页头与独立胶囊标签栏保持固定，仅内容超出时滚动，切换标签恢复对应的内容滚动位置。应用仅补充全屏尺寸与移动端导航抽屉的布局适配。全局不提供 Footer，仅在需要的页面内部添加局部页脚。
