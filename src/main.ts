@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import SaxDesign from "sax-design-vue";
 import "sax-design-vue/dist/index.css";
+import "sax-design-vue/theme-chalk/dark/css-vars.css";
 import "virtual:uno.css";
 import "./styles/base.css";
 import App from "./App.vue";

@@ -1,4 +1,5 @@
 import Mock from "mockjs";
+import type { Order } from "./contracts";
 import { t, departmentLabel } from "../i18n";
 import type {
   Dashboard,
@@ -19,6 +20,24 @@ let users: User[] = Array.from({ length: 128 }, (_, i) => ({
   createdAt: random.date("yyyy-MM-dd"),
 }));
 let nextId = 129;
+const orders: Order[] = Array.from({ length: 86 }, (_, i) => {
+  const items = Array.from({ length: random.integer(1, 3) }, () => ({
+    name: random.pick(["Sax Cloud Pro", "Team Workspace", "Analytics Pack"]),
+    quantity: random.integer(1, 5),
+    price: random.pick([199, 499, 999]),
+  }));
+  return {
+    id: i + 1,
+    number: `SO-2026-${String(i + 1).padStart(5, "0")}`,
+    customer: random.cname(),
+    total: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    status: random.pick(["pending", "paid", "shipped", "completed"]),
+    date: new Date(Date.now() - random.integer(0, 90) * 86400000)
+      .toISOString()
+      .slice(0, 10),
+    items,
+  };
+});
 const sessions = new Map<string, Session>();
 // Demo sessions are recoverable across page reloads; production authentication is server-owned.
 const roleForToken = (token: string) =>
@@ -110,14 +129,12 @@ export function createMapData(): MapData {
   }));
   return {
     points,
-    flows: points
-      .slice(1)
-      .map((p) => ({
-        source: points[0]!.position,
-        target: p.position,
-        name: `Shanghai → ${p.name}`,
-        value: random.integer(50, 500),
-      })),
+    flows: points.slice(1).map((p) => ({
+      source: points[0]!.position,
+      target: p.position,
+      name: `Shanghai → ${p.name}`,
+      value: random.integer(50, 500),
+    })),
   };
 }
 function json<T>(data: T, status = 200, message = "ok") {
@@ -179,6 +196,25 @@ export const mockFetch: typeof fetch = async (input, init) => {
     "";
   const role = roleForToken(token);
   if (!role) return json(null, 401, t("error.expired"));
+  if (url.pathname.endsWith("/orders") && method === "GET") {
+    const keyword = (url.searchParams.get("keyword") || "").toLowerCase(),
+      status = url.searchParams.get("status") || "";
+    const page = Math.max(1, Number(url.searchParams.get("page")) || 1),
+      size = Math.min(
+        100,
+        Math.max(1, Number(url.searchParams.get("pageSize")) || 10),
+      );
+    const items = orders.filter(
+      (o) =>
+        (!keyword ||
+          `${o.number} ${o.customer}`.toLowerCase().includes(keyword)) &&
+        (!status || o.status === status),
+    );
+    return json({
+      items: items.slice((page - 1) * size, page * size),
+      total: items.length,
+    });
+  }
   if (url.pathname.endsWith("/dashboard")) return json(createDashboard());
   if (url.pathname.endsWith("/analytics"))
     return json(

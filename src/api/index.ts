@@ -1,4 +1,9 @@
 import { http } from "./client";
+import type { Order, OrderQuery } from "./contracts";
+export const ordersApi = {
+  list: (query: OrderQuery) =>
+    http.Get<PageResult<Order>>("/orders", { params: query }),
+};
 import type {
   Dashboard,
   LoginInput,

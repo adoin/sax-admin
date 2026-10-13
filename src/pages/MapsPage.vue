@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SCard } from "sax-design-vue";
 import { t, cityLabel } from "@/i18n";
 import { computed, onMounted, shallowRef } from "vue";
 import { SButton, SSwitch, STable } from "sax-design-vue";
@@ -83,65 +84,79 @@ onMounted(refresh);
         },
       ]"
       :key="item.label"
-      class="panel flex gap-4 items-center"
+      class=""
     >
-      <span class="text-brand p-3 rounded-3 bg-blue-50"
-        ><component :is="item.icon" :size="21"
-      /></span>
-      <div>
-        <p class="text-muted text-xs m-0">{{ item.label }}</p>
-        <b class="text-7 tabular mt-1 block">{{ item.value }}</b>
-      </div>
+      <SCard class="admin-card card-inline">
+        <span class="text-brand p-3 rounded-3 bg-blue-50"
+          ><component :is="item.icon" :size="21"
+        /></span>
+        <div>
+          <p class="text-muted text-xs m-0">{{ item.label }}</p>
+          <b class="text-7 tabular mt-1 block">{{ item.value }}</b>
+        </div>
+      </SCard>
     </div>
   </div>
-  <section class="panel">
-    <div class="flex flex-wrap justify-between items-center mb-5 gap-4">
-      <div>
-        <h2 class="section-title m-0">{{ t("maps.network") }}</h2>
-        <p class="text-xs text-muted mt-2 mb-0">{{ t("maps.instructions") }}</p>
+  <section class="">
+    <SCard class="admin-card">
+      <div class="flex flex-wrap justify-between items-center mb-5 gap-4">
+        <div>
+          <h2 class="section-title m-0">{{ t("maps.network") }}</h2>
+          <p class="text-xs text-muted mt-2 mb-0">
+            {{ t("maps.instructions") }}
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-5">
+          <label class="text-12px text-muted flex items-center gap-2"
+            >{{ t("maps.flows")
+            }}<SSwitch
+              v-model="flows"
+              :aria-label="t('maps.showFlows')" /></label
+          ><label class="text-12px text-muted flex items-center gap-2"
+            >{{ t("maps.labels")
+            }}<SSwitch
+              v-model="labels"
+              :aria-label="t('maps.showLabels')" /></label
+          ><SButton type="flat" size="small" @click="map?.reset()"
+            ><LocateFixed :size="14" class="mr-1.5" />{{
+              t("maps.reset")
+            }}</SButton
+          >
+        </div>
       </div>
-      <div class="flex flex-wrap items-center gap-5">
-        <label class="text-12px text-muted flex items-center gap-2"
-          >{{ t("maps.flows")
-          }}<SSwitch v-model="flows" :aria-label="t('maps.showFlows')" /></label
-        ><label class="text-12px text-muted flex items-center gap-2"
-          >{{ t("maps.labels")
-          }}<SSwitch
-            v-model="labels"
-            :aria-label="t('maps.showLabels')" /></label
-        ><SButton type="flat" size="small" @click="map?.reset()"
-          ><LocateFixed :size="14" class="mr-1.5" />{{
-            t("maps.reset")
-          }}</SButton
-        >
-      </div>
-    </div>
-    <p v-if="error" role="alert" class="text-red-600">{{ error }}</p>
-    <p v-if="busy && !data" class="py-20 text-center text-muted" role="status">
-      {{ t("maps.loading") }}
-    </p>
-    <BusinessMap
-      v-if="data"
-      ref="map"
-      :data="data"
-      :flows="flows"
-      :labels="labels"
-    />
+      <p v-if="error" role="alert" class="text-red-600">{{ error }}</p>
+      <p
+        v-if="busy && !data"
+        class="py-20 text-center text-muted"
+        role="status"
+      >
+        {{ t("maps.loading") }}
+      </p>
+      <BusinessMap
+        v-if="data"
+        ref="map"
+        :data="data"
+        :flows="flows"
+        :labels="labels"
+      />
+    </SCard>
   </section>
-  <section v-if="data" class="panel mt-5">
-    <h2 class="section-title m-0 mb-5">{{ t("maps.ranking") }}</h2>
-    <STable
-      :data="ranking"
-      :columns="columns"
-      row-key="id"
-      :pager-config="{ pageSize: 6 }"
-      ><template #city="{ row }">{{ cityLabel(row.name) }}</template
-      ><template #coordinates="{ row }"
-        ><span class="text-muted text-xs tabular"
-          >{{ row.position[0].toFixed(2) }}° E,
-          {{ row.position[1].toFixed(2) }}° N</span
-        ></template
-      ></STable
-    >
+  <section v-if="data" class="mt-5">
+    <SCard class="admin-card">
+      <h2 class="section-title m-0 mb-5">{{ t("maps.ranking") }}</h2>
+      <STable
+        :data="ranking"
+        :columns="columns"
+        row-key="id"
+        :pager-config="{ pageSize: 6 }"
+        ><template #city="{ row }">{{ cityLabel(row.name) }}</template
+        ><template #coordinates="{ row }"
+          ><span class="text-muted text-xs tabular"
+            >{{ row.position[0].toFixed(2) }}° E,
+            {{ row.position[1].toFixed(2) }}° N</span
+          ></template
+        ></STable
+      >
+    </SCard>
   </section>
 </template>

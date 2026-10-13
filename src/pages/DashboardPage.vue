@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SCard, SAlert, SSkeleton } from "sax-design-vue";
 import { t, locale } from "@/i18n";
 import { computed, onMounted, shallowRef } from "vue";
 import { RouterLink } from "vue-smart-router";
@@ -77,129 +78,139 @@ onMounted(refresh);
       ><RefreshCw :size="15" class="mr-2" />{{ t("common.refresh") }}</SButton
     ></PageHeading
   >
-  <p v-if="error" role="alert" class="panel text-red-600">
-    {{ error }} <button @click="refresh">{{ t("common.retry") }}</button>
-  </p>
-  <div
-    v-if="!data && busy"
-    class="panel py-20 text-center text-muted"
-    role="status"
-  >
-    {{ t("dashboard.loading") }}
+  <SAlert v-if="error" color="danger" type="flat">
+    {{ error }}
+    <SButton type="transparent" :debounce="false" @click="refresh">{{
+      t("common.retry")
+    }}</SButton>
+  </SAlert>
+  <div v-if="!data && busy" class="py-20 text-center text-muted" role="status">
+    <SCard class="admin-card">
+      {{ t("dashboard.loading") }}
+      <SSkeleton />
+    </SCard>
   </div>
   <template v-if="data">
     <MetricCards :metrics="data.metrics" />
     <div
       class="grid xl:grid-cols-[minmax(0,2.1fr)_minmax(290px,1fr)] gap-5 mt-5"
     >
-      <section class="panel min-w-0">
-        <div class="flex flex-wrap justify-between gap-3 items-start">
-          <div>
-            <h2 class="section-title m-0">{{ t("dashboard.revenue") }}</h2>
-            <p class="text-12px text-muted mt-2">
-              {{ t("dashboard.revenueCaption") }}
+      <section class="min-w-0">
+        <SCard class="admin-card">
+          <div class="flex flex-wrap justify-between gap-3 items-start">
+            <div>
+              <h2 class="section-title m-0">{{ t("dashboard.revenue") }}</h2>
+              <p class="text-12px text-muted mt-2">
+                {{ t("dashboard.revenueCaption") }}
+              </p>
+            </div>
+            <div class="flex gap-1 bg-slate-50 dark:bg-slate-800 p-1 rounded-2">
+              <SButton
+                type="transparent"
+                :debounce="false"
+                v-for="p in [7, 30]"
+                :key="p"
+                class="border-0 px-3 py-1.5 rounded-2 text-11px"
+                :class="
+                  period === p
+                    ? 'bg-white text-brand shadow-sm dark:bg-slate-700'
+                    : 'bg-transparent text-muted'
+                "
+                @click="period = p"
+              >
+                {{ t("dashboard.days", { days: p }) }}
+              </SButton>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-5">
+            <p class="text-7 font-650 tabular m-0">
+              ¥{{ total
+              }}<span class="text-11px text-emerald-600 ml-3 font-500"
+                >↗ 18.6%</span
+              >
             </p>
-          </div>
-          <div class="flex gap-1 bg-slate-50 dark:bg-slate-800 p-1 rounded-2">
-            <button
-              v-for="p in [7, 30]"
-              :key="p"
-              class="border-0 px-3 py-1.5 rounded-2 text-11px"
-              :class="
-                period === p
-                  ? 'bg-white text-brand shadow-sm dark:bg-slate-700'
-                  : 'bg-transparent text-muted'
-              "
-              @click="period = p"
+            <span class="text-11px text-muted flex gap-4"
+              ><span
+                ><i
+                  class="inline-block w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5"
+                />{{ t("dashboard.thisMonth") }}</span
+              ><span
+                ><i
+                  class="inline-block w-1.5 h-1.5 rounded-full bg-blue-200 mr-1.5"
+                />{{ t("dashboard.lastMonth") }}</span
+              ></span
             >
-              {{ t("dashboard.days", { days: p }) }}
-            </button>
           </div>
-        </div>
-        <div class="flex justify-between items-center mb-5">
-          <p class="text-7 font-650 tabular m-0">
-            ¥{{ total
-            }}<span class="text-11px text-emerald-600 ml-3 font-500"
-              >↗ 18.6%</span
-            >
-          </p>
-          <span class="text-11px text-muted flex gap-4"
-            ><span
-              ><i
-                class="inline-block w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5"
-              />{{ t("dashboard.thisMonth") }}</span
-            ><span
-              ><i
-                class="inline-block w-1.5 h-1.5 rounded-full bg-blue-200 mr-1.5"
-              />{{ t("dashboard.lastMonth") }}</span
-            ></span
-          >
-        </div>
-        <GpuChart :series="series" :height="230" />
+          <GpuChart :series="series" :height="230" />
+        </SCard>
       </section>
       <ChannelPanel :channels="data.channels" />
     </div>
     <div
       class="grid xl:grid-cols-[minmax(0,2.1fr)_minmax(290px,1fr)] gap-5 mt-5"
     >
-      <section class="panel">
-        <div class="flex items-center justify-between">
-          <h2 class="section-title m-0">{{ t("dashboard.explore") }}</h2>
-          <span class="text-11px text-muted">{{
-            t("dashboard.exploreCaption")
-          }}</span>
-        </div>
-        <div class="grid sm:grid-cols-3 gap-4 mt-6">
-          <RouterLink
-            v-for="item in [
-              {
-                to: '/users',
-                title: t('dashboard.team'),
-                caption: t('dashboard.teamCaption'),
-                icon: Users,
-                color: 'text-blue-500 bg-blue-50',
-              },
-              {
-                to: '/charts',
-                title: t('dashboard.data'),
-                caption: t('dashboard.dataCaption'),
-                icon: ChartNoAxesCombined,
-                color: 'text-violet-500 bg-violet-50',
-              },
-              {
-                to: '/maps',
-                title: t('dashboard.geo'),
-                caption: t('dashboard.geoCaption'),
-                icon: Map,
-                color: 'text-emerald-500 bg-emerald-50',
-              },
-            ]"
-            :key="item.to"
-            :to="item.to"
-            class="rounded-4 bg-slate-50 dark:bg-slate-800 p-5 hover:bg-blue-50 dark:hover:bg-slate-700"
-            ><span
-              class="w-10 h-10 rounded-3 flex items-center justify-center"
-              :class="item.color"
-              ><component :is="item.icon" :size="20"
-            /></span>
-            <h3
-              class="text-13px font-600 mt-5 mb-2 flex justify-between items-center"
+      <section class="">
+        <SCard class="admin-card">
+          <div class="flex items-center justify-between">
+            <h2 class="section-title m-0">{{ t("dashboard.explore") }}</h2>
+            <span class="text-11px text-muted">{{
+              t("dashboard.exploreCaption")
+            }}</span>
+          </div>
+          <div class="grid sm:grid-cols-3 gap-4 mt-6">
+            <RouterLink
+              v-for="item in [
+                {
+                  to: '/users',
+                  title: t('dashboard.team'),
+                  caption: t('dashboard.teamCaption'),
+                  icon: Users,
+                  color: 'text-blue-500 bg-blue-50',
+                },
+                {
+                  to: '/charts',
+                  title: t('dashboard.data'),
+                  caption: t('dashboard.dataCaption'),
+                  icon: ChartNoAxesCombined,
+                  color: 'text-violet-500 bg-violet-50',
+                },
+                {
+                  to: '/maps',
+                  title: t('dashboard.geo'),
+                  caption: t('dashboard.geoCaption'),
+                  icon: Map,
+                  color: 'text-emerald-500 bg-emerald-50',
+                },
+              ]"
+              :key="item.to"
+              :to="item.to"
+              class="block min-w-0"
+              ><SCard class="admin-card" hover-effect="lift"
+                ><span
+                  class="w-10 h-10 rounded-3 flex items-center justify-center"
+                  :class="item.color"
+                  ><component :is="item.icon" :size="20"
+                /></span>
+                <h3
+                  class="text-13px font-600 mt-5 mb-2 flex justify-between items-center"
+                >
+                  {{ item.title }}<ArrowUpRight :size="14" class="text-muted" />
+                </h3>
+                <p class="text-11px text-muted m-0">
+                  {{ item.caption }}
+                </p></SCard
+              ></RouterLink
             >
-              {{ item.title }}<ArrowUpRight :size="14" class="text-muted" />
-            </h3>
-            <p class="text-11px text-muted m-0">
-              {{ item.caption }}
-            </p></RouterLink
+          </div>
+          <SAlert type="flat" class="mt-5"
+            ><div class="flex gap-3 items-center">
+              <Sparkles :size="19" class="text-brand shrink-0" />
+              <p class="text-12px text-slate-500 dark:text-slate-300 m-0">
+                {{ t("dashboard.tip") }}
+              </p>
+            </div></SAlert
           >
-        </div>
-        <div
-          class="mt-5 rounded-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-slate-800 p-4 flex gap-3 items-center"
-        >
-          <Sparkles :size="19" class="text-brand shrink-0" />
-          <p class="text-12px text-slate-500 dark:text-slate-300 m-0">
-            {{ t("dashboard.tip") }}
-          </p>
-        </div>
+        </SCard>
       </section>
       <ActivityPanel :activities="data.activities" />
     </div>

@@ -1,4 +1,6 @@
+import { exampleZh, exampleEn } from "./examples";
 export const zh = {
+  ...exampleZh,
   "nav.dashboard": "工作台",
   "nav.users": "用户管理",
   "nav.charts": "图表分析",
@@ -259,6 +261,7 @@ export const zh = {
 } as const;
 export type MessageKey = keyof typeof zh;
 export const en: Record<MessageKey, string> = {
+  ...exampleEn,
   "nav.dashboard": "Overview",
   "nav.users": "Members",
   "nav.charts": "Analytics",

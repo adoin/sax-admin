@@ -25,12 +25,18 @@ pnpm preview
 - 登录、会话恢复、路由守卫、只读角色、404。
 - 工作台：指标、收入趋势、访问来源、团队动态。
 - 用户管理：配置式查询/表格/分页、成员创建与编辑、删除确认、CSV 导出。
+- 订单管理：配置式远程筛选和分页、订单商品明细、履约 Steps。
+- 项目空间：MockJS 项目数据、选择/收藏卡片、成员头像、进度和项目详情。
+- 表单示例：配置式资料编辑与预览、带校验的分步申请、本地 PDF/图片附件选择。
+- 组件示例：23 个示例块，涵盖基础控件、输入控件、状态反馈，以及 9 个 Card 预设/扩展示例。
 - ChartGPU：20,000 点演示，折线/柱状/散点，尺寸适配与资源释放。
 - deck.gl：离线 Natural Earth 底图、城市散点/标签/流向、拾取提示、平移/缩放/复位。
 - 响应式布局、移动导航、页面搜索、通知入口、深色模式。
 - 中文 / English 双语：登录页和顶部导航可切换，偏好自动保存；页面、表格/表单配置、校验、组件库语言包、地图标签、CSV 表头和接口错误一起切换。
 
 ## 目录与配置式开发
+
+卡片表面直接使用 `SCard`，控件优先使用组件库组件。应用仅为 Card 设置填满布局列的宽度；不再通过自定义 `panel` 重建背景、圆角和阴影。深色模式同时加载组件库的 `dark/css-vars.css`。预算字段使用 Form 插槽中的 `SInputNumber`，因为内置 renderer 注册表暂无数值输入 renderer。
 
 ```text
 src/api/               Alova 客户端、接口方法、DTO、MockJS 数据
@@ -54,6 +60,8 @@ Alova 的 `Get<PageResult<User>>` / `Post<User>` 保留方法实例、取消请�
 `vue-router` npm alias 指向 `vue-smart-router`，Vite 同步别名，避免组件库内部路由与应用路由出现两份注入上下文。
 
 ## 接入真实接口
+
+订单示例额外使用 `GET /orders`，参数为 `keyword/status/page/pageSize`，返回 `PageResult<Order>`；订单状态为 `pending/paid/shipped/completed`。项目收藏、资料编辑和分步申请当前是页面本地演示；附件选择不执行网络上传。
 
 复制 `.env.example` 为 `.env.local`：
 

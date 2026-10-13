@@ -1,4 +1,25 @@
 export type Role = "admin" | "editor" | "viewer";
+export type OrderStatus = "pending" | "paid" | "shipped" | "completed";
+export interface OrderItem {
+  name: string;
+  quantity: number;
+  price: number;
+}
+export interface Order {
+  id: number;
+  number: string;
+  customer: string;
+  total: number;
+  status: OrderStatus;
+  date: string;
+  items: OrderItem[];
+}
+export interface OrderQuery {
+  keyword: string;
+  status: string;
+  page: number;
+  pageSize: number;
+}
 export type UserStatus = "active" | "disabled";
 export interface User {
   id: number;

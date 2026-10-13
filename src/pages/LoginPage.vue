@@ -84,7 +84,9 @@ async function login() {
       />
     </section>
     <section class="flex items-center justify-center px-7 py-12 relative">
-      <button
+      <SButton
+        type="transparent"
+        :debounce="false"
         class="absolute top-6 right-6 border-0 bg-transparent text-muted flex items-center gap-2 p-3 rounded-3"
         :aria-label="t('shell.language')"
         @click="toggleLocale"
@@ -92,7 +94,7 @@ async function login() {
         <Languages :size="18" />{{
           locale === "zh-CN" ? "English" : "简体中文"
         }}
-      </button>
+      </SButton>
       <div class="w-full max-w-92">
         <span
           class="inline-flex w-11 h-11 bg-brand rounded-3 items-center justify-center text-white font-800 text-2xl mb-9"

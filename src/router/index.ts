@@ -24,6 +24,34 @@ export const navigation = [
     caption: "charts.caption",
   },
   {
+    path: "/orders",
+    label: "nav.orders",
+    icon: "ShoppingBag",
+    section: "section.workspace",
+    caption: "orders.caption",
+  },
+  {
+    path: "/projects",
+    label: "nav.projects",
+    icon: "FolderKanban",
+    section: "section.workspace",
+    caption: "projects.caption",
+  },
+  {
+    path: "/forms",
+    label: "nav.forms",
+    icon: "ListChecks",
+    section: "section.examples",
+    caption: "forms.caption",
+  },
+  {
+    path: "/components",
+    label: "nav.components",
+    icon: "Blocks",
+    section: "section.examples",
+    caption: "examples.caption",
+  },
+  {
     path: "/maps",
     label: "nav.maps",
     icon: "Map",
@@ -53,6 +81,30 @@ export const router = createRouter({
       component: () => import("@/layouts/AdminLayout.vue"),
       redirect: "/dashboard",
       children: [
+        {
+          path: "orders",
+          name: "orders",
+          component: () => import("@/pages/OrdersPage.vue"),
+          meta: { title: "nav.orders" },
+        },
+        {
+          path: "projects",
+          name: "projects",
+          component: () => import("@/pages/ProjectsPage.vue"),
+          meta: { title: "nav.projects" },
+        },
+        {
+          path: "forms",
+          name: "forms",
+          component: () => import("@/pages/FormsPage.vue"),
+          meta: { title: "nav.forms" },
+        },
+        {
+          path: "components",
+          name: "components",
+          component: () => import("@/pages/ComponentsPage.vue"),
+          meta: { title: "nav.components" },
+        },
         {
           path: "dashboard",
           name: "dashboard",

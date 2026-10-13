@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SCard } from "sax-design-vue";
 import { t, departmentLabel, messageLabel } from "@/i18n";
 import { shallowRef, reactive, computed } from "vue";
 import { STable, SButton, STag, SDialog } from "sax-design-vue";
@@ -124,80 +125,86 @@ async function exportCsv() {
   <p v-if="!session.isAdmin" class="text-muted text-sm mb-5">
     {{ t("users.readonly") }}
   </p>
-  <div class="panel min-w-0">
-    <STable ref="table" v-bind="config"
-      ><template #toolbar_right
-        ><SButton type="flat" size="small" @click="table?.refresh()"
-          ><RefreshCw :size="14" class="mr-1" />{{
-            t("common.refresh")
-          }}</SButton
-        ></template
-      ><template #member="{ row }"
-        ><div class="flex items-center gap-3 py-1.5">
-          <span
-            class="w-9 h-9 bg-blue-50 text-blue-600 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-xs shrink-0"
-            >{{ row.name.slice(-2) }}</span
-          >
-          <div>
-            <span class="text-13px font-550">{{ row.name }}</span
-            ><span class="block text-11px text-muted mt-1">{{
-              row.email
-            }}</span>
-          </div>
-        </div></template
-      ><template #department="{ row }">{{
-        departmentLabel(row.department)
-      }}</template
-      ><template #role="{ row }"
-        ><STag
-          variant="default"
-          :color="
-            row.role === 'admin'
-              ? 'primary'
-              : row.role === 'editor'
-                ? '#8b5cf6'
-                : '#64748b'
-          "
-          >{{ roleOptions.find((r) => r.value === row.role)?.label }}</STag
-        ></template
-      ><template #status="{ row }"
-        ><span
-          class="text-12px flex items-center gap-2"
-          :class="row.status === 'active' ? 'text-emerald-600' : 'text-muted'"
-          ><span
-            class="w-1.5 h-1.5 rounded-full"
-            :class="row.status === 'active' ? 'bg-emerald-500' : 'bg-slate-400'"
-          />{{
-            row.status === "active" ? t("status.active") : t("status.disabled")
-          }}</span
-        ></template
-      ><template #actions="{ row }"
-        ><div v-if="session.isAdmin" class="flex gap-1">
-          <SButton
-            type="transparent"
-            icon
-            size="small"
-            :aria-label="t('users.edit', { name: row.name })"
-            @click="edit(row)"
-            ><Pencil :size="15" /></SButton
-          ><SButton
-            type="transparent"
-            icon
-            color="danger"
-            size="small"
-            :aria-label="t('users.delete', { name: row.name })"
-            @click="
-              removing = row;
-              error = '';
+  <div class="min-w-0">
+    <SCard class="admin-card">
+      <STable ref="table" v-bind="config"
+        ><template #toolbar_right
+          ><SButton type="flat" size="small" @click="table?.refresh()"
+            ><RefreshCw :size="14" class="mr-1" />{{
+              t("common.refresh")
+            }}</SButton
+          ></template
+        ><template #member="{ row }"
+          ><div class="flex items-center gap-3 py-1.5">
+            <span
+              class="w-9 h-9 bg-blue-50 text-blue-600 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-xs shrink-0"
+              >{{ row.name.slice(-2) }}</span
+            >
+            <div>
+              <span class="text-13px font-550">{{ row.name }}</span
+              ><span class="block text-11px text-muted mt-1">{{
+                row.email
+              }}</span>
+            </div>
+          </div></template
+        ><template #department="{ row }">{{
+          departmentLabel(row.department)
+        }}</template
+        ><template #role="{ row }"
+          ><STag
+            variant="default"
+            :color="
+              row.role === 'admin'
+                ? 'primary'
+                : row.role === 'editor'
+                  ? '#8b5cf6'
+                  : '#64748b'
             "
-            ><Trash2 :size="15"
-          /></SButton>
-        </div>
-        <span v-else class="text-muted text-xs">{{
-          t("users.readonlyAction")
-        }}</span></template
-      ></STable
-    >
+            >{{ roleOptions.find((r) => r.value === row.role)?.label }}</STag
+          ></template
+        ><template #status="{ row }"
+          ><span
+            class="text-12px flex items-center gap-2"
+            :class="row.status === 'active' ? 'text-emerald-600' : 'text-muted'"
+            ><span
+              class="w-1.5 h-1.5 rounded-full"
+              :class="
+                row.status === 'active' ? 'bg-emerald-500' : 'bg-slate-400'
+              "
+            />{{
+              row.status === "active"
+                ? t("status.active")
+                : t("status.disabled")
+            }}</span
+          ></template
+        ><template #actions="{ row }"
+          ><div v-if="session.isAdmin" class="flex gap-1">
+            <SButton
+              type="transparent"
+              icon
+              size="small"
+              :aria-label="t('users.edit', { name: row.name })"
+              @click="edit(row)"
+              ><Pencil :size="15" /></SButton
+            ><SButton
+              type="transparent"
+              icon
+              color="danger"
+              size="small"
+              :aria-label="t('users.delete', { name: row.name })"
+              @click="
+                removing = row;
+                error = '';
+              "
+              ><Trash2 :size="15"
+            /></SButton>
+          </div>
+          <span v-else class="text-muted text-xs">{{
+            t("users.readonlyAction")
+          }}</span></template
+        ></STable
+      >
+    </SCard>
   </div>
   <UserEditor
     v-model:open="open"

@@ -6,8 +6,6 @@ export default defineConfig({
     fontFamily: { sans: 'Inter, "Segoe UI", "Microsoft YaHei", sans-serif' },
   },
   shortcuts: {
-    panel:
-      "bg-white rounded-5 p-6 shadow-[0_4px_24px_rgba(28,49,86,0.035)] dark:bg-slate-900",
     "page-title":
       "text-7 font-700 tracking-tight text-slate-800 dark:text-slate-100",
     "page-caption": "text-sm text-muted mt-2 leading-6",

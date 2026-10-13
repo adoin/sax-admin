@@ -7,6 +7,19 @@
   text-rendering: optimizeLegibility;
   --sax-primary: 221 83% 53%;
 }
+.s-card-content:has(> .admin-card) {
+  width: 100%;
+  min-width: 0;
+}
+.admin-card.s-card {
+  width: 100%;
+  max-width: none !important;
+}
+.admin-card.card-inline > .s-card__body {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
 * {
   box-sizing: border-box;
 }

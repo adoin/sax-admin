@@ -2,7 +2,16 @@
 import { t, locale, toggleLocale } from "@/i18n";
 import { computed, shallowRef } from "vue";
 import { RouterLink, RouterView, useRoute, useRouter } from "vue-smart-router";
-import { SButton, SDialog, SInput } from "sax-design-vue";
+import {
+  SButton,
+  SDialog,
+  SInput,
+  SAvatar,
+  SBadge,
+  SScrollbar,
+  SCard,
+  STag,
+} from "sax-design-vue";
 import {
   LayoutDashboard,
   Users,
@@ -19,6 +28,10 @@ import {
   ArrowUpRight,
   LogOut,
   Languages,
+  ShoppingBag,
+  FolderKanban,
+  ListChecks,
+  Blocks,
 } from "lucide-vue-next";
 import { navigation } from "@/router";
 import { sessionStore } from "@/stores/session";
@@ -28,10 +41,21 @@ const route = useRoute(),
   router = useRouter(),
   session = sessionStore(),
   preferences = preferencesStore();
-const icons = { LayoutDashboard, Users, ChartNoAxesCombined, Map, Settings2 };
+const icons = {
+  LayoutDashboard,
+  Users,
+  ChartNoAxesCombined,
+  Map,
+  Settings2,
+  ShoppingBag,
+  FolderKanban,
+  ListChecks,
+  Blocks,
+};
 const sections = [
   "section.workspace",
   "section.insights",
+  "section.examples",
   "section.system",
 ] as const;
 const searchOpen = shallowRef(false),
@@ -88,44 +112,43 @@ function navigate(path: string) {
           >
         </div></RouterLink
       >
-      <nav :aria-label="t('shell.navigation')" class="flex-1">
-        <div v-for="section in sections" :key="section" class="mb-7">
-          <p
-            v-if="!preferences.collapsed"
-            class="text-11px text-muted px-3 mb-3"
-          >
-            {{ t(section) }}
-          </p>
-          <RouterLink
-            v-for="item in navigation.filter((n) => n.section === section)"
-            :key="item.path"
-            :to="item.path"
-            :title="t(item.label)"
-            class="flex items-center gap-3 px-3 py-3 rounded-3 mb-1.5 text-13px font-500 hover:bg-slate-50 dark:hover:bg-slate-800"
-            :class="
-              route.path === item.path
-                ? 'bg-blue-50 text-brand dark:bg-blue-500/15'
-                : 'text-muted'
-            "
-            :aria-current="route.path === item.path ? 'page' : undefined"
-            @click="preferences.mobileOpen = false"
-            ><component
-              :is="icons[item.icon]"
-              :size="19"
-              :stroke-width="1.8"
-            /><span v-if="!preferences.collapsed">{{ t(item.label) }}</span
-            ><span
-              v-if="item.path === '/charts' && !preferences.collapsed"
-              class="ml-auto text-9px px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 rounded text-brand"
-              >GPU</span
-            ></RouterLink
-          >
-        </div>
-      </nav>
-      <div
-        v-if="!preferences.collapsed"
-        class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-blue-950 rounded-4 p-4 mb-5"
+      <SScrollbar class="flex-1 min-h-0" height="100%"
+        ><nav :aria-label="t('shell.navigation')">
+          <div v-for="section in sections" :key="section" class="mb-7">
+            <p
+              v-if="!preferences.collapsed"
+              class="text-11px text-muted px-3 mb-3"
+            >
+              {{ t(section) }}
+            </p>
+            <RouterLink
+              v-for="item in navigation.filter((n) => n.section === section)"
+              :key="item.path"
+              :to="item.path"
+              :title="t(item.label)"
+              class="flex items-center gap-3 px-3 py-3 rounded-3 mb-1.5 text-13px font-500 hover:bg-slate-50 dark:hover:bg-slate-800"
+              :class="
+                route.path === item.path
+                  ? 'bg-blue-50 text-brand dark:bg-blue-500/15'
+                  : 'text-muted'
+              "
+              :aria-current="route.path === item.path ? 'page' : undefined"
+              @click="preferences.mobileOpen = false"
+              ><component
+                :is="icons[item.icon]"
+                :size="19"
+                :stroke-width="1.8"
+              /><span v-if="!preferences.collapsed">{{ t(item.label) }}</span
+              ><span
+                v-if="item.path === '/charts' && !preferences.collapsed"
+                class="ml-auto text-9px px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 rounded text-brand"
+                >GPU</span
+              ></RouterLink
+            >
+          </div>
+        </nav></SScrollbar
       >
+      <SCard v-if="!preferences.collapsed" class="admin-card mb-5">
         <span class="text-10px tracking-widest text-brand font-700"
           >BUILT FOR BETTER WORK</span
         >
@@ -137,11 +160,10 @@ function navigate(path: string) {
           class="text-12px text-brand flex items-center gap-2"
           >{{ t("shell.docs") }} <ArrowUpRight :size="14"
         /></a>
-      </div>
+      </SCard>
       <div class="flex items-center gap-3 px-2">
-        <span
-          class="rounded-full bg-indigo-100 text-indigo-600 w-9 h-9 flex items-center justify-center font-600"
-          >{{ session.current?.name.slice(0, 1) }}</span
+        <SAvatar :size="36" shape="circle"
+          ><template #text>{{ session.current?.name }}</template></SAvatar
         >
         <div v-if="!preferences.collapsed" class="flex-1 min-w-0">
           <p class="text-12px font-600 m-0 truncate">
@@ -151,14 +173,17 @@ function navigate(path: string) {
             session.isAdmin ? t("shell.admin") : t("shell.viewer")
           }}</span>
         </div>
-        <button
+        <SButton
+          type="transparent"
+          :debounce="false"
+          icon
           v-if="!preferences.collapsed"
           class="icon-button shrink-0"
           :aria-label="t('shell.logout')"
           @click="logout"
         >
           <LogOut :size="17" />
-        </button>
+        </SButton>
       </div>
     </aside>
     <div
@@ -169,18 +194,24 @@ function navigate(path: string) {
         class="h-19 px-5 md:px-8 bg-white/80 dark:bg-slate-900/90 flex items-center justify-between sticky top-0 z-25 backdrop-blur-lg"
       >
         <div class="flex items-center gap-4">
-          <button
+          <SButton
+            type="transparent"
+            :debounce="false"
+            icon
             class="icon-button hidden lg:flex"
             :aria-label="t('shell.collapse')"
             @click="preferences.collapsed = !preferences.collapsed"
           >
-            <PanelLeftClose :size="18" /></button
-          ><button
+            <PanelLeftClose :size="18" /></SButton
+          ><SButton
+            type="transparent"
+            :debounce="false"
+            icon
             class="icon-button lg:hidden"
             :aria-label="t('shell.openNav')"
             @click="preferences.mobileOpen = true"
           >
-            <Menu :size="20" /></button
+            <Menu :size="20" /></SButton
           ><span class="text-muted hidden sm:inline">{{
             t("section.workspace")
           }}</span
@@ -192,43 +223,51 @@ function navigate(path: string) {
           }}</span>
         </div>
         <div class="flex items-center gap-2 md:gap-4">
-          <button
+          <SButton
+            type="transparent"
+            :debounce="false"
             class="flex items-center gap-2 text-muted bg-slate-50 dark:bg-slate-800 px-3 py-2.5 rounded-3 border-0"
             :aria-label="t('shell.search')"
             @click="searchOpen = true"
           >
             <Search :size="16" /><span class="hidden md:block text-12px">{{
               t("shell.searchPlaceholder")
-            }}</span></button
-          ><button
+            }}</span></SButton
+          ><SButton
+            type="transparent"
+            :debounce="false"
             class="flex items-center gap-1.5 border-0 bg-transparent text-muted rounded-3 p-2 text-xs"
             :aria-label="t('shell.language')"
             @click="toggleLocale"
           >
             <Languages :size="17" /><span>{{
               locale === "zh-CN" ? "EN" : "中文"
-            }}</span></button
-          ><button
+            }}</span></SButton
+          ><SButton
+            type="transparent"
+            :debounce="false"
+            icon
             class="icon-button"
             :aria-label="preferences.dark ? t('shell.light') : t('shell.dark')"
             @click="preferences.toggleTheme"
           >
             <Sun v-if="preferences.dark" :size="18" /><Moon
               v-else
-              :size="18"
-            /></button
-          ><button
-            class="icon-button relative"
-            :aria-label="t('shell.notifications')"
-            @click="notifications = true"
-          >
-            <Bell :size="19" /><span
-              class="absolute top-2 right-2 w-1.5 h-1.5 bg-brand rounded-full"
-            /></button
-          ><span
-            class="hidden md:block text-11px bg-emerald-50 text-emerald-700 px-2.5 py-1.5 rounded-full dark:bg-emerald-900/30"
-            >{{ mockEnabled ? t("shell.demo") : t("shell.api") }}</span
-          >
+              :size="18" /></SButton
+          ><SBadge is-dot
+            ><SButton
+              type="transparent"
+              :debounce="false"
+              icon
+              class="icon-button relative"
+              :aria-label="t('shell.notifications')"
+              @click="notifications = true"
+            >
+              <Bell :size="19" /></SButton
+          ></SBadge>
+          <STag color="success" class="hidden md:block">{{
+            mockEnabled ? t("shell.demo") : t("shell.api")
+          }}</STag>
         </div>
       </header>
       <main class="px-5 py-7 md:px-8 md:py-8 max-w-400 mx-auto">
@@ -251,7 +290,9 @@ function navigate(path: string) {
         clearable
       />
       <div class="mt-4 flex flex-col gap-2">
-        <button
+        <SButton
+          type="transparent"
+          :debounce="false"
           v-for="item in matches"
           :key="item.path"
           class="border-0 bg-slate-50 dark:bg-slate-800 rounded-3 p-4 flex items-center justify-between text-left"
@@ -262,7 +303,7 @@ function navigate(path: string) {
             <p class="text-12px text-muted mb-0 mt-1">{{ t(item.caption) }}</p>
           </div>
           <ChevronRight :size="16" />
-        </button>
+        </SButton>
         <p v-if="!matches.length" class="text-muted">
           {{ t("shell.noResults") }}
         </p>
