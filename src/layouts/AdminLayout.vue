@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { t, locale, toggleLocale } from "@/i18n";
-import { computed, shallowRef } from "vue";
+import { t } from "@/i18n";
+import { computed, shallowRef, watch, nextTick } from "vue";
 import { RouterLink, RouterView, useRoute, useRouter } from "vue-smart-router";
 import {
   SButton,
@@ -11,6 +11,9 @@ import {
   SScrollbar,
   SCard,
   STag,
+  SLayout,
+  SLayoutHeader,
+  SLayoutFooter,
 } from "sax-design-vue";
 import {
   LayoutDashboard,
@@ -22,12 +25,9 @@ import {
   Menu,
   Search,
   Bell,
-  Moon,
-  Sun,
   ChevronRight,
   ArrowUpRight,
   LogOut,
-  Languages,
   ShoppingBag,
   FolderKanban,
   ListChecks,
@@ -38,9 +38,13 @@ import { sessionStore } from "@/stores/session";
 import { preferencesStore } from "@/stores/preferences";
 import { mockEnabled } from "@/api/client";
 import WorkspaceTabs from "@/components/common/WorkspaceTabs.vue";
+import AsideTools from "@/components/common/AsideTools.vue";
 import { workspaceStore } from "@/stores/workspace";
 import type { RouteLocationNormalizedLoaded } from "vue-smart-router";
 const workspace = workspaceStore();
+const layout = shallowRef<InstanceType<typeof SLayout>>();
+const outsideCollapsed = shallowRef(false);
+const scrollPositions = new globalThis.Map<string, number>();
 const cacheName = (page: RouteLocationNormalizedLoaded) => workspace.cacheName(page.fullPath);
 const route = useRoute(),
   router = useRouter(),
@@ -74,6 +78,14 @@ const matches = computed(() =>
 const active = computed(() =>
   navigation.find((item) => item.path === route.path),
 );
+watch(() => route.fullPath, async (path, previous) => {
+  const root = layout.value?.$el as HTMLElement | undefined;
+  const body = root?.querySelector<HTMLElement>(':scope > .s-layout__content > .s-layout-body');
+  if (!body) return;
+  scrollPositions.set(previous, body.scrollTop);
+  await nextTick();
+  body.scrollTop = scrollPositions.get(path) || 0;
+});
 function logout() {
   session.clear();
   workspace.reset();
@@ -93,15 +105,20 @@ function navigate(path: string) {
       :aria-label="t('shell.closeNav')"
       @click="preferences.mobileOpen = false"
     />
-    <aside
-      class="fixed top-0 left-0 bottom-0 z-40 bg-white dark:bg-slate-900 flex flex-col p-5 transition-transform duration-200 w-62"
-      :class="[
-        preferences.mobileOpen
-          ? 'translate-x-0'
-          : '-translate-x-full lg:translate-x-0',
-        preferences.collapsed ? 'lg:w-21' : '',
-      ]"
+    <SLayout
+      ref="layout"
+      class="admin-shell"
+      :class="{ 'is-mobile-open': preferences.mobileOpen }"
+      :aside-width="preferences.collapsed ? 84 : 248"
+      :padding="0"
+      :gap="0"
+      min-height="100dvh"
+      :responsive="false"
+      v-model:aside-outside-collapsed="outsideCollapsed"
+      @keydown.esc="preferences.mobileOpen = false"
     >
+      <template #aside>
+      <div class="admin-sidebar">
       <RouterLink
         to="/dashboard"
         class="flex items-center gap-3 px-2 h-12 mb-9"
@@ -191,13 +208,18 @@ function navigate(path: string) {
           <LogOut :size="17" />
         </SButton>
       </div>
-    </aside>
-    <div
-      class="transition-[margin] duration-200"
-      :class="preferences.collapsed ? 'lg:ml-21' : 'lg:ml-62'"
-    >
-      <header
-        class="h-19 px-5 md:px-8 bg-white/80 dark:bg-slate-900/90 flex items-center justify-between sticky top-0 z-25 backdrop-blur-lg"
+      </div>
+      </template>
+      <template #aside-outside>
+        <AsideTools @navigate="preferences.mobileOpen = false" />
+      </template>
+      <SLayoutHeader
+        class="admin-header"
+        :size="76"
+        :padding="20"
+        sticky
+        :sticky-offset="0"
+        :z-index="25"
       >
         <div class="flex items-center gap-4">
           <SButton
@@ -239,27 +261,6 @@ function navigate(path: string) {
             <Search :size="16" /><span class="hidden md:block text-12px">{{
               t("shell.searchPlaceholder")
             }}</span></SButton
-          ><SButton
-            type="transparent"
-            :debounce="false"
-            class="flex items-center gap-1.5 border-0 bg-transparent text-muted rounded-3 p-2 text-xs"
-            :aria-label="t('shell.language')"
-            @click="toggleLocale"
-          >
-            <Languages :size="17" /><span>{{
-              locale === "zh-CN" ? "EN" : "中文"
-            }}</span></SButton
-          ><SButton
-            type="transparent"
-            :debounce="false"
-            icon
-            class="icon-button"
-            :aria-label="preferences.dark ? t('shell.light') : t('shell.dark')"
-            @click="preferences.toggleTheme"
-          >
-            <Sun v-if="preferences.dark" :size="18" /><Moon
-              v-else
-              :size="18" /></SButton
           ><SBadge is-dot
             ><SButton
               type="transparent"
@@ -275,24 +276,24 @@ function navigate(path: string) {
             mockEnabled ? t("shell.demo") : t("shell.api")
           }}</STag>
         </div>
-      </header>
+      </SLayoutHeader>
       <WorkspaceTabs />
-      <main class="px-5 py-7 md:px-8 md:py-8 max-w-400 mx-auto">
+      <div class="px-5 py-7 md:px-8 md:py-8 max-w-400 mx-auto admin-page">
         <RouterView v-slot="{ Component }" :cache-component-name="cacheName">
           <KeepAlive :include="workspace.cacheNames">
             <component :is="Component" />
           </KeepAlive>
         </RouterView>
-      </main>
-      <footer
-        class="px-8 pb-6 flex flex-wrap gap-2 justify-between text-11px text-muted"
+      </div>
+      <SLayoutFooter
+        class="admin-footer text-11px text-muted"
       >
         <span
           >© {{ new Date().getFullYear() }} Sax Admin. Crafted for your next
           idea.</span
         ><span>Vue 3 · Sax Design Vue</span>
-      </footer>
-    </div>
+      </SLayoutFooter>
+    </SLayout>
     <SDialog v-model="searchOpen" :title="t('shell.searchTitle')" width="520px"
       ><SInput
         v-model="keyword"
@@ -340,3 +341,25 @@ function navigate(path: string) {
     >
   </div>
 </template>
+<style scoped>
+.admin-shell { height: 100dvh; border-radius: 0; }
+.admin-shell :deep(.s-layout__content) { height: 100%; }
+.admin-shell :deep(.s-layout__content > .s-layout-aside) {
+  min-width: 0; height: 100%; z-index: 30;
+  border-radius: 0 0 var(--sax-radius-lg) 0;
+}
+.admin-shell :deep(.s-layout-aside__content) { height: 100%; overflow: hidden; }
+.admin-sidebar { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.admin-shell :deep(.s-layout__content > .s-layout-body) { padding: 0; border-radius: 0; scrollbar-gutter: stable; }
+.admin-header { justify-content: space-between; border-radius: 0; }
+.admin-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; border-radius: 0; margin-bottom: 44px; }
+.admin-page { min-height: calc(100dvh - 230px); }
+@media (max-width: 1023px) {
+  .admin-shell :deep(.s-layout__content > .s-layout-aside) { position: fixed; inset: 0 auto 0 0; width: 248px !important; z-index: 40; visibility: hidden; transform: translateX(calc(-100% - 180px)); }
+  .admin-shell.is-mobile-open :deep(.s-layout__content > .s-layout-aside) { visibility: visible; transform: translateX(0); }
+  .admin-shell :deep(.s-layout-aside__content) { height: calc(100% - 56px); }
+  .admin-shell :deep(.s-layout-aside__outside) { position: static; margin-top: 12px; width: fit-content; border-radius: var(--sax-radius-md); }
+  .admin-shell :deep(.s-layout-aside__outside::before) { display: none; }
+  .admin-header { padding: 0 16px !important; }
+}
+</style>
