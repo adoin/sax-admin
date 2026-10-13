@@ -11,8 +11,6 @@ import {
   SScrollbar,
   STag,
   SLayout,
-  SLayoutHeader,
-  SLayoutFooter,
 } from "sax-design-vue";
 import {
   LayoutDashboard,
@@ -108,8 +106,10 @@ function navigate(path: string) {
       class="admin-shell"
       :class="{ 'is-mobile-open': preferences.mobileOpen }"
       :aside-width="preferences.collapsed ? 84 : 248"
-      :padding="0"
-      :gap="0"
+      :padding="12"
+      :gap="12"
+      :header-height="64"
+      :footer-height="48"
       min-height="100dvh"
       :responsive="false"
       v-model:aside-outside-collapsed="outsideCollapsed"
@@ -198,14 +198,8 @@ function navigate(path: string) {
       <template #aside-outside>
         <AsideTools @navigate="preferences.mobileOpen = false" />
       </template>
-      <SLayoutHeader
-        class="admin-header"
-        :size="76"
-        :padding="20"
-        sticky
-        :sticky-offset="0"
-        :z-index="25"
-      >
+      <template #header>
+      <div class="admin-header">
         <div class="flex items-center gap-4">
           <SButton
             type="transparent"
@@ -261,7 +255,8 @@ function navigate(path: string) {
             mockEnabled ? t("shell.demo") : t("shell.api")
           }}</STag>
         </div>
-      </SLayoutHeader>
+      </div>
+      </template>
       <WorkspaceTabs />
       <div class="py-7 md:py-8 admin-page">
         <RouterView v-slot="{ Component }" :cache-component-name="cacheName">
@@ -270,14 +265,14 @@ function navigate(path: string) {
           </KeepAlive>
         </RouterView>
       </div>
-      <SLayoutFooter
-        class="admin-footer text-11px text-muted"
-      >
+      <template #footer>
+      <div class="admin-footer text-11px text-muted">
         <span
           >© {{ new Date().getFullYear() }} Sax Admin. Crafted for your next
           idea.</span
         ><span>Vue 3 · Sax Design Vue</span>
-      </SLayoutFooter>
+      </div>
+      </template>
     </SLayout>
     <SDialog v-model="searchOpen" :title="t('shell.searchTitle')" width="520px"
       ><SInput
@@ -327,24 +322,21 @@ function navigate(path: string) {
   </div>
 </template>
 <style scoped>
-.admin-shell { height: 100dvh; border-radius: 0; }
-.admin-shell :deep(.s-layout__content) { height: 100%; }
+.admin-shell { height: 100dvh; }
 .admin-shell :deep(.s-layout__content > .s-layout-aside) {
   min-width: 0; height: 100%; z-index: 30;
-  border-radius: 0 0 var(--sax-radius-lg) 0;
 }
 .admin-shell :deep(.s-layout-aside__content) { height: 100%; overflow: hidden; }
 .admin-sidebar { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-.admin-shell :deep(.s-layout__content > .s-layout-body) { padding: 0; border-radius: 0; scrollbar-gutter: stable; }
-.admin-header { justify-content: space-between; border-radius: 0; }
-.admin-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; border-radius: 0; margin-bottom: 44px; }
-.admin-page { width: 100%; padding-inline: 20px; min-height: calc(100dvh - 230px); }
+.admin-shell :deep(.s-layout__content > .s-layout-body) { padding: 0; scrollbar-gutter: stable; }
+.admin-header { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 16px; }
+.admin-footer { display: flex; flex-wrap: wrap; justify-content: space-between; width: 100%; gap: 8px; }
+.admin-page { width: 100%; padding-inline: 20px; padding-bottom: 64px; }
 @media (max-width: 1023px) {
-  .admin-shell :deep(.s-layout__content > .s-layout-aside) { position: fixed; inset: 0 auto 0 0; width: 248px !important; z-index: 40; visibility: hidden; transform: translateX(calc(-100% - 180px)); }
+  .admin-shell :deep(.s-layout__content > .s-layout-aside) { position: fixed; inset: 12px auto 12px 12px; height: calc(100dvh - 24px); width: 248px !important; z-index: 40; visibility: hidden; transform: translateX(calc(-100% - 180px)); }
   .admin-shell.is-mobile-open :deep(.s-layout__content > .s-layout-aside) { visibility: visible; transform: translateX(0); }
   .admin-shell :deep(.s-layout-aside__content) { height: calc(100% - 56px); }
   .admin-shell :deep(.s-layout-aside__outside) { position: static; margin-top: 12px; width: fit-content; border-radius: var(--sax-radius-md); }
   .admin-shell :deep(.s-layout-aside__outside::before) { display: none; }
-  .admin-header { padding: 0 16px !important; }
 }
 </style>
