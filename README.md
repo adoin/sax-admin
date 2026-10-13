@@ -36,7 +36,7 @@ pnpm preview
 
 ## 目录与配置式开发
 
-卡片表面直接使用 `SCard`，控件优先使用组件库组件。应用仅为 Card 设置填满布局列的宽度；不再通过自定义 `panel` 重建背景、圆角和阴影。深色模式同时加载组件库的 `dark/css-vars.css`。预算字段使用 Form 插槽中的 `SInputNumber`，因为内置 renderer 注册表暂无数值输入 renderer。
+卡片表面直接使用 `SCard`，控件优先使用组件库组件。应用仅为 Card 设置填满布局列的宽度；不再通过自定义 `panel` 重建背景、圆角和阴影。深色变量已包含在组件库默认 CSS 中，切换 `html.dark` 即可生效。预算字段使用 Form 插槽中的 `SInputNumber`，因为内置 renderer 注册表暂无数值输入 renderer。
 
 ```text
 src/api/               Alova 客户端、接口方法、DTO、MockJS 数据
@@ -80,4 +80,4 @@ Mock 通过 Alova Fetch adapter 的 `customFetch` 接入，不拦截全局 XHR/F
 
 [deck.gl](https://deck.gl/) 需要 WebGL2。底图使用 [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/) 1:110m 国家数据（公共领域），源文件来自 [natural-earth-vector](https://github.com/nvkelso/natural-earth-vector)。地理数据仅用于可视化演示，不用于边界判定。无需地图服务密钥或在线瓦片。地图失败时仍可查看城市排行。
 
-组件库通过 npm `sax-design-vue@2.1.0` 安装，模板不依赖相邻源码目录，可独立克隆和构建。
+组件库通过 npm `sax-design-vue@2.1.1` 安装，模板不依赖相邻源码目录，可独立克隆和构建。
