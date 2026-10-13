@@ -1,0 +1,4 @@
+minimumReleaseAgeExclude:
+  - sax-design-vue@2.1.0
+allowBuilds:
+  '@parcel/watcher@2.6.0': true
