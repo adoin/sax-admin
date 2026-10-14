@@ -52,7 +52,32 @@ onBeforeUnmount(stop);
 </script>
 <template><div class="feature-page">
   <PageHeading :title="t('nav.agent')" :caption="t('agent.caption')" eyebrow="AGENT"><SButton type="flat" @click="clear">{{ t('agent.clear') }}</SButton></PageHeading>
-  <SAlert color="primary" class="mb-5">{{ t('agent.note') }}</SAlert>
+  <p class="text-xs text-muted mb-5 leading-6">{{ t('agent.note') }}</p>
   <SAlert v-if="notice" :color="notice === 'agent.feedback' ? 'success' : 'warn'" class="mb-5">{{ t(notice) }}</SAlert>
-  <SCard class="admin-card"><SMessageScroller :items="messages" :height="420" :has-more="false" :label="t('agent.history')" @message-action="messageAction" /><SChatInput v-model="prompt" v-model:attachments="attachments" :loading="running" :voice-input="false" accept="image/*,.pdf" :file-limit-size="5" :placeholder="t('agent.placeholder')" :label="t('agent.placeholder')" @submit="send" @stop="cancel" @file-error="notice = 'files.errorPick'" /><p class="text-xs text-muted mt-4">{{ t('agent.attachmentNote') }}</p></SCard>
+  <div class="agent-shell"><SCard class="admin-card agent-workspace"><SMessageScroller :items="messages" :height="420" :has-more="false" :label="t('agent.history')" @message-action="messageAction" /><SChatInput v-model="prompt" v-model:attachments="attachments" :loading="running" :voice-input="false" accept="image/*,.pdf" :file-limit-size="5" :placeholder="t('agent.placeholder')" :label="t('agent.placeholder')" @submit="send" @stop="cancel" @file-error="notice = 'files.errorPick'" /><p class="text-xs text-muted m-0 leading-6">{{ t('agent.attachmentNote') }}</p></SCard></div>
 </div></template>
+<style scoped>
+.agent-shell :deep(.agent-workspace.s-card) {
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+.agent-shell :deep(.s-card__body) {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+}
+.agent-shell :deep(.s-message-scroller) {
+  box-shadow: none;
+  background: transparent;
+}
+.agent-shell :deep(.s-agent-viewport) {
+  padding: 8px 4px;
+}
+.agent-shell :deep(.s-chat-input) {
+  padding: 10px;
+  background: color-mix(in srgb, currentColor 4%, transparent);
+  box-shadow: inset 0 2px 8px -5px color-mix(in srgb, currentColor 18%, transparent);
+}
+</style>
