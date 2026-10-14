@@ -129,7 +129,7 @@ function navigate(path: string) {
           >
         </div></RouterLink
       >
-      <SScrollbar class="flex-1 min-h-0" height="100%"><SMenu class="admin-menu" :options="menus.options" :model-value="selectedMenu" :collapse="preferences.collapsed && !preferences.mobileOpen" :open-keys="menuOpenKeys" :unique-open="preferences.collapsed && !preferences.mobileOpen" variant="plain" :aria-label="t('shell.navigation')" @update:open-keys="menuOpenKeys = $event" @select="selectMenu" /></SScrollbar>
+      <SScrollbar class="admin-menu-scroll flex-1 min-h-0" height="100%" placement="outside" :gap="3" :always="false"><SMenu class="admin-menu" :options="menus.options" :model-value="selectedMenu" :collapse="preferences.collapsed && !preferences.mobileOpen" :open-keys="menuOpenKeys" :unique-open="preferences.collapsed && !preferences.mobileOpen" variant="plain" :aria-label="t('shell.navigation')" @update:open-keys="menuOpenKeys = $event" @select="selectMenu" /></SScrollbar>
       <div class="flex items-center gap-3 px-2">
         <SAvatar :size="36" shape="circle"
           ><template #text>{{ session.current?.name }}</template></SAvatar
@@ -221,7 +221,7 @@ function navigate(path: string) {
       <SLayoutHeader class="workspace-tab-surface" :padding="0">
         <WorkspaceTabs />
       </SLayoutHeader>
-      <SScrollbar ref="pageScrollbar" class="admin-page-scroll" wrap-class="s-layout-body" height="100%" placement="outside" :gap="3" :wrap-style="{ overscrollBehavior: 'contain' }" @scroll="rememberScroll">
+      <SScrollbar ref="pageScrollbar" class="admin-page-scroll" wrap-class="s-layout-body" height="100%" placement="outside" :gap="3" :always="false" :wrap-style="{ overscrollBehavior: 'contain' }" @scroll="rememberScroll">
       <div class="py-7 md:py-8 admin-page">
         <RouterView v-slot="{ Component }" :cache-component-name="cacheName">
           <KeepAlive :include="workspace.cacheNames">
