@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, reactive, shallowRef } from "vue";
-import { SCard, SForm, SButton, SAlert, SAvatar, STag } from "sax-design-vue";
+import { SCard, SForm, SButton, SAlert } from "sax-design-vue";
 import type { FormItemConfig, FormInstance } from "sax-design-vue";
-import { t, departmentLabel } from "@/i18n";
+import { t } from "@/i18n";
 import { departmentOptions } from "@/features/users/config";
 interface Profile {
   name: string;
@@ -20,7 +20,7 @@ const model = reactive<Profile>({
   }),
   form = shallowRef<FormInstance>(),
   saved = shallowRef(false);
-const items = computed<FormItemConfig<Profile>[]>(() => [
+const fields = computed<FormItemConfig<Profile>[]>(() => [
   {
     field: "name",
     title: t("users.name"),
@@ -61,12 +61,15 @@ const items = computed<FormItemConfig<Profile>[]>(() => [
     itemRender: { name: "$switch" },
   },
 ]);
+const items = computed<FormItemConfig<Profile>[]>(() => [
+  { title: t("forms.accountGroup"), children: fields.value.slice(0, 2) },
+  { title: t("forms.workGroup"), children: fields.value.slice(2) },
+]);
 async function save() {
   saved.value = Boolean(await form.value?.validate());
 }
 </script>
 <template>
-  <div class="grid xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-5">
     <SCard
       class="admin-card"
       :title="t('forms.profile')"
@@ -82,24 +85,5 @@ async function save() {
       ><template #footer
         ><SButton @click="save">{{ t("forms.submit") }}</SButton></template
       ></SCard
-    ><SCard
-      class="admin-card"
-      type="profile"
-      :title="model.name"
-      :subtitle="t('forms.review')"
-      ><template #img
-        ><div class="flex justify-center p-8 bg-blue-50 dark:bg-slate-800">
-          <SAvatar :size="64" shape="circle"
-            ><template #text>{{ model.name }}</template></SAvatar
-          >
-        </div></template
-      ><template #text
-        ><p class="text-muted text-sm">{{ model.email }}</p>
-        <STag>{{ departmentLabel(model.department) }}</STag>
-        <p class="leading-7 text-sm mt-5 whitespace-pre-wrap">
-          {{ model.bio || t("forms.bioPlaceholder") }}
-        </p></template
-      ></SCard
     >
-  </div>
 </template>
