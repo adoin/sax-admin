@@ -187,7 +187,7 @@ function navigate(path: string) {
             :size="13"
             class="text-slate-300 hidden sm:block"
           /><span class="font-500 text-13px">{{
-            selectedMenu ? menuLabel(menus.records.find((row) => row.id === selectedMenu)!) : active ? t(active.label) : t('workspace.draft', { id: String(route.params.id || '') })
+            selectedMenu ? menuLabel(menus.records.find((row) => row.id === selectedMenu)!) : active ? t(active.label) : route.name === 'workspace-empty' ? t('workspace.emptyTitle') : t('workspace.draft', { id: String(route.params.id || '') })
           }}</span>
         </div>
         <div class="flex items-center gap-2 md:gap-4">
@@ -218,7 +218,7 @@ function navigate(path: string) {
         </div>
       </div>
       </template>
-      <SLayoutHeader class="workspace-tab-surface" :padding="0">
+      <SLayoutHeader v-if="workspace.tabs.length" class="workspace-tab-surface" :padding="0">
         <WorkspaceTabs />
       </SLayoutHeader>
       <SScrollbar ref="pageScrollbar" class="admin-page-scroll" wrap-class="s-layout-body" height="100%" placement="outside" :gap="3" :always="false" :wrap-style="{ overscrollBehavior: 'contain' }" @scroll="rememberScroll">

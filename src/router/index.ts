@@ -20,6 +20,7 @@ export const router = createRouter({
       component: () => import("@/layouts/AdminLayout.vue"),
       redirect: "/dashboard",
       children: [
+        { path: 'launchpad', name: 'workspace-empty', component: () => import('@/pages/EmptyWorkspacePage.vue'), meta: { title: 'workspace.emptyTitle', tabless: true } },
         { path: 'roles', name: 'roles', component: () => import('@/pages/RolesPage.vue'), meta: { title: 'nav.roles' } },
         { path: 'departments', name: 'departments', component: () => import('@/pages/DepartmentsPage.vue'), meta: { title: 'nav.departments' } },
         { path: 'dictionaries', name: 'dictionaries', component: () => import('@/pages/DictionariesPage.vue'), meta: { title: 'nav.dictionaries' } },

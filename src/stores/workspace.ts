@@ -6,14 +6,13 @@ export interface WorkspaceTab {
   fullPath: string;
   title: MessageKey;
   titleId?: string;
-  pinned: boolean;
   revision: number;
 }
 export type TabCloseAction = "current" | "left" | "right" | "others" | "all";
 export function tabCloseTargets(tabs: WorkspaceTab[], path: string, action: TabCloseAction): string[] {
   const index = tabs.findIndex((tab) => tab.fullPath === path);
   if (index < 0) return [];
-  return tabs.filter((tab, position) => !tab.pinned && (
+  return tabs.filter((_tab, position) => (
     action === "all" ||
     (action === "current" && position === index) ||
     (action === "left" && position < index) ||
@@ -21,21 +20,19 @@ export function tabCloseTargets(tabs: WorkspaceTab[], path: string, action: TabC
     (action === "others" && position !== index)
   )).map((tab) => tab.fullPath);
 }
-const home = (): WorkspaceTab => ({ fullPath: "/dashboard", title: "nav.dashboard", pinned: true, revision: 0 });
 export const workspaceStore = defineStore("workspace", {
-  state: () => ({ tabs: [home()] as WorkspaceTab[], editorEnabled: true, nextDraft: 3 }),
+  state: () => ({ tabs: [] as WorkspaceTab[], editorEnabled: true, nextDraft: 3 }),
   getters: {
     cacheNames: (state) => state.tabs.map((tab) => `${tab.fullPath}::${tab.revision}`),
   },
   actions: {
     visit(route: RouteLocationNormalizedLoaded) {
-      if (!route.matched.some((record) => record.name === "admin") || !route.name) return;
+      if (!route.matched.some((record) => record.name === "admin") || !route.name || route.meta.tabless) return;
       if (!this.tabs.some((tab) => tab.fullPath === route.fullPath)) {
         this.tabs.push({
           fullPath: route.fullPath,
           title: route.meta.title as MessageKey,
           titleId: route.name === "workspace-draft" ? String(route.params.id) : undefined,
-          pinned: false,
           revision: 0,
         });
       }
@@ -45,15 +42,15 @@ export const workspaceStore = defineStore("workspace", {
       return tab ? `${tab.fullPath}::${tab.revision}` : undefined;
     },
     remove(fullPath: string) {
-      this.tabs = this.tabs.filter((tab) => tab.pinned || tab.fullPath !== fullPath);
+      this.tabs = this.tabs.filter((tab) => tab.fullPath !== fullPath);
     },
     retain(fullPaths: string[]) {
-      this.tabs = this.tabs.filter((tab) => tab.pinned || fullPaths.includes(tab.fullPath));
+      this.tabs = this.tabs.filter((tab) => fullPaths.includes(tab.fullPath));
     },
     refresh(fullPath: string) {
       const tab = this.tabs.find((item) => item.fullPath === fullPath);
       if (tab) tab.revision++;
     },
-    reset() { this.tabs = [home()]; },
+    reset() { this.tabs = []; },
   },
 });

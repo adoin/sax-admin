@@ -1,4 +1,11 @@
 export const workspaceZh = {
+  "workspace.emptyTitle": "留一点空白，再出发",
+  "workspace.emptyEyebrow": "下一页，由你开启",
+  "workspace.emptyCaption": "所有页面都已关闭。可以从这里重新开始，也可以用左侧菜单或顶部搜索，打开接下来要处理的事情。",
+  "workspace.thoughtOne": "不必把每一寸空白都填满。先伸个懒腰，再打开下一页。",
+  "workspace.thoughtTwo": "把注意力留给眼前的一件事，其他的可以稍后再说。",
+  "workspace.thoughtThree": "喝口水，看看远处。新的想法有时就在停下来的片刻。",
+  "workspace.nextThought": "换一句",
   "settings.tabStyle": "标签样式",
   "settings.tabStyleCaption": "立即应用并保存偏好；超出宽度的标签始终收纳到更多菜单。",
   "settings.tabSize": "标签尺寸",
@@ -43,6 +50,13 @@ export const workspaceZh = {
   "workspace.implementationCaption": "vue-smart-router 按 /drafts/1、/drafts/2 区分实例，再配合 KeepAlive 保留各自状态。路由移除时同步关闭标签并释放缓存。",
 } as const;
 export const workspaceEn: Record<keyof typeof workspaceZh, string> = {
+  "workspace.emptyTitle": "A little space for what's next",
+  "workspace.emptyEyebrow": "YOUR NEXT PAGE STARTS HERE",
+  "workspace.emptyCaption": "All pages are closed. Start again below, or use the sidebar and page search to open what you want to work on next.",
+  "workspace.thoughtOne": "You do not have to fill every empty space. Stretch before opening the next page.",
+  "workspace.thoughtTwo": "Give one thing your attention. The rest can wait a moment.",
+  "workspace.thoughtThree": "Take a sip of water and look into the distance. A fresh idea may arrive during the pause.",
+  "workspace.nextThought": "Another thought",
   "settings.tabStyle": "Tab style",
   "settings.tabStyleCaption": "Apply instantly and save your preference. Overflowing tabs always go into the more menu.",
   "settings.tabSize": "Tab size",
