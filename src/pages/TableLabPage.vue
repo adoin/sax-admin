@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, shallowRef } from 'vue';
 import Mock from 'mockjs';
-import { SCard, STable, SSelect, SButton, SAlert } from 'sax-design-vue';
+import { SCard, STable, SSelect, SButton, SAlert, SCodeBlock } from 'sax-design-vue';
+import tableSource from './TableLabPage.vue?raw';
 import type { SaxGridSetting, TableExposes, TableHistoryState } from 'sax-design-vue';
 import { t, locale } from '@/i18n';
 import PageHeading from '@/components/common/PageHeading.vue';
@@ -28,4 +29,5 @@ const setting = computed<SaxGridSetting<Row>>(() => ({
   <SCard class="admin-card"><div class="flex flex-wrap items-center gap-2.5 mb-5"><SButton size="small" :disabled="!pending" @click="table?.commitEdit()">{{ t('tableLab.save') }}</SButton><SButton size="small" type="flat" :disabled="!pending" @click="table?.cancelEdit()">{{ t('tableLab.cancel') }}</SButton><SButton size="small" type="flat" :disabled="!history.canUndo" @click="table?.undo()">{{ t('tableLab.undo') }}</SButton><SButton size="small" type="flat" :disabled="!history.canRedo" @click="table?.redo()">{{ t('tableLab.redo') }}</SButton></div>
     <STable ref="table" v-model:data="rows" v-bind="setting" @edit-start="pending = true" @edit-commit="pending = false" @edit-cancel="pending = false" @history-change="history = $event" />
   </SCard>
+  <SCard class="admin-card mt-5" :title="t('tableLab.code')"><SCodeBlock :code="tableSource" filename="src/pages/TableLabPage.vue" language="vue" :expanded="false" :download="false" /></SCard>
 </div></template>

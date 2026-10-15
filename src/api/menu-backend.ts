@@ -1,6 +1,7 @@
 import { defaultMenus } from "./menu-defaults";
 import { menuIcons } from "./menu-contracts";
 import type { AdminMenu, MenuInput } from "./menu-contracts";
+import { zh, en } from "@/i18n/messages";
 const storageKey = "sax-mock-menus-v1";
 let memory: AdminMenu[] | undefined;
 function isInput(value: unknown): value is MenuInput {
@@ -13,7 +14,22 @@ function read(): AdminMenu[] {
     try {
       const saved: unknown = JSON.parse(localStorage.getItem(storageKey) || "null");
       if (Array.isArray(saved) && saved.every((row) => isInput(row) && "id" in row && typeof row.id === "string")) {
-        return saved as AdminMenu[];
+        let renamed = false;
+        const rows = (saved as AdminMenu[]).map((row) => {
+          const previous = row.id === 'page:/table-lab' && row.path === '/table-lab'
+            ? { zh: '高级表格', en: 'Advanced table', key: 'nav.tableLab' as const }
+            : row.id === 'page:/workspace' && row.path === '/workspace'
+              ? { zh: '动态工作区', en: 'Dynamic workspace', key: 'nav.workspace' as const }
+              : undefined;
+          if (!previous) return row;
+          const titleZh = row.titleZh === previous.zh ? zh[previous.key] : row.titleZh;
+          const titleEn = row.titleEn === previous.en ? en[previous.key] : row.titleEn;
+          if (titleZh === row.titleZh && titleEn === row.titleEn) return row;
+          renamed = true;
+          return { ...row, titleZh, titleEn };
+        });
+        if (renamed) write(rows);
+        return rows;
       }
       if (saved === null) {
         const seeded = defaultMenus();

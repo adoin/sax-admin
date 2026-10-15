@@ -14,6 +14,17 @@ async function request<T>(path = '', method = 'GET', body?: unknown, token = 'mo
 }
 const group = (name: string, parentId = ''): MenuInput => ({ titleZh: name, titleEn: name, parentId, kind: 'group', path: '', icon: 'nav:folder-kanban', order: 100, enabled: true });
 describe('mock menu persistence and validation', () => {
+  it('renames only old built-in example labels without adding menus or replacing custom titles', async () => {
+    const rows: AdminMenu[] = [
+      { ...group('高级表格'), id: 'page:/table-lab', kind: 'page', path: '/table-lab', titleEn: 'Advanced table' },
+      { ...group('我的编辑台'), id: 'page:/workspace', kind: 'page', path: '/workspace', titleEn: 'My editors' },
+    ];
+    storage.set('sax-mock-menus-v1', JSON.stringify(rows));
+    const listed = await request<AdminMenu[]>();
+    expect(listed.body.data).toHaveLength(2);
+    expect(listed.body.data[0]).toMatchObject({ titleZh: '表格编辑与查找', titleEn: 'Table editing & search' });
+    expect(listed.body.data[1]).toEqual(rows[1]);
+  });
   it('persists create and update, returns a fresh list, and supports deletion', async () => {
     const added = await request<AdminMenu>('', 'POST', group('Saved group'));
     expect(added.status).toBe(200);
