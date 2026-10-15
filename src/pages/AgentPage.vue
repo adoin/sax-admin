@@ -3,6 +3,9 @@ import { computed, onBeforeUnmount, shallowRef } from "vue";
 import {
   SCard,
   SMessageScroller,
+  SMessage,
+  SCodeBlock,
+  SInlineCitations,
   SChatInput,
   SButton,
   SAlert,
@@ -19,6 +22,7 @@ import { assistantApi } from "@/api/admin";
 import { t, locale } from "@/i18n";
 import PageHeading from "@/components/common/PageHeading.vue";
 import AgentRunDetails from "@/components/agent/AgentRunDetails.vue";
+import agentSource from "./AgentPage.vue?raw";
 const selectedModel = shallowRef("chat"),
   fast = shallowRef(false),
   reasoningLevel = shallowRef("standard");
@@ -48,6 +52,23 @@ const models = computed<ChatInputModel[]>(() => [
 ]);
 const tasks = shallowRef<AgentTask[]>([]),
   planStatus = shallowRef<"pending" | "approved" | "rejected" | null>(null);
+interface RunDetails {
+  tasks: AgentTask[];
+  reasoning: string[];
+  status: "pending" | "approved" | "rejected" | null;
+  content: string;
+}
+const detailReplyId = shallowRef<string>();
+const previousRuns = shallowRef<Record<string, RunDetails>>({});
+function getRun(id: string): RunDetails | undefined {
+  return id === detailReplyId.value
+    ? { tasks: tasks.value, reasoning: reasoning.value, status: planStatus.value, content: planContent.value }
+    : previousRuns.value[id];
+}
+function archiveRun() {
+  const id = detailReplyId.value;
+  if (id) previousRuns.value = { ...previousRuns.value, [id]: { ...getRun(id)!, tasks: tasks.value.map(task => ({ ...task })) } };
+}
 const pendingPlan = shallowRef<{ text: string; id: string } | null>(null);
 const reasoning = computed(() => [
   t("agent.reasoningMock"),
@@ -150,6 +171,8 @@ function stop() {
 function clear() {
   stop();
   tasks.value = [];
+  detailReplyId.value = undefined;
+  previousRuns.value = {};
   pendingPlan.value = null;
   planStatus.value = null;
   prompt.value = "";
@@ -240,6 +263,8 @@ async function send(text: string, files: AgentAttachment[] = []) {
   attachments.value = [];
   editingId.value = null;
   notice.value = "";
+  archiveRun();
+  detailReplyId.value = id;
   prepareTasks();
   if (selectedModel.value === "planner") {
     pendingPlan.value = { text: question, id };
@@ -276,6 +301,8 @@ function messageAction(event: MessageScrollerAction) {
         .slice(0, event.index)
         .reverse()
         .find((row) => row.role === "user")?.content || t("agent.defaultTask");
+    archiveRun();
+    detailReplyId.value = event.item.id;
     prepareTasks();
     planStatus.value = null;
     messages.value = messages.value.map((row) =>
@@ -311,7 +338,7 @@ onBeforeUnmount(stop);
       >{{ t(notice) }}</SAlert
     >
     <div
-      class="agent-shell grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_320px] gap-8"
+      class="agent-shell"
     >
       <SCard class="admin-card agent-workspace">
         <SMessageScroller
@@ -320,6 +347,35 @@ onBeforeUnmount(stop);
           :has-more="false"
           :label="t('agent.history')"
           @message-action="messageAction"
+        >
+          <template #message="{ item, index }">
+            <SMessage :role="item.role" :content="item.content"
+              @edit="messageAction({ item, index, action: 'edit' })"
+              @regenerate="messageAction({ item, index, action: 'regenerate' })"
+              @update:feedback="messageAction({ item, index, action: 'feedback', feedback: $event })"
+              @copy-error="messageAction({ item, index, action: 'copy-error', error: $event })" />
+            <AgentRunDetails v-if="getRun(item.id)" class="agent-message-details"
+              v-bind="getRun(item.id)!"
+              @approve="approvePlan" @reject="rejectPlan" />
+          </template>
+        </SMessageScroller>
+        <SChatInput
+          v-model="prompt"
+          v-model:attachments="attachments"
+          v-model:model="selectedModel"
+          v-model:fast="fast"
+          v-model:reasoning="reasoningLevel"
+          :models="models"
+          :disabled="!!pendingPlan"
+          :loading="running"
+          :voice-input="false"
+          accept="image/*,.pdf"
+          :file-limit-size="5"
+          :placeholder="t('agent.placeholder')"
+          :label="t('agent.placeholder')"
+          @submit="send"
+          @stop="cancel"
+          @file-error="notice = 'files.errorPick'"
         />
         <div v-if="messages.length === 1" class="flex flex-wrap gap-3">
           <SButton
@@ -342,41 +398,27 @@ onBeforeUnmount(stop);
             >{{ t("agent.tryChat") }}</SButton
           >
         </div>
-        <SChatInput
-          v-model="prompt"
-          v-model:attachments="attachments"
-          v-model:model="selectedModel"
-          v-model:fast="fast"
-          v-model:reasoning="reasoningLevel"
-          :models="models"
-          :disabled="!!pendingPlan"
-          :loading="running"
-          :voice-input="false"
-          accept="image/*,.pdf"
-          :file-limit-size="5"
-          :placeholder="t('agent.placeholder')"
-          :label="t('agent.placeholder')"
-          @submit="send"
-          @stop="cancel"
-          @file-error="notice = 'files.errorPick'"
-        />
         <p class="text-xs text-muted m-0 leading-6">
           {{ t("agent.attachmentNote") }}
         </p>
       </SCard>
-      <AgentRunDetails
-        :tasks="tasks"
-        :sources="sources"
-        :reasoning="reasoning"
-        :status="planStatus"
-        :content="planContent"
-        @approve="approvePlan"
-        @reject="rejectPlan"
-      />
     </div>
+    <SCard class="admin-card mt-5" :title="t('agent.sourcesTitle')">
+      <p class="text-xs text-muted leading-6">{{ t('agent.sourcesNote') }}</p>
+      <SInlineCitations :sources="sources" :label="t('agent.sourcesTitle')" />
+      <div class="mt-4"><SCodeBlock :code="agentSource" language="vue" filename="AgentPage.vue" :expanded="false" :download="false" /></div>
+    </SCard>
   </div>
 </template>
 <style scoped>
+.agent-shell {
+  max-width: 1080px;
+  margin-inline: auto;
+}
+.agent-message-details {
+  margin: 4px 0 20px 36px;
+  max-width: 720px;
+}
 .agent-shell :deep(.agent-workspace.s-card) {
   border: 0;
   box-shadow: none;

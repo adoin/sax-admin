@@ -4,16 +4,14 @@ import {
   SReasoningSteps,
   SPlanCard,
   STaskList,
-  SInlineCitations,
 } from "sax-design-vue";
-import type { AgentTask, AgentSource } from "sax-design-vue";
+import type { AgentTask } from "sax-design-vue";
 import { t } from "@/i18n";
 const reasoningExpanded = shallowRef(false);
-const planExpanded = shallowRef(false);
+const planExpanded = shallowRef(true);
 const tasksExpanded = shallowRef(true);
 defineProps<{
   tasks: AgentTask[];
-  sources: AgentSource[];
   reasoning: string[];
   status: "pending" | "approved" | "rejected" | null;
   content: string;
@@ -21,10 +19,7 @@ defineProps<{
 defineEmits<{ approve: []; reject: [] }>();
 </script>
 <template>
-  <aside class="agent-details flex flex-col gap-6 min-w-0">
-    <p v-if="!tasks.length" class="text-sm text-muted leading-7 m-0">
-      {{ t("agent.planHint") }}
-    </p>
+  <section class="agent-details flex flex-col gap-4 min-w-0">
     <SReasoningSteps
       v-model:expanded="reasoningExpanded"
       v-if="tasks.length"
@@ -45,15 +40,9 @@ defineEmits<{ approve: []; reject: [] }>();
     />
     <STaskList
       v-model:expanded="tasksExpanded"
-      v-else-if="tasks.length"
+      v-if="tasks.length && status !== 'pending' && status !== 'rejected'"
       :title="t('agent.tasksTitle')"
       :tasks="tasks"
     />
-    <div class="flex flex-col gap-3">
-      <p class="text-xs text-muted m-0 leading-6">
-        {{ t("agent.sourcesNote") }}
-      </p>
-      <SInlineCitations :sources="sources" :label="t('agent.sourcesTitle')" />
-    </div>
-  </aside>
+  </section>
 </template>
