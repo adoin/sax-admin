@@ -57,7 +57,7 @@ export function createUsersConfig(
       {
         key: "actions",
         title: t("users.actions"),
-        width: 125,
+        width: 165,
         fixed: "right",
         slots: { default: "actions" },
       },

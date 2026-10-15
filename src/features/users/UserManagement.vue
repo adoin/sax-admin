@@ -6,7 +6,7 @@ import { t, departmentLabel, messageLabel } from "@/i18n";
 import { shallowRef, reactive, computed } from "vue";
 import { STable, SButton, STag, SDialog } from "sax-design-vue";
 import type { TableExposes } from "sax-design-vue";
-import { Plus, RefreshCw, Pencil, Trash2, Download } from "lucide-vue-next";
+import { Plus, RefreshCw, Download } from "lucide-vue-next";
 import PageHeading from "@/components/common/PageHeading.vue";
 import UserEditor from "./UserEditor.vue";
 import { createUsersConfig, roleOptions } from "./config";
@@ -185,15 +185,13 @@ async function exportCsv() {
         ><template #actions="{ row }"
           ><div v-if="session.isAdmin" class="table-row-actions">
             <SButton
-              type="transparent"
-              icon
+              type="flat"
               size="small"
               :aria-label="t('users.edit', { name: row.name })"
               @click="edit(row)"
-              ><Pencil :size="15" /></SButton
+              >{{ t("business.actionEdit") }}</SButton
             ><SButton
-              type="transparent"
-              icon
+              type="flat"
               color="danger"
               size="small"
               :aria-label="t('users.delete', { name: row.name })"
@@ -201,8 +199,7 @@ async function exportCsv() {
                 removing = row;
                 error = '';
               "
-              ><Trash2 :size="15"
-            /></SButton>
+              >{{ t("business.actionDelete") }}</SButton>
           </div>
           <span v-else class="text-muted text-xs">{{
             t("users.readonlyAction")
