@@ -6,12 +6,12 @@ import type { CardType, CardTexture, CardEffect, CardOrientation, CardHoverEffec
 import { t } from '@/i18n';
 import PageHeading from '@/components/common/PageHeading.vue';
 interface Config { type: CardType; texture: CardTexture; effect: CardEffect; orientation: CardOrientation; shape: 'rounded' | 'square'; hover: CardHoverEffect; loading: boolean; selectable: boolean }
-const model = reactive<Config>({ type: 'classic', texture: 'default', effect: 'default', orientation: 'vertical', shape: 'rounded', hover: 'lift', loading: false, selectable: true }), selected = shallowRef(false);
+const model = reactive<Config>({ type: 'classic', texture: 'solid', effect: 'none', orientation: 'vertical', shape: 'rounded', hover: 'lift', loading: false, selectable: true }), selected = shallowRef(false);
 type Token = typeof cardTypes[number] | typeof cardTextures[number] | typeof cardEffects[number] | typeof cardOrientations[number] | typeof cardHoverEffects[number] | 'rounded' | 'square';
-const options = (values: readonly Token[]) => values.map((value) => ({ value, label: t(`visual.${value}`) }));
+const options = (values: readonly Token[], defaultValue?: Token) => values.map((value) => ({ value, label: value === defaultValue ? t('visual.defaultLabel', { value: t(`visual.${value}`) }) : t(`visual.${value}`) }));
 const items = computed<FormItemConfig<Config>[]>(() => [
-  { field: 'type', title: t('cardLab.type'), itemRender: { name: '$select', options: options(cardTypes) } }, { field: 'texture', title: t('cardLab.texture'), itemRender: { name: '$select', options: options(cardTextures) } },
-  { field: 'effect', title: t('cardLab.effect'), itemRender: { name: '$select', options: options(cardEffects) } }, { field: 'orientation', title: t('cardLab.orientation'), itemRender: { name: '$select', options: options(cardOrientations) } },
+  { field: 'type', title: t('cardLab.type'), itemRender: { name: '$select', options: options(cardTypes, 'basic') } }, { field: 'texture', title: t('cardLab.texture'), itemRender: { name: '$select', options: options(cardTextures, 'solid') } },
+  { field: 'effect', title: t('cardLab.effect'), itemRender: { name: '$select', options: options(cardEffects, 'none') } }, { field: 'orientation', title: t('cardLab.orientation'), itemRender: { name: '$select', options: options(cardOrientations) } },
   { field: 'shape', title: t('cardLab.shape'), itemRender: { name: '$select', options: options(['rounded', 'square']) } }, { field: 'hover', title: t('cardLab.hover'), itemRender: { name: '$select', options: options(cardHoverEffects) } },
   { field: 'loading', title: t('cardLab.loading'), itemRender: { name: '$switch' } }, { field: 'selectable', title: t('cardLab.selectable'), itemRender: { name: '$switch' } },
 ]);

@@ -22,3 +22,5 @@
 - Admin 树形管理页默认在 SaxGridSetting 中设置 `virtualConfig: { enabled: true, height: 'auto' }`，外层通过 useRemainingHeight 提供确定高度；展开节点只增加内部可滚动范围，不撑长整个页面。
 
 - main 推送通过 GitHub Actions 自动部署 Pages；子目录部署使用 SAX_BASE_URL 配合 history 路由和 Pages 404.html 应用回退，避免与 SAnchor 的 URL hash 冲突。public 资源必须拼接 import.meta.env.BASE_URL，不能写死根路径。
+
+- 示例的风格、材质、特效和尺寸枚举使用组件库的具体语义值（如 basic、solid、none、medium），默认项显示“具体名称（默认）”；不添加单独的 Default/默认选项。旧 default 字面量只用于兼容已有数据。

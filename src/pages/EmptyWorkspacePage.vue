@@ -53,7 +53,7 @@ const shortcuts = computed(() => {
           <SButton
             v-for="(page, index) in shortcuts"
             :key="page.id"
-            :type="index === 0 ? 'default' : 'flat'"
+            :type="index === 0 ? 'solid' : 'flat'"
             @click="router.push(page.path)"
           >
             <SIcon v-if="page.icon" :name="page.icon" :size="18" /><span>{{
