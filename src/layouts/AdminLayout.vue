@@ -9,7 +9,7 @@ import {
   SAvatar,
   SBadge,
   SScrollbar,
-  STag,
+  SLink,
   SLayout,
   SLayoutHeader,
   SMenu,
@@ -21,11 +21,11 @@ import {
   Bell,
   ChevronRight,
   LogOut,
+  Github,
 } from "lucide-vue-next";
 import { navigation } from "@/router";
 import { sessionStore } from "@/stores/session";
 import { preferencesStore } from "@/stores/preferences";
-import { mockEnabled } from "@/api/client";
 import WorkspaceTabs from "@/components/common/WorkspaceTabs.vue";
 import AsideTools from "@/components/common/AsideTools.vue";
 import { workspaceStore } from "@/stores/workspace";
@@ -212,9 +212,10 @@ function navigate(path: string) {
             >
               <Bell :size="19" /></SButton
           ></SBadge>
-          <STag color="success" class="hidden md:inline-flex">{{
-            mockEnabled ? t("shell.demo") : t("shell.api")
-          }}</STag>
+          <SLink href="https://github.com/adoin/sax-design-vue" target="_blank" rel="noopener noreferrer"
+            :underline="false" :aria-label="t('shell.github')" :title="t('shell.github')" class="inline-flex items-center justify-center w-9 h-9">
+            <Github :size="20" aria-hidden="true" />
+          </SLink>
         </div>
       </div>
       </template>
