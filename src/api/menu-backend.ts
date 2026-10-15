@@ -1,4 +1,4 @@
-import { defaultMenus } from "./menu-defaults";
+import { defaultMenus, groupIcons } from "./menu-defaults";
 import { menuIcons } from "./menu-contracts";
 import type { AdminMenu, MenuInput } from "./menu-contracts";
 import { zh, en } from "@/i18n/messages";
@@ -18,6 +18,10 @@ function read(): AdminMenu[] {
         const retained = (saved as AdminMenu[]).filter((row) => !(row.id === 'page:/components' && row.path === '/components'));
         renamed = retained.length !== saved.length;
         const rows = retained.map((row) => {
+          if (row.kind === 'group' && !row.parentId && !row.path && row.icon === 'nav:folder-kanban' && groupIcons[row.id]) {
+            renamed = true;
+            row = { ...row, icon: groupIcons[row.id]! };
+          }
           const previous = row.id === 'page:/table-lab' && row.path === '/table-lab'
             ? { zh: '高级表格', en: 'Advanced table', key: 'nav.tableLab' as const }
             : row.id === 'page:/workspace' && row.path === '/workspace'

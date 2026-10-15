@@ -9,4 +9,4 @@ export interface MenuInput {
   enabled: boolean;
 }
 export interface AdminMenu extends MenuInput { id: string }
-export const menuIcons = ["nav:layout-dashboard", "nav:users", "nav:shopping-bag", "nav:folder-kanban", "nav:list-checks", "nav:blocks", "nav:chart-no-axes-combined", "nav:map", "nav:settings-2", "nav:menu"] as const;
+export const menuIcons = ["nav:briefcase-business", "nav:flask-conical", "nav:layout-dashboard", "nav:users", "nav:shopping-bag", "nav:folder-kanban", "nav:list-checks", "nav:blocks", "nav:chart-no-axes-combined", "nav:map", "nav:settings-2", "nav:menu"] as const;

@@ -4,6 +4,8 @@ export default defineSaxIconConfig({
   api: { baseUrl: "https://api.iconify.design" },
   collections: { demo: "lucide", nav: "lucide" },
   safelist: [
+    "nav:briefcase-business",
+    "nav:flask-conical",
     "demo:house",
     "demo:settings",
     "demo:chart-no-axes-combined",

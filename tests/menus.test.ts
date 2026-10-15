@@ -33,6 +33,18 @@ describe('mock menu persistence and validation', () => {
     expect(JSON.parse(storage.get('sax-mock-menus-v1')!)).toEqual([custom]);
     expect((await request<AdminMenu[]>()).body.data).toEqual([custom]);
   });
+  it('updates default section icons while preserving custom icons and groups', async () => {
+    const rows: AdminMenu[] = [
+      { ...group('Workspace'), id: 'section.workspace' },
+      { ...group('Insights'), id: 'section.insights', icon: 'nav:map' },
+      { ...group('Custom'), id: 'custom-group' },
+    ];
+    storage.set('sax-mock-menus-v1', JSON.stringify(rows));
+    const listed = (await request<AdminMenu[]>()).body.data;
+    expect(listed[0]?.icon).toBe('nav:briefcase-business');
+    expect(listed[1]).toEqual(rows[1]);
+    expect(listed[2]).toEqual(rows[2]);
+  });
   it('persists create and update, returns a fresh list, and supports deletion', async () => {
     const added = await request<AdminMenu>('', 'POST', group('Saved group'));
     expect(added.status).toBe(200);
