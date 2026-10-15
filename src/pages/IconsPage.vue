@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, shallowRef } from "vue";
-import { SIcon, SCard, SSelect, SAlert, SCodeBlock } from "sax-design-vue";
+import { SIcon, SCard, SSelect, SAlert, SCodeBlock, STag } from "sax-design-vue";
 import PageHeading from "@/components/common/PageHeading.vue";
 import { iconBuildProbe } from "@/icons/tree-shaking-proof";
 import apiCode from "../../sax-icons.config.ts?raw";
@@ -97,7 +97,7 @@ const svgCode = [
             :size="36"
             color="primary"
             :label="t('icons.select')"
-          /><code>{{ selected }}</code>
+          /><STag>{{ selected }}</STag>
         </div>
         <SCodeBlock
           :code="quickUsageCode"

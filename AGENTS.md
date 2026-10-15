@@ -5,6 +5,7 @@
 - Table 查询、工具栏、分页和远程请求直接通过 `SaxGridSetting<Row, Query>` 配置。
 - 组件库之外的布局和样式使用 UnoCSS；浮层使用组件库 Dialog/Popper。
 - 能使用 Sax Design Vue 组件时优先使用，尤其卡片表面直接使用 SCard；不得再用自定义 panel 重建卡片。示例需要中英双语、可操作的业务场景。
+- 示例涉及调用方式、配置、命令或 SVG 时，要展示可查看、可复制的代码，整个 Admin 统一使用 SCodeBlock；设置准确的 language，独立文件提供 filename，完整示例包含所需导入和状态。不得用原生 pre/code 或自绘代码面板替代。图标名称等普通标识使用文本或 STag。
 - 左侧导航使用 SMenu 配置式 options，不手写菜单节点。菜单管理通过 Alova 调用 Mock CRUD API；持久化归 Mock 后端所有，保存后刷新菜单状态并同步导航与页面搜索。
 - API 方法集中在 `src/api`，输入 DTO、返回 DTO 和列表泛型完整透传；不可用 `any` 隐藏类型错误。
 - 路由使用 vue-smart-router；vue-router 使用 npm alias 保证组件库与应用共享同一个路由运行时。
