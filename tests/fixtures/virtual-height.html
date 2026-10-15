@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Virtual viewport height diagnostic</title></head><body><div id="app"></div><script type="module">
+import {createApp,h,ref} from 'vue';
+import {SCard,SSplitter,SSplitterItem,SVirtualList} from 'sax-design-vue';
+import 'sax-design-vue/dist/index.css';
+const itemAt=index=>({id:index});
+const keyAt=index=>index;
+createApp({setup(){const bounded=ref(false);const split=ref({type:'horizontal',size:[.48,'rest']});return()=>h('main',[
+ h('button',{type:'button',onClick:()=>bounded.value=!bounded.value},bounded.value?'Use missing utility heights':'Use explicit heights'),
+ h(SCard,{}, {default:()=>h(SSplitter,{class:'h-115',style:bounded.value?{height:'460px'}:undefined,modelValue:split.value,'onUpdate:modelValue':v=>split.value=v},{default:()=>[
+ h(SSplitterItem,{}, {default:()=>h(SVirtualList,{class:'h-full',style:bounded.value?{height:'100%',minHeight:'0'}:undefined,count:300,itemAt,itemKeyAt:keyAt,height:'100%',estimateSize:120,dynamic:true},{default:({index})=>h('div',{style:{padding:'18px'}},'Record '+index)})}),
+ h(SSplitterItem,{}, {default:()=>h('p','Details')})
+ ]})})
+]);}}).mount('#app');
+</script></body></html>
