@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRemainingHeight } from '@/composables/useRemainingHeight';
+import type { ComponentPublicInstance } from 'vue';
 import { computed, reactive, shallowRef } from 'vue';
 import { STable, SCard, SButton, STag, SDialog, SAlert } from 'sax-design-vue';
 import type { SaxGridSetting, TableExposes, TableRowKey } from 'sax-design-vue';
@@ -9,6 +11,9 @@ import { t } from '@/i18n';
 import PageHeading from '@/components/common/PageHeading.vue';
 import ResourceEditor from './ResourceEditor.vue';
 import { departmentTree, entryName } from './entity-utils';
+const tableCard = shallowRef<ComponentPublicInstance>();
+const { style: tableCardStyle } = useRemainingHeight(tableCard);
+
 const props = defineProps<{ kind: ResourceKind }>();
 interface Filters { keyword: string; enabled: string }
 const filters = reactive<Filters>({ keyword: '', enabled: '' }), session = sessionStore();
@@ -69,12 +74,12 @@ function details(row: AdminEntry) {
 <template><div class="feature-page">
   <PageHeading :title="t(`nav.${kind}`)" :caption="t(`${kind}.caption`)" eyebrow="MANAGEMENT"><SButton :disabled="!session.isAdmin" @click="edit(null)">{{ t('business.new') }}</SButton></PageHeading>
   <SAlert v-if="notice" color="success" class="my-4">{{ t(notice) }}</SAlert><SAlert v-if="error && !open && !removing" color="danger" class="my-4">{{ error }}</SAlert>
-  <SCard class="admin-card"><STable ref="table" v-model:expanded-keys="expandedKeys" v-bind="setting">
+  <SAlert v-if="kind === 'roles'" color="primary" class="my-4">{{ t('roles.note') }}</SAlert>
+  <SCard ref="tableCard" class="admin-card remaining-table-card" :style="tableCardStyle"><STable :virtual-config="{ enabled: true, height: 'auto' }" ref="table" v-model:expanded-keys="expandedKeys" v-bind="setting">
     <template #name="{ row }">{{ entryName(row) }}</template><template #details="{ row }">{{ details(row) }}</template>
     <template #state="{ row }"><STag :color="row.enabled ? 'success' : 'warn'">{{ t(row.enabled ? 'business.active' : 'business.disabled') }}</STag></template>
     <template #actions="{ row }"><div class="table-row-actions"><SButton size="small" type="flat" :disabled="!session.isAdmin" @click="edit(row)">{{ t('business.actionEdit') }}</SButton><SButton size="small" type="flat" color="danger" :disabled="!session.isAdmin" @click="removing = row; error = ''">{{ t('business.actionDelete') }}</SButton></div></template>
   </STable></SCard>
-  <SAlert v-if="kind === 'roles'" color="primary" class="my-4">{{ t('roles.note') }}</SAlert>
   <ResourceEditor v-model:open="open" :kind="kind" :entry="editing" :departments="departments" :busy="busy" :error="error" @save="save" />
   <SDialog :model-value="Boolean(removing)" :title="t('business.remove')" width="440px" @update:model-value="(value) => { if (!value) removing = null; }"><p>{{ t('business.confirmRemove', { name: removing ? entryName(removing) : '' }) }}</p><SAlert v-if="error" color="danger">{{ error }}</SAlert><template #footer><div class="flex flex-wrap gap-2"><SButton type="flat" @click="removing = null">{{ t('common.cancel') }}</SButton><SButton color="danger" :loading="busy" @click="remove">{{ t('business.remove') }}</SButton></div></template></SDialog>
 </div></template>

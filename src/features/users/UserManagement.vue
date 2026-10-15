@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRemainingHeight } from '@/composables/useRemainingHeight';
+import type { ComponentPublicInstance } from 'vue';
 import { SCard } from "sax-design-vue";
 import { t, departmentLabel, messageLabel } from "@/i18n";
 import { shallowRef, reactive, computed } from "vue";
@@ -12,6 +14,9 @@ import type { UserFilters } from "./config";
 import { sessionStore } from "@/stores/session";
 import { usersApi } from "@/api";
 import type { User, UserInput } from "@/api/contracts";
+const tableCard = shallowRef<ComponentPublicInstance>();
+const { style: tableCardStyle } = useRemainingHeight(tableCard);
+
 const filters = reactive<UserFilters>({ keyword: "", status: "" });
 const config = computed(() => createUsersConfig(filters)),
   session = sessionStore(),
@@ -126,8 +131,8 @@ async function exportCsv() {
     {{ t("users.readonly") }}
   </p>
   <div class="min-w-0">
-    <SCard class="admin-card">
-      <STable ref="table" v-bind="config"
+    <SCard ref="tableCard" class="admin-card remaining-table-card" :style="tableCardStyle">
+      <STable :virtual-config="{ enabled: true, height: 'auto' }" ref="table" v-bind="config"
         ><template #toolbar_right
           ><SButton type="flat" size="small" @click="table?.refresh()"
             ><RefreshCw :size="14" class="mr-1" />{{

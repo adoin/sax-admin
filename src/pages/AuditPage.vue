@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRemainingHeight } from '@/composables/useRemainingHeight';
+import type { ComponentPublicInstance } from 'vue';
 import { computed, reactive, shallowRef } from 'vue';
 import { STable, SCard, STag, SButton, SAlert } from 'sax-design-vue';
 import type { SaxGridSetting } from 'sax-design-vue';
@@ -7,6 +9,9 @@ import { auditApi } from '@/api/admin';
 import { t, locale } from '@/i18n';
 import PageHeading from '@/components/common/PageHeading.vue';
 interface Filters { keyword: string; module: string; status: string }
+const tableCard = shallowRef<ComponentPublicInstance>();
+const { style: tableCardStyle } = useRemainingHeight(tableCard);
+
 const filters = reactive<Filters>({ keyword: '', module: '', status: '' }), busy = shallowRef(false), error = shallowRef('');
 const moduleLabel = (module: AuditEntry['module']) => module === 'session' ? t('audit.session') : t(`nav.${module}`);
 const detail = (row: AuditEntry) => locale.value === 'zh-CN' ? row.detailZh : row.detailEn;
@@ -40,5 +45,5 @@ async function exportRows() {
 <template><div class="feature-page">
   <PageHeading :title="t('nav.audit')" :caption="t('audit.caption')" eyebrow="AUDIT"><SButton :loading="busy" @click="exportRows">{{ t('audit.export') }}</SButton></PageHeading>
   <SAlert v-if="error" color="danger">{{ error }}</SAlert>
-  <SCard class="admin-card"><STable v-bind="setting"><template #action="{ row }">{{ actionLabel(row.action) }}</template><template #module="{ row }">{{ moduleLabel(row.module) }}</template><template #status="{ row }"><STag :color="row.status === 'success' ? 'success' : 'danger'">{{ statusLabel(row.status) }}</STag></template><template #detail="{ row }">{{ detail(row) }}</template><template #time="{ row }">{{ time(row.time) }}</template></STable></SCard>
+  <SCard ref="tableCard" class="admin-card remaining-table-card" :style="tableCardStyle"><STable :virtual-config="{ enabled: true, height: 'auto' }" v-bind="setting"><template #action="{ row }">{{ actionLabel(row.action) }}</template><template #module="{ row }">{{ moduleLabel(row.module) }}</template><template #status="{ row }"><STag :color="row.status === 'success' ? 'success' : 'danger'">{{ statusLabel(row.status) }}</STag></template><template #detail="{ row }">{{ detail(row) }}</template><template #time="{ row }">{{ time(row.time) }}</template></STable></SCard>
 </div></template>

@@ -114,3 +114,9 @@ Mock 通过 Alova Fetch adapter 的 `customFetch` 接入，不拦截全局 XHR/F
 [deck.gl](https://deck.gl/) 需要 WebGL2。底图使用 [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/) 1:110m 国家数据（公共领域），源文件来自 [natural-earth-vector](https://github.com/nvkelso/natural-earth-vector)。地理数据仅用于可视化演示，不用于边界判定。无需地图服务密钥或在线瓦片。地图失败时仍可查看城市排行。
 
 组件库通过 npm `sax-design-vue@2.1.1` 安装，模板不依赖相邻源码目录，可独立克隆和构建。
+
+### 填满剩余内容区的表格
+
+以表格结尾的页面使用 `src/composables/useRemainingHeight.ts`：传入表格外层 SCard 的 ref，把返回的 style 绑定到该卡片，并添加 `remaining-table-card` 类。STable 设置 `virtualConfig: { enabled: true, height: 'auto' }`，让查询、工具栏、分页由组件分配空间，仅行视口滚动。不要再创建表格业务包装组件。
+
+方法相对 Admin 内容滚动容器计算，跟随窗口、标题、提示、查询布局与缓存激活变化。默认最小卡片高度 240px，空间不足时允许页面滚动；`minHeight` 和 `bottomGap` 可按页面覆盖。初次测量前保留确定高度，隐藏或停用时停止测量；不适用于表格下方还有普通内容的页面。

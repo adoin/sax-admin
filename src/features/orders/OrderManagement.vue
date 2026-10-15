@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRemainingHeight } from '@/composables/useRemainingHeight';
+import type { ComponentPublicInstance } from 'vue';
 import { computed, reactive, shallowRef } from "vue";
 import { SCard, STable, SButton, STag, SDialog, SSteps } from "sax-design-vue";
 import type { SaxGridSetting, TableExposes } from "sax-design-vue";
@@ -6,6 +8,9 @@ import { ordersApi } from "@/api";
 import type { Order, OrderStatus, OrderItem } from "@/api/contracts";
 import { t } from "@/i18n";
 import PageHeading from "@/components/common/PageHeading.vue";
+const tableCard = shallowRef<ComponentPublicInstance>();
+const { style: tableCardStyle } = useRemainingHeight(tableCard);
+
 const filters = reactive({ keyword: "", status: "" }),
   table = shallowRef<TableExposes<Order, typeof filters>>(),
   detail = shallowRef<Order | null>(null);
@@ -104,8 +109,8 @@ const steps = computed(() =>
     :title="t('nav.orders')"
     :caption="t('orders.caption')"
     eyebrow="COMMERCE"
-  /><SCard class="admin-card"
-    ><STable ref="table" v-bind="config"
+  /><SCard ref="tableCard" class="admin-card remaining-table-card" :style="tableCardStyle"
+    ><STable :virtual-config="{ enabled: true, height: 'auto' }" ref="table" v-bind="config"
       ><template #toolbar_right
         ><SButton type="flat" size="small" @click="table?.refresh()">{{
           t("common.refresh")
