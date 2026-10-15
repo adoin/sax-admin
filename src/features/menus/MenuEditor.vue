@@ -164,18 +164,20 @@ async function submit() {
       :disabled="busy"
       @submit="submit"
       ><template #icon
-        ><div class="flex items-center gap-3" @click.prevent>
-          <SButton type="flat" :disabled="busy" @click="pickIcon"
+        ><div class="group relative inline-flex items-center" @click.prevent>
+          <SButton type="flat" :class="{ 'pr-9': model.icon }" :disabled="busy" @click="pickIcon"
             ><SIcon v-if="model.icon" :name="model.icon" :size="20" /><span>{{
               model.icon || t("menus.chooseIcon")
             }}</span></SButton
-          ><SButton
+          ><button
             v-if="model.icon"
-            type="transparent"
-            size="small"
+            type="button"
+            class="absolute right-1 top-1/2 z-10 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full border-0 bg-transparent text-current cursor-pointer opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 hover:bg-primary/10 disabled:cursor-not-allowed"
+            :aria-label="t('menus.clearIcon')"
+            :title="t('menus.clearIcon')"
             :disabled="busy"
-            @click="model.icon = ''"
-            >{{ t("menus.clearIcon") }}</SButton
+            @click.stop="model.icon = ''"
+            ><span aria-hidden="true">×</span></button
           >
         </div>
         <p class="text-xs text-muted mt-2 mb-0">

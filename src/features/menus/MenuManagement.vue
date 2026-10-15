@@ -11,11 +11,23 @@ import PageHeading from '@/components/common/PageHeading.vue';
 import MenuEditor from './MenuEditor.vue';
 const store = menusStore(), session = sessionStore();
 const open = shallowRef(false), editing = shallowRef<AdminMenu | null>(null), removing = shallowRef<AdminMenu | null>(null), busy = shallowRef(false), error = shallowRef(''), notice = shallowRef<'menus.saved' | 'menus.deleted' | ''>('');
-const rows = computed(() => [...store.records].sort((a, b) => a.order - b.order));
-const setting = computed<SaxGridSetting<AdminMenu>>(() => ({
+interface MenuRow extends AdminMenu { children: MenuRow[] }
+const rows = computed<MenuRow[]>(() => {
+  const nodes = [...store.records].sort((a, b) => a.order - b.order).map((row): MenuRow => ({ ...row, children: [] }));
+  const indexed = new Map(nodes.map((row) => [row.id, row]));
+  const roots: MenuRow[] = [];
+  for (const row of nodes) {
+    const parent = indexed.get(row.parentId);
+    if (parent && parent !== row) parent.children.push(row);
+    else roots.push(row);
+  }
+  return roots;
+});
+const setting = computed<SaxGridSetting<MenuRow>>(() => ({
   rowKey: 'id',
+  treeConfig: { children: 'children', expandAll: true, line: true },
   columns: [
-    { field: 'titleZh', title: t('menus.titleZh'), minWidth: 160 },
+    { field: 'titleZh', title: t('menus.titleZh'), minWidth: 200, treeNode: true },
     { field: 'titleEn', title: t('menus.titleEn'), minWidth: 180 },
     { field: 'kind', title: t('menus.kind'), width: 90, slots: { default: 'kind' } },
     { field: 'parentId', title: t('menus.parent'), minWidth: 130, slots: { default: 'parent' } },
