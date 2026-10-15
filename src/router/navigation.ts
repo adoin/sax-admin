@@ -66,13 +66,6 @@ export const navigation = [
     caption: "forms.caption",
   },
   {
-    path: "/components",
-    label: "nav.components",
-    icon: "Blocks",
-    section: "section.examples",
-    caption: "examples.caption",
-  },
-  {
     path: "/maps",
     label: "nav.maps",
     icon: "Map",

@@ -62,12 +62,6 @@ export const router = createRouter({
           meta: { title: "nav.forms" },
         },
         {
-          path: "components",
-          name: "components",
-          component: () => import("@/pages/ComponentsPage.vue"),
-          meta: { title: "nav.components" },
-        },
-        {
           path: "dashboard",
           name: "dashboard",
           component: () => import("@/pages/DashboardPage.vue"),

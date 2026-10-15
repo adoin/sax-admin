@@ -15,7 +15,9 @@ function read(): AdminMenu[] {
       const saved: unknown = JSON.parse(localStorage.getItem(storageKey) || "null");
       if (Array.isArray(saved) && saved.every((row) => isInput(row) && "id" in row && typeof row.id === "string")) {
         let renamed = false;
-        const rows = (saved as AdminMenu[]).map((row) => {
+        const retained = (saved as AdminMenu[]).filter((row) => !(row.id === 'page:/components' && row.path === '/components'));
+        renamed = retained.length !== saved.length;
+        const rows = retained.map((row) => {
           const previous = row.id === 'page:/table-lab' && row.path === '/table-lab'
             ? { zh: '高级表格', en: 'Advanced table', key: 'nav.tableLab' as const }
             : row.id === 'page:/workspace' && row.path === '/workspace'

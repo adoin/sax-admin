@@ -25,6 +25,14 @@ describe('mock menu persistence and validation', () => {
     expect(listed.body.data[0]).toMatchObject({ titleZh: '表格编辑与查找', titleEn: 'Table editing & search' });
     expect(listed.body.data[1]).toEqual(rows[1]);
   });
+  it('removes the retired built-in page without resetting custom menus', async () => {
+    const retired: AdminMenu = { ...group('组件示例'), id: 'page:/components', kind: 'page', path: '/components' };
+    const custom: AdminMenu = { ...group('Custom'), id: 'custom', kind: 'page', path: '/future' };
+    storage.set('sax-mock-menus-v1', JSON.stringify([retired, custom]));
+    expect((await request<AdminMenu[]>()).body.data).toEqual([custom]);
+    expect(JSON.parse(storage.get('sax-mock-menus-v1')!)).toEqual([custom]);
+    expect((await request<AdminMenu[]>()).body.data).toEqual([custom]);
+  });
   it('persists create and update, returns a fresh list, and supports deletion', async () => {
     const added = await request<AdminMenu>('', 'POST', group('Saved group'));
     expect(added.status).toBe(200);

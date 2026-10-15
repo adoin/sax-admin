@@ -59,7 +59,7 @@ function favorite(id: number) {
   <p class="text-muted text-sm mb-5" role="status">
     {{ t("projects.favoriteCount", { count: favorites.length }) }}
   </p>
-  <SEmpty v-if="!visible.length" :description="t('examples.emptyCaption')" />
+  <SEmpty v-if="!visible.length" :description="t('projects.emptyCaption')" />
   <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
     <SCard
       v-for="project in visible"
