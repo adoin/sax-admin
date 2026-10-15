@@ -104,15 +104,14 @@ async function login() {
         </h2>
         <p class="text-muted mb-9">{{ t("login.caption") }}</p>
         <form @submit.prevent="login" class="flex flex-col gap-5">
-          <label class="field-label"
+          <label class="field-label" style="display: grid; gap: 8px"
             >{{ t("login.username")
             }}<SInput
               v-model="form.username"
               block
               :placeholder="t('login.usernamePlaceholder')"
-              autocomplete="username"
-              class="mt-2" /></label
-          ><label class="field-label"
+              autocomplete="username" /></label
+          ><label class="field-label" style="display: grid; gap: 8px"
             >{{ t("login.password")
             }}<SInput
               v-model="form.password"
@@ -120,7 +119,6 @@ async function login() {
               block
               :placeholder="t('login.passwordPlaceholder')"
               autocomplete="current-password"
-              class="mt-2"
           /></label>
           <p v-if="error" role="alert" class="text-red-600 text-sm m-0">
             {{ error }}
