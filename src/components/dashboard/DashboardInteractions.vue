@@ -97,7 +97,7 @@ const progress = computed(() =>
           </div>
           <p class="text-sm leading-7 mb-0">{{ t("dashboard.focusHint") }}</p>
           <template #footer>
-            <SButton type="flat" @click.stop="router.push('/settings')">{{
+            <SButton @click.stop="router.push('/settings')">{{
               t("dashboard.openPreferences")
             }}</SButton>
           </template>
