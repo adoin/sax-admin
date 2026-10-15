@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from "vue-smart-router";
-import { SCard, SButton, STag, SAlert, SCodeBlock } from "sax-design-vue";
+import { SCard, SButton, STag, SAlert } from "sax-design-vue";
 import PageHeading from "@/components/common/PageHeading.vue";
 import { workspaceStore } from "@/stores/workspace";
 import { registerDraftRoute, removeDraftRoute } from "@/router/workspace";
 import { t } from "@/i18n";
-import routeSource from "@/router/workspace.ts?raw";
-import editorSource from "./DraftPage.vue?raw";
 const router = useRouter(), workspace = workspaceStore();
 function enable() { registerDraftRoute(router); workspace.editorEnabled = true; }
 function open(id: number) { if (!workspace.editorEnabled) enable(); router.push(`/drafts/${id}`); }
@@ -30,7 +28,6 @@ function create() { open(workspace.nextDraft++); }
         <SButton v-if="!workspace.editorEnabled" type="flat" @click="enable">{{ t('workspace.enable') }}</SButton>
         <SButton v-else color="danger" type="flat" @click="removeDraftRoute(router)">{{ t('workspace.disable') }}</SButton>
       </div>
-      <div class="grid gap-4"><SCodeBlock :code="routeSource" filename="src/router/workspace.ts" language="typescript" :expanded="false" :download="false" /><SCodeBlock :code="editorSource" filename="src/pages/DraftPage.vue" language="vue" :expanded="false" :download="false" /></div>
     </SCard>
   </div>
 </template>

@@ -4,8 +4,6 @@ import {
   SCard,
   SMessageScroller,
   SMessage,
-  SCodeBlock,
-  SInlineCitations,
   SChatInput,
   SButton,
   SAlert,
@@ -15,14 +13,12 @@ import type {
   AgentAttachment,
   MessageScrollerAction,
   AgentTask,
-  AgentSource,
   ChatInputModel,
 } from "sax-design-vue";
 import { assistantApi } from "@/api/admin";
-import { t, locale } from "@/i18n";
+import { t } from "@/i18n";
 import PageHeading from "@/components/common/PageHeading.vue";
 import AgentRunDetails from "@/components/agent/AgentRunDetails.vue";
-import agentSource from "./AgentPage.vue?raw";
 const selectedModel = shallowRef("chat"),
   fast = shallowRef(false),
   reasoningLevel = shallowRef("standard");
@@ -77,22 +73,6 @@ const reasoning = computed(() => [
       ? "agent.reasoningDetailed"
       : "agent.reasoningStandard",
   ),
-]);
-const sources = computed<AgentSource[]>(() => [
-  {
-    id: "chat-input",
-    title: "SChatInput",
-    publisher: "Sax Design Vue",
-    href: `https://sax-design.emssion.com/${locale.value === "zh-CN" ? "zh/" : ""}components/chat-input.html`,
-    description: t("agent.inputSource"),
-  },
-  {
-    id: "plan-card",
-    title: "SPlanCard",
-    publisher: "Sax Design Vue",
-    href: `https://sax-design.emssion.com/${locale.value === "zh-CN" ? "zh/" : ""}components/plan-card.html`,
-    description: t("agent.planSource"),
-  },
 ]);
 const planContent = computed(() =>
   [
@@ -403,11 +383,7 @@ onBeforeUnmount(stop);
         </p>
       </SCard>
     </div>
-    <SCard class="admin-card mt-5" :title="t('agent.sourcesTitle')">
-      <p class="text-xs text-muted leading-6">{{ t('agent.sourcesNote') }}</p>
-      <SInlineCitations :sources="sources" :label="t('agent.sourcesTitle')" />
-      <div class="mt-4"><SCodeBlock :code="agentSource" language="vue" filename="AgentPage.vue" :expanded="false" :download="false" /></div>
-    </SCard>
+
   </div>
 </template>
 <style scoped>

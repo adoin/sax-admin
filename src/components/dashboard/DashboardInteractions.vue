@@ -7,10 +7,8 @@ import {
   SProgress,
   SButton,
   STag,
-  SCodeBlock,
 } from "sax-design-vue";
 import { t } from "@/i18n";
-import source from "./DashboardInteractions.vue?raw";
 
 const router = useRouter();
 const followed = shallowRef(false);
@@ -104,14 +102,6 @@ const progress = computed(() =>
         </SCard>
       </div>
     </div>
-    <div class="mt-4">
-      <SCodeBlock
-        :code="source"
-        filename="DashboardInteractions.vue"
-        language="vue"
-        :expanded="false"
-        :download="false"
-      />
-    </div>
+
   </section>
 </template>

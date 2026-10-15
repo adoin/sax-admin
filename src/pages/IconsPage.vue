@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, shallowRef } from "vue";
 import { SIcon, SCard, SSelect, SAlert, SCodeBlock, STag } from "sax-design-vue";
+import ExampleSections from "@/components/common/ExampleSections.vue";
 import PageHeading from "@/components/common/PageHeading.vue";
 import { iconBuildProbe } from "@/icons/tree-shaking-proof";
 import apiCode from "../../sax-icons.config.ts?raw";
@@ -63,9 +64,11 @@ const svgCode = [
       :caption="t('icons.caption')"
       eyebrow="ICONS"
     />
+    <ExampleSections :sections="[{ id: 'icons-use', title: 'icons.use' }, { id: 'icons-config', title: 'icons.config' }, { id: 'icons-private', title: 'icons.privateApi' }, { id: 'icons-svg', title: 'icons.svgSource' }]" />
     <div class="grid gap-5 min-w-0">
       <SCard
         class="admin-card min-w-0"
+        id="icons-use"
         :title="t('icons.use')"
         :subtitle="t('icons.useCaption')"
       >
@@ -111,6 +114,7 @@ const svgCode = [
 
       <SCard
         class="admin-card min-w-0"
+        id="icons-config"
         :title="t('icons.config')"
         :subtitle="t('icons.configCaption')"
       >
@@ -128,6 +132,7 @@ const svgCode = [
 
       <SCard
         class="admin-card min-w-0"
+        id="icons-private"
         :title="t('icons.privateApi')"
         :subtitle="t('icons.privateApiCaption')"
       >
@@ -191,6 +196,7 @@ const svgCode = [
 
       <SCard
         class="admin-card min-w-0"
+        id="icons-svg"
         :title="t('icons.svgSource')"
         :subtitle="t('icons.svgSourceCaption')"
       >

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { shallowRef } from "vue";
-import { SCard, SUpload, SCodeBlock } from "sax-design-vue";
+import { SCard, SUpload } from "sax-design-vue";
 import { t } from "@/i18n";
 import PageHeading from "@/components/common/PageHeading.vue";
+import ExampleSections from "@/components/common/ExampleSections.vue";
 import ProfileForm from "@/features/forms/ProfileForm.vue";
 import RequestWizard from "@/features/forms/RequestWizard.vue";
 import ContactForms from "@/features/forms/ContactForms.vue";
-import contactSource from "@/features/forms/ContactForms.vue?raw";
 const files = shallowRef<File[]>([]);
 </script>
 <template>
@@ -14,13 +14,14 @@ const files = shallowRef<File[]>([]);
     :title="t('nav.forms')"
     :caption="t('forms.caption')"
     eyebrow="FORMS"
-  /><ProfileForm />
-  <SCard class="admin-card mt-5" :title="t('forms.contacts')" :subtitle="t('forms.contactsCaption')">
+  />
+  <ExampleSections :sections="[{ id: 'forms-profile', title: 'forms.profile' }, { id: 'forms-contacts', title: 'forms.contacts' }, { id: 'forms-workflow', title: 'forms.workflow' }, { id: 'forms-files', title: 'forms.files' }]" />
+  <section id="forms-profile"><ProfileForm /></section>
+  <SCard id="forms-contacts" class="admin-card mt-5" :title="t('forms.contacts')" :subtitle="t('forms.contactsCaption')">
     <ContactForms />
-    <div class="mt-5"><SCodeBlock :code="contactSource" language="vue" filename="ContactForms.vue" :expanded="false" :download="false" /></div>
   </SCard>
-  <div class="mt-5"><RequestWizard /></div>
-  <div class="mt-5">
+  <section id="forms-workflow" class="mt-5"><RequestWizard /></section>
+  <section id="forms-files" class="mt-5">
     <SCard
       class="admin-card"
       :title="t('forms.files')"
@@ -34,5 +35,5 @@ const files = shallowRef<File[]>([]);
         :automatic="false"
         :show-submit-button="false"
     /></SCard>
-  </div>
+  </section>
 </template>
