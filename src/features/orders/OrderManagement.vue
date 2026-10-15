@@ -109,7 +109,7 @@ const steps = computed(() =>
     :title="t('nav.orders')"
     :caption="t('orders.caption')"
     eyebrow="COMMERCE"
-  /><SCard ref="tableCard" class="admin-card remaining-table-card" :style="tableCardStyle"
+  /><SCard ref="tableCard" class="admin-card remaining-height-card" :style="tableCardStyle"
     ><STable :virtual-config="{ enabled: true, height: 'auto' }" ref="table" v-bind="config"
       ><template #toolbar_right
         ><SButton type="flat" size="small" @click="table?.refresh()">{{

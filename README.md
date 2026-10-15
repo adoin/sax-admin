@@ -115,8 +115,10 @@ Mock 通过 Alova Fetch adapter 的 `customFetch` 接入，不拦截全局 XHR/F
 
 组件库通过 npm `sax-design-vue@2.1.1` 安装，模板不依赖相邻源码目录，可独立克隆和构建。
 
-### 填满剩余内容区的表格
+### 填满剩余内容区的容器
 
-以表格结尾的页面使用 `src/composables/useRemainingHeight.ts`：传入表格外层 SCard 的 ref，把返回的 style 绑定到该卡片，并添加 `remaining-table-card` 类。STable 设置 `virtualConfig: { enabled: true, height: 'auto' }`，让查询、工具栏、分页由组件分配空间，仅行视口滚动。不要再创建表格业务包装组件。
+以表格、分栏或其他工作区结尾的页面使用 `src/composables/useRemainingHeight.ts`：传入外层 SCard 或 HTMLElement 的 ref，把返回的 style 绑定到该卡片，并添加 `remaining-height-card` 类。STable 设置 `virtualConfig: { enabled: true, height: 'auto' }`，让查询、工具栏、分页由组件分配空间，仅行视口滚动。不要再创建表格业务包装组件。
 
 方法相对 Admin 内容滚动容器计算，跟随窗口、标题、提示、查询布局与缓存激活变化。默认最小卡片高度 240px，空间不足时允许页面滚动；`minHeight` 和 `bottomGap` 可按页面覆盖。初次测量前保留确定高度，隐藏或停用时停止测量；不适用于表格下方还有普通内容的页面。
+
+虚拟工作台也复用此方法：外层卡片使用返回的高度，分栏设置 `flex: 1 1 0%; height: 0; min-height: 0`，虚拟列表保持 `height="100%"`。高度计算与表格无关；表格自动行视口配置只是其中一种用法。

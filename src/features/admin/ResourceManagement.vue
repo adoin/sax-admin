@@ -75,7 +75,7 @@ function details(row: AdminEntry) {
   <PageHeading :title="t(`nav.${kind}`)" :caption="t(`${kind}.caption`)" eyebrow="MANAGEMENT"><SButton :disabled="!session.isAdmin" @click="edit(null)">{{ t('business.new') }}</SButton></PageHeading>
   <SAlert v-if="notice" color="success" class="my-4">{{ t(notice) }}</SAlert><SAlert v-if="error && !open && !removing" color="danger" class="my-4">{{ error }}</SAlert>
   <SAlert v-if="kind === 'roles'" color="primary" class="my-4">{{ t('roles.note') }}</SAlert>
-  <SCard ref="tableCard" class="admin-card remaining-table-card" :style="tableCardStyle"><STable :virtual-config="{ enabled: true, height: 'auto' }" ref="table" v-model:expanded-keys="expandedKeys" v-bind="setting">
+  <SCard ref="tableCard" class="admin-card remaining-height-card" :style="tableCardStyle"><STable :virtual-config="{ enabled: true, height: 'auto' }" ref="table" v-model:expanded-keys="expandedKeys" v-bind="setting">
     <template #name="{ row }">{{ entryName(row) }}</template><template #details="{ row }">{{ details(row) }}</template>
     <template #state="{ row }"><STag :color="row.enabled ? 'success' : 'warn'">{{ t(row.enabled ? 'business.active' : 'business.disabled') }}</STag></template>
     <template #actions="{ row }"><div class="table-row-actions"><SButton size="small" type="flat" :disabled="!session.isAdmin" @click="edit(row)">{{ t('business.actionEdit') }}</SButton><SButton size="small" type="flat" color="danger" :disabled="!session.isAdmin" @click="removing = row; error = ''">{{ t('business.actionDelete') }}</SButton></div></template>

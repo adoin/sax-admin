@@ -1,7 +1,7 @@
 import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, shallowRef, watch } from 'vue';
 import type { ComponentPublicInstance, Ref } from 'vue';
 
-/** Allocate a final table card the remaining route viewport, without coupling it to window height. */
+/** Allocate a final content container the remaining route viewport, without coupling it to window height. */
 export function useRemainingHeight(target: Ref<HTMLElement | ComponentPublicInstance | undefined>, options: { minHeight?: number; bottomGap?: number } = {}) {
   const height = shallowRef(options.minHeight ?? 320);
   let observer: ResizeObserver | undefined;
