@@ -72,7 +72,7 @@ function details(row: AdminEntry) {
   <SCard class="admin-card"><STable ref="table" v-model:expanded-keys="expandedKeys" v-bind="setting">
     <template #name="{ row }">{{ entryName(row) }}</template><template #details="{ row }">{{ details(row) }}</template>
     <template #state="{ row }"><STag :color="row.enabled ? 'success' : 'warn'">{{ t(row.enabled ? 'business.active' : 'business.disabled') }}</STag></template>
-    <template #actions="{ row }"><div class="flex flex-wrap gap-2"><SButton size="small" type="flat" :disabled="!session.isAdmin" @click="edit(row)">{{ t('business.edit') }}</SButton><SButton size="small" type="flat" color="danger" :disabled="!session.isAdmin" @click="removing = row; error = ''">{{ t('business.remove') }}</SButton></div></template>
+    <template #actions="{ row }"><div class="table-row-actions"><SButton size="small" type="flat" :disabled="!session.isAdmin" @click="edit(row)">{{ t('business.actionEdit') }}</SButton><SButton size="small" type="flat" color="danger" :disabled="!session.isAdmin" @click="removing = row; error = ''">{{ t('business.actionDelete') }}</SButton></div></template>
   </STable></SCard>
   <SAlert v-if="kind === 'roles'" color="primary" class="my-4">{{ t('roles.note') }}</SAlert>
   <ResourceEditor v-model:open="open" :kind="kind" :entry="editing" :departments="departments" :busy="busy" :error="error" @save="save" />

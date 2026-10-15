@@ -76,3 +76,7 @@ input:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* Keep compact table actions on one line across management pages. */
+.table-row-actions { display: flex; align-items: center; flex-wrap: nowrap; gap: 8px; white-space: nowrap; }
+.table-row-actions > .s-button { flex-shrink: 0; white-space: nowrap; }

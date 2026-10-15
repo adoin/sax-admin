@@ -178,7 +178,7 @@ async function exportCsv() {
             }}</span
           ></template
         ><template #actions="{ row }"
-          ><div v-if="session.isAdmin" class="flex gap-1">
+          ><div v-if="session.isAdmin" class="table-row-actions">
             <SButton
               type="transparent"
               icon
