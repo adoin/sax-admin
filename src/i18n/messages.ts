@@ -4,7 +4,9 @@ import { iconsZh, iconsEn } from "./icons";
 import { menusZh, menusEn } from "./menus";
 import { expandedZh, expandedEn } from './expanded';
 import { agentZh, agentEn } from './agent';
+import { dashboardZh, dashboardEn } from './dashboard';
 export const zh = {
+  ...dashboardZh,
   ...agentZh,
   ...exampleZh,
   ...workspaceZh,
@@ -271,6 +273,7 @@ export const zh = {
 } as const;
 export type MessageKey = keyof typeof zh;
 export const en: Record<MessageKey, string> = {
+  ...dashboardEn,
   ...agentEn,
   ...exampleEn,
   ...workspaceEn,

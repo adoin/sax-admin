@@ -279,7 +279,7 @@ function navigate(path: string) {
   </div>
 </template>
 <style scoped>
-.admin-root { height: 100dvh; overflow: hidden; }
+.admin-root { height: 100dvh; overflow: clip; }
 .admin-shell { height: 100dvh; }
 .admin-shell :deep(.s-layout__content > .s-layout-aside) {
   min-width: 0; height: 100%; z-index: 30;

@@ -10,14 +10,14 @@ import {
   ArrowUpRight,
 } from "lucide-vue-next";
 import type { Metric } from "@/api/contracts";
-const props = defineProps<{ metrics: Metric[] }>();
+const props = defineProps<{ metrics: Metric[]; loading?: boolean }>();
 const icons = [Wallet, Users, ShoppingBag, MousePointer2],
-  colors = ["#3b82f6", "#8b5cf6", "#21b99a", "#f0aa3c"];
+  colors = ["#3b82f6", "#8b5cf6", "#21b99a", "#f0aa3c"] as const;
 const cards = computed(() =>
   props.metrics.map((m, i) => ({
     ...m,
     icon: icons[i],
-    color: colors[i],
+    color: colors[i % colors.length]!,
     spark: m.trend.map((n, j) => `${j * 9},${46 - n * 0.42}`).join(" "),
     display:
       m.unit === "¥"
@@ -29,7 +29,13 @@ const cards = computed(() =>
 <template>
   <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-5">
     <article v-for="m in cards" :key="m.label" class="relative">
-      <SCard class="admin-card">
+      <SCard
+        class="admin-card"
+        hover-effect="lift"
+        effect="spotlight"
+        :color="m.color"
+        :loading="loading"
+      >
         <div class="flex items-center justify-between">
           <span class="text-13px text-muted">{{ t(m.label) }}</span
           ><span

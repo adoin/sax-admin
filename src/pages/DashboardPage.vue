@@ -20,6 +20,7 @@ import MetricCards from "@/components/dashboard/MetricCards.vue";
 import ChannelPanel from "@/components/dashboard/ChannelPanel.vue";
 import ActivityPanel from "@/components/dashboard/ActivityPanel.vue";
 import GpuChart from "@/components/charts/GpuChart.vue";
+import DashboardInteractions from "@/components/dashboard/DashboardInteractions.vue";
 const data = shallowRef<Dashboard>(),
   busy = shallowRef(false),
   error = shallowRef("");
@@ -91,12 +92,12 @@ onMounted(refresh);
     </SCard>
   </div>
   <template v-if="data">
-    <MetricCards :metrics="data.metrics" />
+    <MetricCards :metrics="data.metrics" :loading="busy" />
     <div
       class="grid xl:grid-cols-[minmax(0,2.1fr)_minmax(290px,1fr)] gap-5 mt-5"
     >
       <section class="min-w-0">
-        <SCard class="admin-card">
+        <SCard class="admin-card" hover-effect="glow">
           <div class="flex flex-wrap justify-between gap-3 items-start">
             <div>
               <h2 class="section-title m-0">{{ t("dashboard.revenue") }}</h2>
@@ -185,7 +186,7 @@ onMounted(refresh);
               :key="item.to"
               :to="item.to"
               class="block min-w-0"
-              ><SCard class="admin-card" hover-effect="lift"
+              ><SCard class="admin-card" hover-effect="lift" effect="gradient-glow"
                 ><span
                   class="w-10 h-10 rounded-3 flex items-center justify-center"
                   :class="item.color"
@@ -214,5 +215,6 @@ onMounted(refresh);
       </section>
       <ActivityPanel :activities="data.activities" />
     </div>
+    <DashboardInteractions class="mt-5" />
   </template>
 </template>

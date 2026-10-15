@@ -8,7 +8,7 @@ defineProps<{ activities: Activity[] }>();
 </script>
 <template>
   <section class="">
-    <SCard class="admin-card">
+    <SCard class="admin-card" hover-effect="glow" color="secondary">
       <div class="flex justify-between items-center mb-5">
         <h2 class="section-title m-0">{{ t("dashboard.activity") }}</h2>
         <RouterLink

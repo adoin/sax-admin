@@ -18,7 +18,7 @@ const gradient = computed(() => {
 </script>
 <template>
   <section class="">
-    <SCard class="admin-card">
+    <SCard class="admin-card" hover-effect="glow" color="success">
       <h2 class="section-title m-0">{{ t("dashboard.sources") }}</h2>
       <p class="text-12px text-muted mt-2">
         {{ t("dashboard.sourcesCaption") }}
