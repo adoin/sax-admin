@@ -23,7 +23,7 @@ const setting = computed<SaxGridSetting<Row>>(() => ({
 }));
 </script>
 <template><div class="feature-page">
-  <PageHeading :title="t('nav.tableLab')" :caption="t('tableLab.caption')" eyebrow="TABLE"><div class="flex flex-wrap items-center gap-2.5"><SSelect v-model="count" :aria-label="t('tableLab.count')" :options="[100, 2000, 10000].map((value) => ({ value, label: value.toLocaleString() }))" /><SButton @click="generate">{{ t('tableLab.reset') }}</SButton></div></PageHeading>
+  <PageHeading :title="t('nav.tableLab')" :caption="t('tableLab.caption')" eyebrow="TABLE"><div class="flex flex-wrap items-center gap-2.5"><SSelect v-model="count" :label="t('tableLab.count')" label-float :aria-label="t('tableLab.count')" :options="[100, 2000, 10000].map((value) => ({ value, label: value.toLocaleString() }))" /><SButton @click="generate">{{ t('tableLab.reset') }}</SButton></div></PageHeading>
   <SAlert color="primary" class="mb-5">{{ t('tableLab.tip') }}</SAlert>
   <SCard class="admin-card"><div class="flex flex-wrap items-center gap-2.5 mb-5"><SButton size="small" :disabled="!pending" @click="table?.commitEdit()">{{ t('tableLab.save') }}</SButton><SButton size="small" type="flat" :disabled="!pending" @click="table?.cancelEdit()">{{ t('tableLab.cancel') }}</SButton><SButton size="small" type="flat" :disabled="!history.canUndo" @click="table?.undo()">{{ t('tableLab.undo') }}</SButton><SButton size="small" type="flat" :disabled="!history.canRedo" @click="table?.redo()">{{ t('tableLab.redo') }}</SButton></div>
     <STable ref="table" v-model:data="rows" v-bind="setting" @edit-start="pending = true" @edit-commit="pending = false" @edit-cancel="pending = false" @history-change="history = $event" />

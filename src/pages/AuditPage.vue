@@ -18,10 +18,10 @@ const setting = computed<SaxGridSetting<AuditEntry, Filters>>(() => ({
     { field: 'actor', title: t('audit.actor'), minWidth: 150 }, { field: 'action', title: t('audit.action'), width: 100, slots: { default: 'action' } },
     { field: 'module', title: t('audit.module'), minWidth: 150, slots: { default: 'module' } }, { field: 'status', title: t('audit.result'), width: 100, slots: { default: 'status' } },
     { field: 'detailZh', title: t('audit.detail'), minWidth: 220, slots: { default: 'detail' } }, { field: 'time', title: t('audit.time'), minWidth: 190, slots: { default: 'time' } }, { field: 'address', title: t('audit.address'), minWidth: 150 },
-  ], queryConfig: { model: filters, labelPosition: 'top', items: [
-    { field: 'keyword', title: t('audit.search'), span: 12, itemRender: { name: '$input', props: { clearable: true } } },
-    { field: 'module', title: t('audit.module'), span: 6, itemRender: { name: '$select', options: [{ value: '', label: t('business.all') }, ...(['roles', 'departments', 'dictionaries', 'menus', 'session'] as const).map((value) => ({ value, label: moduleLabel(value) }))] } },
-    { field: 'status', title: t('audit.result'), span: 6, itemRender: { name: '$select', options: [{ value: '', label: t('business.all') }, { value: 'success', label: t('audit.success') }, { value: 'failed', label: t('audit.failed') }] } },
+  ], queryConfig: { model: filters, items: [
+    { field: 'keyword', span: 12, itemRender: { name: '$input', props: { clearable: true, label: t('audit.search'), labelFloat: true } } },
+    { field: 'module', span: 6, itemRender: { name: '$select', props: { label: t('audit.module'), labelFloat: true }, options: [{ value: '', label: t('business.all') }, ...(['roles', 'departments', 'dictionaries', 'menus', 'session'] as const).map((value) => ({ value, label: moduleLabel(value) }))] } },
+    { field: 'status', span: 6, itemRender: { name: '$select', props: { label: t('audit.result'), labelFloat: true }, options: [{ value: '', label: t('business.all') }, { value: 'success', label: t('audit.success') }, { value: 'failed', label: t('audit.failed') }] } },
   ] }, toolbarConfig: { title: t('nav.audit'), right: [{ itemRender: '$refresh' }, { itemRender: '$columnConfig' }] }, pagerConfig: { remote: true, currentPage: 1, pageSize: 10, pageSizes: [10, 20, 50] },
   proxyConfig: { autoLoad: true, autoQuery: true, query: async ({ form, pager }) => { const result = await auditApi.list({ ...form, page: pager ? pager.currentPage || 1 : 1, pageSize: pager ? pager.pageSize || 10 : 10 }); return { data: result.items, total: result.total }; } },
 }));

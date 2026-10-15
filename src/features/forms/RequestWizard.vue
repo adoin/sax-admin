@@ -60,7 +60,9 @@ function restart() {
       label-position="top"
       ><template #budget
         ><SInputNumber
-          v-model="model.budget"
+          :model-value="model.budget"
+          :value-on-clear="100"
+          @update:model-value="model.budget = $event ?? 100"
           :min="100"
           :max="1000000"
           :step="100"

@@ -110,10 +110,10 @@ onMounted(refresh);
               {{ t.label }}
             </SButton>
           </div>
-          <label class="flex gap-2 items-center text-12px text-muted"
-            >{{ t("charts.count")
-            }}<SSelect
+          <SSelect
               v-model="count"
+              :label="t('charts.count')"
+              label-float
               :options="[
                 { value: 1000, label: '1,000' },
                 { value: 5000, label: '5,000' },
@@ -121,8 +121,7 @@ onMounted(refresh);
               ]"
               :aria-label="t('charts.countLabel')"
             >
-            </SSelect
-          ></label>
+            </SSelect>
         </div>
       </div>
       <p v-if="error" role="alert" class="text-red-600">{{ error }}</p>

@@ -25,9 +25,9 @@ const setting = computed<SaxGridSetting<AdminEntry, Filters>>(() => ({
     { field: 'id', title: t('users.actions'), width: 165, slots: { default: 'actions' } },
   ],
   treeConfig: props.kind === 'departments' ? { children: 'children', expandAll: true, line: true } : undefined,
-  queryConfig: { model: filters, labelPosition: 'top', items: [
-    { field: 'keyword', title: t('business.search'), span: 12, itemRender: { name: '$input', props: { clearable: true } } },
-    { field: 'enabled', title: t('business.state'), span: 12, itemRender: { name: '$select', options: [{ value: '', label: t('business.all') }, { value: 'active', label: t('business.active') }, { value: 'disabled', label: t('business.disabled') }] } },
+  queryConfig: { model: filters, items: [
+    { field: 'keyword', span: 12, itemRender: { name: '$input', props: { clearable: true, label: t('business.search'), labelFloat: true } } },
+    { field: 'enabled', span: 12, itemRender: { name: '$select', props: { label: t('business.state'), labelFloat: true }, options: [{ value: '', label: t('business.all') }, { value: 'active', label: t('business.active') }, { value: 'disabled', label: t('business.disabled') }] } },
   ] },
   toolbarConfig: { title: t(`nav.${props.kind}`), right: [{ itemRender: '$refresh' }, { itemRender: '$columnConfig' }] },
   pagerConfig: props.kind === 'departments' ? false : { remote: true, currentPage: 1, pageSize: 10, pageSizes: [10, 20, 50] },

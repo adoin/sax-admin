@@ -51,7 +51,7 @@ function parentName(id: string) { const row = store.records.find((row) => row.id
     <template #parent="{ row }">{{ parentName(row.parentId) }}</template>
     <template #icon="{ row }"><SIcon :name="row.icon" :size="20" /></template>
     <template #enabled="{ row }"><STag :color="row.enabled ? 'success' : 'warn'">{{ t(row.enabled ? 'menus.enabled' : 'menus.hidden') }}</STag></template>
-    <template #actions="{ row }"><div class="menu-actions"><SButton size="small" type="flat" :disabled="!session.isAdmin" @click="edit(row)">{{ t('menus.edit') }}</SButton><SButton size="small" type="flat" color="danger" :disabled="!session.isAdmin" @click="removing = row; error = ''">{{ t('menus.remove') }}</SButton></div></template>
+    <template #actions="{ row }"><div class="menu-actions menu-row-actions"><SButton size="small" type="flat" :disabled="!session.isAdmin" @click="edit(row)">{{ t('menus.actionEdit') }}</SButton><SButton size="small" type="flat" color="danger" :disabled="!session.isAdmin" @click="removing = row; error = ''">{{ t('menus.actionDelete') }}</SButton></div></template>
   </STable></SCard>
   <SAlert class="menu-notice" color="primary">{{ t('menus.storage') }}</SAlert>
   <MenuEditor v-model:open="open" :menu="editing" :busy="busy" :error="error" @save="save" />
@@ -60,4 +60,9 @@ function parentName(id: string) { const row = store.records.find((row) => row.id
     <template #footer><div class="menu-actions"><SButton type="flat" @click="removing = null">{{ t('common.cancel') }}</SButton><SButton color="danger" :loading="busy" @click="remove">{{ t('menus.remove') }}</SButton></div></template>
   </SDialog>
 </template>
-<style scoped>.menu-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; } .menu-notice { margin-block: 16px; }</style>
+<style scoped>
+.menu-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.menu-row-actions { flex-wrap: nowrap; white-space: nowrap; }
+.menu-row-actions :deep(.s-button) { flex-shrink: 0; white-space: nowrap; }
+.menu-notice { margin-block: 16px; }
+</style>

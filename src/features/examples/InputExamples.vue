@@ -41,7 +41,9 @@ const enabled = shallowRef(true),
         :step="10"
         show-value
         :aria-label="t('examples.priority')" /><SInputNumber
-        v-model="priority"
+        :model-value="priority"
+        :value-on-clear="0"
+        @update:model-value="priority = $event ?? 0"
         :min="0"
         :max="100"
         :step="10"

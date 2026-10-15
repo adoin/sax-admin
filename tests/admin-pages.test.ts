@@ -46,11 +46,10 @@ describe('expanded admin page contracts', () => {
     expect((await request<{ content: string }>('/assistant/reply', 'POST', { prompt: 'Planning test' })).data.content).toContain('Planning test');
     expect((await request('/assistant/reply', 'POST', { prompt: '' })).status).toBe(400);
   });
-  it('adds new navigation entries without restoring intentionally deleted old ones', async () => {
+  it('preserves saved menus without merging the current branch navigation catalog', async () => {
     storage.set('sax-mock-menus-v1', JSON.stringify([]));
     const menus = await request<Array<{ id: string; path: string }>>('/menus');
-    expect(menus.data.some((row) => row.path === '/roles')).toBe(true);
-    expect(menus.data.some((row) => row.path === '/users')).toBe(false);
+    expect(menus.data).toEqual([]);
     const second = await request<Array<{ id: string; path: string }>>('/menus');
     expect(second.data).toEqual(menus.data);
   });

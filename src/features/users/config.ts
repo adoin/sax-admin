@@ -64,17 +64,17 @@ export function createUsersConfig(
     ],
     queryConfig: {
       model,
-      labelPosition: "top",
       submitText: t("users.query"),
       resetText: t("users.reset"),
       items: [
         {
           field: "keyword",
-          title: t("users.search"),
           span: 12,
           itemRender: {
             name: "$input",
             props: {
+              label: t("users.search"),
+              labelFloat: true,
               placeholder: t("users.searchPlaceholder"),
               clearable: true,
             },
@@ -82,11 +82,10 @@ export function createUsersConfig(
         },
         {
           field: "status",
-          title: t("users.statusFilter"),
           span: 12,
           itemRender: {
             name: "$select",
-            props: { placeholder: t("users.allStatus"), clearable: true },
+            props: { placeholder: t("users.allStatus"), clearable: true, label: t("users.statusFilter"), labelFloat: true },
             options: statusOptions.value,
           },
         },

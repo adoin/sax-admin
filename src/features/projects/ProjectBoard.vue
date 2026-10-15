@@ -54,7 +54,7 @@ function favorite(id: number) {
     :title="t('nav.projects')"
     :caption="t('projects.caption')"
     eyebrow="COLLABORATION"
-    ><SInput v-model="keyword" :placeholder="t('projects.search')" clearable
+    ><SInput v-model="keyword" :label="t('projects.search')" label-float clearable
   /></PageHeading>
   <p class="text-muted text-sm mb-5" role="status">
     {{ t("projects.favoriteCount", { count: favorites.length }) }}

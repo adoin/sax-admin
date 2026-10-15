@@ -41,26 +41,23 @@ const config = computed<SaxGridSetting<Order, typeof filters>>(() => ({
   ],
   queryConfig: {
     model: filters,
-    labelPosition: "top",
     submitText: t("users.query"),
     resetText: t("users.reset"),
     items: [
       {
         field: "keyword",
-        title: t("orders.keyword"),
         span: 12,
         itemRender: {
           name: "$input",
-          props: { clearable: true, placeholder: t("orders.keyword") },
+          props: { clearable: true, label: t("orders.keyword"), labelFloat: true },
         },
       },
       {
         field: "status",
-        title: t("orders.status"),
         span: 12,
         itemRender: {
           name: "$select",
-          props: { clearable: true, placeholder: t("users.allStatus") },
+          props: { clearable: true, placeholder: t("users.allStatus"), label: t("orders.status"), labelFloat: true },
           options: statuses.map((value) => ({
             value,
             label: t(`orders.${value}`),

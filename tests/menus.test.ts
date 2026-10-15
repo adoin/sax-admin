@@ -34,6 +34,12 @@ describe('mock menu persistence and validation', () => {
   it('allows viewer reads but rejects writes and invalid page targets', async () => {
     expect((await request('', 'POST', group('Viewer'), 'mock-viewer-session')).status).toBe(403);
     expect((await request('', 'GET', undefined, 'mock-viewer-session')).status).toBe(200);
-    expect((await request('', 'POST', { ...group('Invalid'), kind: 'page', path: '/missing-page' })).status).toBe(400);
+    expect((await request('', 'POST', { ...group('Invalid'), kind: 'page', path: 'users' })).status).toBe(400);
+    expect((await request('', 'POST', { ...group('Invalid'), kind: 'page', path: '//external.example/path' })).status).toBe(400);
+  });
+  it('stores manually entered paths without requiring a route in this branch', async () => {
+    const added = await request<AdminMenu>('', 'POST', { ...group('Future page'), kind: 'page', path: '  /future/report?tab=summary  ' });
+    expect(added.status).toBe(200);
+    expect(added.body.data.path).toBe('/future/report?tab=summary');
   });
 });
