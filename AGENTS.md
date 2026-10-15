@@ -18,3 +18,5 @@
 - 直接在 main 工作。交付前运行 `pnpm typecheck`、`pnpm test`、`pnpm build`，并验证浏览器主要操作。
 
 - 不在页面底部附加整页源码、“本页实现”或“组件参考”区块。仅当代码本身是示例的核心内容（如图标配置、部署命令）时展示精简调用代码，并使用 SCodeBlock。长示例页面使用 SAnchor 分节导航，绑定 Admin 内容区的滚动容器。
+
+- Admin 树形管理页默认在 SaxGridSetting 中设置 `virtualConfig: { enabled: true, height: 'auto' }`，外层通过 useRemainingHeight 提供确定高度；展开节点只增加内部可滚动范围，不撑长整个页面。

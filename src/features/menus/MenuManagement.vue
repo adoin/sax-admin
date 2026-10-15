@@ -30,6 +30,7 @@ const rows = computed<MenuRow[]>(() => {
 });
 const setting = computed<SaxGridSetting<MenuRow>>(() => ({
   rowKey: 'id',
+  virtualConfig: { enabled: true, height: 'auto' },
   treeConfig: { children: 'children', expandAll: true, line: true },
   columns: [
     { field: 'titleZh', title: t('menus.titleZh'), minWidth: 200, treeNode: true },
@@ -63,7 +64,7 @@ function parentName(id: string) { const row = store.records.find((row) => row.id
   <PageHeading :title="t('nav.menus')" :caption="t('menus.caption')" eyebrow="NAVIGATION"><div class="menu-actions"><SButton type="flat" :loading="store.busy" @click="store.refresh">{{ t('common.refresh') }}</SButton><SButton :disabled="!session.isAdmin" @click="edit(null)">{{ t('menus.new') }}</SButton></div></PageHeading>
   <SAlert v-if="notice" color="success" class="menu-notice">{{ t(notice) }}</SAlert>
   <SAlert v-if="store.error" color="danger" class="menu-notice">{{ store.error }}</SAlert>
-  <SCard ref="tableCard" class="admin-card remaining-height-card" :style="tableCardStyle"><STable :virtual-config="{ enabled: true, height: 'auto' }" v-bind="setting" :data="rows" :loading="store.busy">
+  <SCard ref="tableCard" class="admin-card remaining-height-card" :style="tableCardStyle"><STable v-bind="setting" :data="rows" :loading="store.busy">
     <template #kind="{ row }">{{ t(row.kind === 'group' ? 'menus.group' : 'menus.page') }}</template>
     <template #parent="{ row }">{{ parentName(row.parentId) }}</template>
     <template #icon="{ row }"><SIcon :name="row.icon" :size="20" /></template>
