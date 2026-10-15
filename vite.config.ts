@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => {
     },
   };
   return {
+    base: env.SAX_BASE_URL || "/",
     plugins: [saxIcons(icons), Vue(), UnoCSS(), iconBuildAudit()],
     resolve: {
       alias: {

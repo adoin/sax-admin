@@ -20,3 +20,5 @@
 - 不在页面底部附加整页源码、“本页实现”或“组件参考”区块。仅当代码本身是示例的核心内容（如图标配置、部署命令）时展示精简调用代码，并使用 SCodeBlock。长示例页面使用 SAnchor 分节导航，绑定 Admin 内容区的滚动容器。
 
 - Admin 树形管理页默认在 SaxGridSetting 中设置 `virtualConfig: { enabled: true, height: 'auto' }`，外层通过 useRemainingHeight 提供确定高度；展开节点只增加内部可滚动范围，不撑长整个页面。
+
+- main 推送通过 GitHub Actions 自动部署 Pages；子目录部署使用 SAX_BASE_URL 配合 history 路由和 Pages 404.html 应用回退，避免与 SAnchor 的 URL hash 冲突。public 资源必须拼接 import.meta.env.BASE_URL，不能写死根路径。

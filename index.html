@@ -1,1 +1,7 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/sax-logo-mark.svg"><meta name="theme-color" content="#2563eb"><title>Sax Admin · 让管理更简单</title></head><body><div id="app"></div><script type="module" src="/src/main.ts"></script></body></html>
+<!doctype html><html lang="zh-CN"><head><script>
+try {
+  const path = sessionStorage.getItem('sax-pages-route');
+  sessionStorage.removeItem('sax-pages-route');
+  if (path && path.startsWith('%BASE_URL%')) history.replaceState(history.state, '', path);
+} catch {}
+</script><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="%BASE_URL%sax-logo-mark.svg"><meta name="theme-color" content="#2563eb"><title>Sax Admin · 让管理更简单</title></head><body><div id="app"></div><script type="module" src="/src/main.ts"></script></body></html>

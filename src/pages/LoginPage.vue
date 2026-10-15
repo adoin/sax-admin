@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const baseUrl = import.meta.env.BASE_URL;
 import { t, locale, toggleLocale } from "@/i18n";
 import { reactive, shallowRef } from "vue";
 import { useRoute, useRouter } from "vue-smart-router";
@@ -96,7 +97,7 @@ async function login() {
         }}
       </SButton>
       <div class="w-full max-w-92">
-        <img src="/sax-logo-mark.svg" alt="" class="w-11 h-11 mb-9" />
+        <img :src="`${baseUrl}sax-logo-mark.svg`" alt="" class="w-11 h-11 mb-9" />
         <p class="text-xs text-muted tracking-widest">WELCOME BACK</p>
         <h2 class="text-8 font-700 tracking-tight mb-2 mt-3">
           {{ t("login.welcome") }}

@@ -113,7 +113,7 @@ Mock 通过 Alova Fetch adapter 的 `customFetch` 接入，不拦截全局 XHR/F
 
 [deck.gl](https://deck.gl/) 需要 WebGL2。底图使用 [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/) 1:110m 国家数据（公共领域），源文件来自 [natural-earth-vector](https://github.com/nvkelso/natural-earth-vector)。地理数据仅用于可视化演示，不用于边界判定。无需地图服务密钥或在线瓦片。地图失败时仍可查看城市排行。
 
-组件库通过 npm `sax-design-vue@2.1.1` 安装，模板不依赖相邻源码目录，可独立克隆和构建。
+组件库通过 npm `sax-design-vue@2.1.7` 安装，模板不依赖相邻源码目录，可独立克隆和构建。
 
 ### 填满剩余内容区的容器
 
@@ -122,3 +122,9 @@ Mock 通过 Alova Fetch adapter 的 `customFetch` 接入，不拦截全局 XHR/F
 方法相对 Admin 内容滚动容器计算，跟随窗口、标题、提示、查询布局与缓存激活变化。默认最小卡片高度 240px，空间不足时允许页面滚动；`minHeight` 和 `bottomGap` 可按页面覆盖。初次测量前保留确定高度，隐藏或停用时停止测量；不适用于表格下方还有普通内容的页面。
 
 虚拟工作台也复用此方法：外层卡片使用返回的高度，分栏设置 `flex: 1 1 0%; height: 0; min-height: 0`，虚拟列表保持 `height="100%"`。高度计算与表格无关；表格自动行视口配置只是其中一种用法。
+
+### GitHub Pages 自动部署
+
+推送 main 后，`.github/workflows/pages.yml` 自动安装依赖、执行测试和构建，再部署到 https://adoin.github.io/sax-admin/ 。也可在 Actions 手动运行。
+
+Pages 构建使用 `SAX_BASE_URL=/sax-admin/`，路由使用同一 base；部署时生成 404.html 将请求带回入口并恢复原始路径，子页面可直接打开和刷新；路径恢复通过当前标签的 sessionStorage 完成，不影响锚点或查询条件。默认启用本地 Mock，无需 API 服务。本地开发的 base 为 `/`，继续使用相同 history 路由；Logo 和演示图片使用 `import.meta.env.BASE_URL`。

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const baseUrl = import.meta.env.BASE_URL;
 import { t } from "@/i18n";
 import { computed, shallowRef, watch, nextTick, onMounted } from "vue";
 import { RouterLink, RouterView, useRoute, useRouter } from "vue-smart-router";
@@ -120,7 +121,7 @@ function navigate(path: string) {
         to="/dashboard"
         class="flex items-center gap-3 px-2 h-12 mb-9"
         :aria-label="t('shell.home')"
-        ><img src="/sax-logo-mark.svg" alt="" class="w-9 h-9 shrink-0" />
+        ><img :src="`${baseUrl}sax-logo-mark.svg`" alt="" class="w-9 h-9 shrink-0" />
         <div v-if="!preferences.collapsed">
           <span class="font-750 text-lg tracking-tight"
             >Sax Admin<span class="text-brand">.</span></span

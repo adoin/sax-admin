@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const baseUrl = import.meta.env.BASE_URL;
 import { computed, reactive, shallowRef } from "vue";
 import { useRouter } from "vue-smart-router";
 import {
@@ -64,17 +65,7 @@ const progress = computed(() =>
       </SCard>
       <div
         class="rounded-5 p-5 grid items-center bg-slate-900"
-        style="
-          background-image:
-            linear-gradient(
-              135deg,
-              rgb(15 23 42 / 0.86),
-              rgb(30 64 175 / 0.72)
-            ),
-            url(&quot;/media-analytics.svg&quot;);
-          background-size: cover;
-          background-position: center;
-        "
+        :style="{ backgroundImage: `linear-gradient(135deg, rgb(15 23 42 / 0.86), rgb(30 64 175 / 0.72)), url('${baseUrl}media-analytics.svg')`, backgroundSize: 'cover', backgroundPosition: 'center' }"
       >
         <SCard
           v-model:selected="followed"

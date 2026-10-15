@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const baseUrl = import.meta.env.BASE_URL;
 import { computed, reactive, shallowRef } from 'vue';
 import { SCard, SForm, SImage, SButton, STag, cardTypes, cardTextures, cardEffects, cardOrientations, cardHoverEffects } from 'sax-design-vue';
 import type { CardType, CardTexture, CardEffect, CardOrientation, CardHoverEffect, FormItemConfig } from 'sax-design-vue';
@@ -20,7 +21,7 @@ const items = computed<FormItemConfig<Config>[]>(() => [
   <div class="grid grid-cols-1 xl:grid-cols-[minmax(240px,320px)_minmax(0,1fr)] gap-5">
     <SCard class="admin-card" :title="t('cardLab.controls')"><SForm :model="model" :items="items" label-position="top" /></SCard>
     <div class="lab-stage relative grid place-items-center p-8 rounded-5 overflow-hidden min-h-125"><span class="lab-backdrop" aria-hidden="true">SAX<br />DESIGN</span><SCard class="lab-preview" v-model:selected="selected" :type="model.type" :texture="model.texture" :effect="model.effect" :orientation="model.orientation" :shape="model.shape" :hover-effect="model.hover" :loading="model.loading" :selectable="model.selectable" :title="t('cardLab.title')" :text="t('cardLab.text')">
-      <template #img><SImage src="/media-orbit.svg" width="100%" :height="190" :alt="t('files.art', { id: 3 })" fit="cover" /></template>
+      <template #img><SImage :src="`${baseUrl}media-orbit.svg`" width="100%" :height="190" :alt="t('files.art', { id: 3 })" fit="cover" /></template>
       <STag>{{ t('cardLab.selected', { value: selected ? '✓' : '—' }) }}</STag><template #buttons><SButton size="small" type="flat" @click.stop="selected = !selected">{{ t('cardLab.selectable') }}</SButton></template>
     </SCard></div>
   </div>

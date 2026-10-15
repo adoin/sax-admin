@@ -32,10 +32,9 @@ export const http = createAlova({
     if (!response.ok || body.code !== 0) {
       if (response.status === 401) {
         sessionStore(pinia).clear();
-        if (window.location.pathname !== "/login")
-          window.location.assign(
-            `/login?redirect=${encodeURIComponent(window.location.pathname)}`,
-          );
+        const base = import.meta.env.BASE_URL;
+        const current = `${window.location.pathname.slice(base.length - 1)}${window.location.search}`;
+        if (!current.startsWith("/login")) window.location.assign(`${base}login?redirect=${encodeURIComponent(current)}`);
       }
       throw new ApiError(
         body.message || t("error.request"),

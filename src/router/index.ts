@@ -5,7 +5,7 @@ import { workspaceStore } from "@/stores/workspace";
 import { registerDraftRoute } from "./workspace";
 export { navigation } from "./navigation";
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior: () => ({ top: 0 }),
   routes: [
     {
