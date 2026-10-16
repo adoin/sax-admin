@@ -18,7 +18,7 @@ function layers() {
   return [
     new GeoJsonLayer({
       id: "countries",
-      data: "/geo/countries.geojson",
+      data: `${import.meta.env.BASE_URL}geo/countries.geojson`,
       filled: true,
       stroked: true,
       getFillColor: [30, 49, 76],
@@ -167,7 +167,7 @@ onActivated(() => requestAnimationFrame(() => deck?.redraw("workspace activated"
     >
       <strong class="text-lg text-white">{{ t("maps.unavailable") }}</strong>
       <p class="text-xs max-w-100 leading-6">{{ error }}</p>
-      <p class="text-xs">{{ t("maps.hardware") }}</p>
+      <p class="text-xs">{{ t("maps.renderHelp") }}</p>
     </div>
   </div>
 </template>

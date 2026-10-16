@@ -217,7 +217,7 @@ export const zh = {
   "maps.cityFlows": "城市流向",
   "maps.mapLabel": "城市业务分布地图，可拖动平移，滚轮缩放，悬停查看业务量",
   "maps.unavailable": "地图暂时无法渲染",
-  "maps.hardware": "请启用浏览器硬件加速。城市业务数据仍可在下方查看。",
+  "maps.renderHelp": "请检查地图资源请求及浏览器渲染支持。城市业务数据仍可在下方查看。",
   "maps.initError": "地图初始化失败",
   "maps.tooltip": "业务量：{value}",
   "city.Shanghai": "上海",
@@ -489,8 +489,8 @@ export const en: Record<MessageKey, string> = {
   "maps.mapLabel":
     "City business map. Drag to pan, scroll to zoom, and hover for volume.",
   "maps.unavailable": "Map rendering unavailable",
-  "maps.hardware":
-    "Enable browser hardware acceleration. City data is still available in the table below.",
+  "maps.renderHelp":
+    "Check map resource requests and browser rendering support. City data is still available in the table below.",
   "maps.initError": "Map initialization failed",
   "maps.tooltip": "Volume: {value}",
   "city.Shanghai": "Shanghai",
