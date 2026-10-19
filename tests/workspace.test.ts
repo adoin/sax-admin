@@ -12,6 +12,19 @@ function testRouter() {
   ] }] });
 }
 describe("workspace cache lifecycle", () => {
+  it('reorders route records without changing their identity, revision or reserved window positions', () => {
+    const workspace = workspaceStore();
+    workspace.tabs = ['one', 'window', 'two', 'three'].map(fullPath => ({ fullPath, title: 'nav.dashboard', revision: 2 }));
+    const original = [...workspace.tabs];
+    workspace.reorder(['three', 'one', 'two']);
+    expect(workspace.tabs.map(tab => tab.fullPath)).toEqual(['three', 'window', 'one', 'two']);
+    expect(workspace.tabs[1]).toBe(original[1]);
+    expect(workspace.tabs[2]).toBe(original[0]);
+    expect(workspace.tabs[2].revision).toBe(2);
+    expect(tabCloseTargets(workspace.tabs.filter(tab => tab.fullPath !== 'window'), 'one', 'left')).toEqual(['three']);
+    workspace.reorder(['missing', 'two', 'two', 'one']);
+    expect(workspace.tabs.map(tab => tab.fullPath)).toEqual(['three', 'window', 'two', 'one']);
+  });
   it("closes relative to the clicked tab including the dashboard", () => {
     const tabs = ['home', 'one', 'two', 'three'].map((fullPath) => ({ fullPath, title: 'nav.dashboard' as const, revision: 0 }));
     expect(tabCloseTargets(tabs, 'two', 'left')).toEqual(['home', 'one']);

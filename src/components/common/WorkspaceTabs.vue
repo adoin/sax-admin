@@ -18,6 +18,9 @@ const routeTabs = windows.routeTabs;
 const contextMenu = shallowRef<ContextMenuInstance>();
 const contextPath = shallowRef("");
 const closing = shallowRef(false);
+function sortTabs(order: (string | number)[]) {
+  workspace.reorder(order.map(String));
+}
 function selectTab(value: unknown) {
   if (typeof value !== 'string' && typeof value !== 'number') return;
   const path = String(value);
@@ -141,11 +144,13 @@ async function selectContext(item: ContextMenuItem) {
       :size="preferences.tabSize"
       overflow="collapse"
       editable
+      sortable
       hide-add
       :animated="false"
       :aria-label="t('workspace.tabs')"
       @update:model-value="selectTab"
       @remove="close"
+      @sort="sortTabs"
       @tab-contextmenu="showContext"
       @keydown="keyboardContext"
     >
@@ -164,6 +169,7 @@ async function selectContext(item: ContextMenuItem) {
         <template #label-extra>
             <SButton
               class="workspace-tab-pin"
+              style="color: inherit"
               icon
               type="transparent"
               size="mini"

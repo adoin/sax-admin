@@ -47,6 +47,14 @@ export const workspaceStore = defineStore("workspace", {
     retain(fullPaths: string[]) {
       this.tabs = this.tabs.filter((tab) => fullPaths.includes(tab.fullPath));
     },
+    reorder(fullPaths: string[]) {
+      const byPath = new Map(this.tabs.map(tab => [tab.fullPath, tab]));
+      const paths = [...new Set(fullPaths)].filter(path => byPath.has(path));
+      const moving = new Set(paths);
+      let index = 0;
+      // Keep window records in their reserved positions while route tabs move.
+      this.tabs = this.tabs.map(tab => moving.has(tab.fullPath) ? byPath.get(paths[index++])! : tab);
+    },
     refresh(fullPath: string) {
       const tab = this.tabs.find((item) => item.fullPath === fullPath);
       if (tab) tab.revision++;

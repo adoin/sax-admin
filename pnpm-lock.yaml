@@ -131,8 +131,8 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3))
       sax-design-vue:
-        specifier: 2.4.2
-        version: 2.4.2(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
+        specifier: 2.5.0
+        version: 2.5.0(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
       sax-design-vue-iconify:
         specifier: ^1.0.2
         version: 1.0.2(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))
@@ -1512,8 +1512,8 @@ packages:
       vite:
         optional: true
 
-  sax-design-vue@2.4.2:
-    resolution: {integrity: sha512-dQaL9w5M8L24CL54XClaqlRK/IKa4zZ+X7lQhMBx3DntO/D0jTwRfD5c6HlCnBjhfUlCRIPP4BDpvNiFjeCsTA==}
+  sax-design-vue@2.5.0:
+    resolution: {integrity: sha512-rJodJGryFsjNSQog5P7qwqaS58ReVncewUgaF0xFvMoYLAAEDJacS8bPdS5V9Vz3kZkNjRcmD1Q7FwzcBqHqOw==}
     peerDependencies:
       vue: ^3.5.0
 
@@ -3087,7 +3087,7 @@ snapshots:
     optionalDependencies:
       vite: 8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)
 
-  sax-design-vue@2.4.2(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3)):
+  sax-design-vue@2.5.0(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3)):
     dependencies:
       '@ctrl/tinycolor': 4.2.1
       '@types/lodash': 4.17.26
