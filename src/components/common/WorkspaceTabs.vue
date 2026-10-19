@@ -14,6 +14,7 @@ const workspace = workspaceStore(),
   router = useRouter();
 const preferences = preferencesStore();
 const windows = usePageWindows();
+const routeTabs = windows.routeTabs;
 const contextMenu = shallowRef<ContextMenuInstance>();
 const contextPath = shallowRef("");
 const closing = shallowRef(false);
@@ -47,7 +48,7 @@ const menuItems = computed<ContextMenuItem[]>(() => [
       )[action],
     ),
     value: action,
-    disabled: !tabCloseTargets(workspace.tabs, contextPath.value, action)
+    disabled: !tabCloseTargets(routeTabs.value, contextPath.value, action)
       .length,
     divided: action === "current" || action === "all",
   })),
@@ -114,7 +115,7 @@ async function selectContext(item: ContextMenuItem) {
   if (closing.value) return;
   closing.value = true;
   try {
-    const paths = tabCloseTargets(workspace.tabs, contextPath.value, action);
+    const paths = tabCloseTargets(routeTabs.value, contextPath.value, action);
     const remaining = workspace.tabs.filter(
       (tab) => !paths.includes(tab.fullPath),
     );
@@ -149,7 +150,7 @@ async function selectContext(item: ContextMenuItem) {
       @keydown="keyboardContext"
     >
       <STab
-        v-for="tab in workspace.tabs"
+        v-for="tab in routeTabs"
         :key="tab.fullPath"
         :name="tab.fullPath"
         :label="windows.title(tab)"
@@ -163,18 +164,16 @@ async function selectContext(item: ContextMenuItem) {
         <template #label-extra>
             <SButton
               class="workspace-tab-pin"
-              :class="{ 'is-pinned': windows.states.get(tab.fullPath)?.pinned }"
               icon
               type="transparent"
               size="mini"
               :debounce="false"
-              :aria-pressed="!!windows.states.get(tab.fullPath)?.pinned"
-              :aria-label="t(windows.states.get(tab.fullPath)?.pinned ? 'workspace.restoreWindow' : 'workspace.pinPage')"
-              :title="t(windows.states.get(tab.fullPath)?.pinned ? 'workspace.restoreWindow' : 'workspace.pinPage')"
+              :aria-label="t('workspace.pinPage')"
+              :title="t('workspace.pinPage')"
               @click.stop="toggleWindow(tab.fullPath)"
               @keydown.stop
               @pointerdown.stop
-            ><Pin :size="13" :fill="windows.states.get(tab.fullPath)?.pinned ? 'currentColor' : 'none'" /></SButton>
+            ><Pin :size="13" /></SButton>
         </template>
       </STab>
     </STabs>
@@ -217,8 +216,7 @@ async function selectContext(item: ContextMenuItem) {
   pointer-events: none;
 }
 .workspace-tabs :deep(.s-tabs__item:hover) .workspace-tab-pin,
-.workspace-tabs :deep(.s-tabs__item:focus-within) .workspace-tab-pin,
-.workspace-tab-pin.is-pinned {
+.workspace-tabs :deep(.s-tabs__item:focus-within) .workspace-tab-pin {
   opacity: 1;
   pointer-events: auto;
 }

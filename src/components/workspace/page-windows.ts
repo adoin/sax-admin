@@ -1,4 +1,5 @@
 import {
+  computed,
   inject,
   nextTick,
   onScopeDispose,
@@ -28,6 +29,7 @@ export function createPageWindowManager(
   router: Pick<Router, 'push' | 'beforeEach'>,
 ) {
   const states = reactive(new Map<string, PageWindowState>());
+  const routeTabs = computed(() => workspace.tabs.filter(tab => !states.get(tab.fullPath)?.pinned));
   let sequence = 1;
   const activePath = shallowRef("");
   let restoringPath: string | undefined;
@@ -112,6 +114,7 @@ export function createPageWindowManager(
     }),
   );
   const api = {
+    routeTabs,
     state,
     states,
     title,

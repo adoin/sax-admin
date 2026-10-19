@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { effectScope, nextTick } from 'vue';
 import { createMemoryHistory, createRouter, isNavigationFailure } from 'vue-smart-router';
-import { workspaceStore } from '../src/stores/workspace';
+import { workspaceStore, tabCloseTargets } from '../src/stores/workspace';
 import { createPageWindowManager } from '../src/components/workspace/page-windows';
 
 const scopes: ReturnType<typeof effectScope>[] = [];
@@ -25,6 +25,25 @@ async function fixture() {
   return { workspace, router, windows };
 }
 describe('page window lifecycle', () => {
+  it('removes pinned pages from route tabs and bulk close targets, then restores their original position', async () => {
+    const { workspace, router, windows } = await fixture();
+    const first = workspace.tabs[0];
+    await router.push('/drafts/2');
+    const second = workspace.tabs[1];
+    await windows.pin(first.fullPath);
+    expect(windows.routeTabs.value).toEqual([second]);
+    const closing = tabCloseTargets(windows.routeTabs.value, second.fullPath, 'all');
+    expect(closing).toEqual([second.fullPath]);
+    await router.push('/launchpad');
+    workspace.retain(workspace.tabs.filter(tab => !closing.includes(tab.fullPath)).map(tab => tab.fullPath));
+    expect(windows.routeTabs.value).toEqual([]);
+    expect(windows.state(first.fullPath).pinned).toBe(true);
+    await router.push('/drafts/3');
+    await windows.restore(first.fullPath);
+    expect(windows.routeTabs.value.map(tab => tab.fullPath)).toEqual([first.fullPath, '/drafts/3']);
+    expect(windows.routeTabs.value[0]).toBe(first);
+    expect(first.revision).toBe(0);
+  });
   it('pins without refreshing or closing and keeps independent geometry and aliases', async () => {
     const { workspace, router, windows } = await fixture();
     const one = workspace.tabs[0];
