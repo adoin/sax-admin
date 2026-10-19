@@ -96,10 +96,13 @@ async function close(value: string | number) {
     closing.value = false;
   }
 }
+async function toggleWindow(path: string) {
+  if (windows.states.get(path)?.pinned) await windows.restore(path);
+  else await windows.pin(path);
+}
 async function selectContext(item: ContextMenuItem) {
   if (item.value === 'pin') {
-    if (windows.states.get(contextPath.value)?.pinned) await windows.restore(contextPath.value);
-    else await windows.pin(contextPath.value);
+    await toggleWindow(contextPath.value);
     return;
   }
   if (item.value === "refresh") {
@@ -152,13 +155,30 @@ async function selectContext(item: ContextMenuItem) {
         :label="windows.title(tab)"
         closable
       >
-        <template #label
-          ><span class="inline-flex items-center gap-1" :data-workspace-tab="tab.fullPath"><Pin v-if="windows.states.get(tab.fullPath)?.pinned" :size="12" :aria-label="t('workspace.pinned')" />{{ windows.title(tab) }}</span></template
-        >
+        <template #label>
+          <span class="inline-flex items-center gap-1" :data-workspace-tab="tab.fullPath">
+            {{ windows.title(tab) }}
+          </span>
+        </template>
+        <template #label-extra>
+            <SButton
+              class="workspace-tab-pin"
+              :class="{ 'is-pinned': windows.states.get(tab.fullPath)?.pinned }"
+              icon
+              type="transparent"
+              size="mini"
+              :debounce="false"
+              :aria-pressed="!!windows.states.get(tab.fullPath)?.pinned"
+              :aria-label="t(windows.states.get(tab.fullPath)?.pinned ? 'workspace.restoreWindow' : 'workspace.pinPage')"
+              :title="t(windows.states.get(tab.fullPath)?.pinned ? 'workspace.restoreWindow' : 'workspace.pinPage')"
+              @click.stop="toggleWindow(tab.fullPath)"
+              @keydown.stop
+              @pointerdown.stop
+            ><Pin :size="13" :fill="windows.states.get(tab.fullPath)?.pinned ? 'currentColor' : 'none'" /></SButton>
+        </template>
       </STab>
     </STabs>
     <div class="workspace-actions">
-      <SButton v-if="workspace.tabs.some(tab => tab.fullPath === route.fullPath)" icon type="transparent" :debounce="false" :aria-label="t('workspace.pinPage')" @click="windows.pin(route.fullPath)"><Pin :size="16" /></SButton>
       <SButton
         icon
         type="transparent"
@@ -191,6 +211,22 @@ async function selectContext(item: ContextMenuItem) {
 }
 .workspace-tabs :deep(.s-tabs__content) {
   display: none;
+}
+.workspace-tab-pin {
+  opacity: 0;
+  pointer-events: none;
+}
+.workspace-tabs :deep(.s-tabs__item:hover) .workspace-tab-pin,
+.workspace-tabs :deep(.s-tabs__item:focus-within) .workspace-tab-pin,
+.workspace-tab-pin.is-pinned {
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (hover: none) {
+  .workspace-tab-pin {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 @media (max-width: 760px) {
   .workspace-bar {

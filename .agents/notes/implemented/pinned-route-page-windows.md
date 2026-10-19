@@ -64,3 +64,8 @@ supersedes: []
 
 - 普通页面宿主（含 tabless）使用 relative + z-index: 0 建立层叠上下文，将吸顶导航等页面内部层级限制在窗口下方；窗口保持既有激活排序，Teleport 页面树不变。
 - 已复验图标页吸顶导航 z-index: 12 与工单窗口 z-index: 7 重叠时，elementFromPoint 命中窗口内部；34 项测试、类型检查、生产构建通过。
+
+## 标签固定入口
+
+- 标签通过 label-extra 提供独立 Pin 按钮，避免嵌套在原生标签按钮内。未固定时 hover/focus-within 显示，已固定常显实心 Pin，触屏始终显示；点击切换固定/恢复并阻止触发标签选择。右键入口保留，移除工具栏重复 Pin。
+- 窗口恢复按钮使用 PanelsTopLeft 图标及本地化提示。浏览器验证键盘 Tab/Enter 固定、点击恢复、同一原生输入 ID 保留；34 项测试、类型检查、生产构建通过。

@@ -16,7 +16,7 @@ import {
 import type { RouteLocationNormalizedLoaded } from "vue-smart-router";
 import { SButton, SScrollbar, SWindow } from "sax-design-vue";
 import type { WindowInstance, ScrollbarInstance } from "sax-design-vue";
-import { ArrowDownLeft, X } from "lucide-vue-next";
+import { PanelsTopLeft, X } from "lucide-vue-next";
 import type { WorkspaceTab } from "@/stores/workspace";
 import { usePageWindows } from "./page-windows";
 import { t } from "@/i18n";
@@ -135,8 +135,9 @@ watch(visible, async (value) => {
         icon
         :debounce="false"
         :aria-label="t('workspace.restoreWindow')"
+        :title="t('workspace.restoreWindow')"
         @click="windows.restore(tab.fullPath)"
-        ><ArrowDownLeft :size="17"
+        ><PanelsTopLeft :size="17"
       /></SButton>
       <SButton
         type="transparent"
