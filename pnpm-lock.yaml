@@ -131,11 +131,11 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3))
       sax-design-vue:
-        specifier: ^2.3.0
-        version: 2.3.0(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
+        specifier: ^2.3.1
+        version: 2.3.1(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
       sax-design-vue-iconify:
-        specifier: ^1.0.1
-        version: 1.0.1(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))
+        specifier: ^1.0.2
+        version: 1.0.2(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))
       vue:
         specifier: ^3.5.34
         version: 3.5.43(typescript@5.9.3)
@@ -1511,16 +1511,16 @@ packages:
     engines: {node: '>=20.19.0'}
     hasBin: true
 
-  sax-design-vue-iconify@1.0.1:
-    resolution: {integrity: sha512-3fdt8NHGXlPhHfXiiJTsQzs4JBVZujRMQbg8rpN40f5VjUhniQKN/t1rgTPceI+UntMgkjHbP1i3jtpTcRpQDw==}
+  sax-design-vue-iconify@1.0.2:
+    resolution: {integrity: sha512-gTVTee+HiGpaI0MdTXoSqiRZPhe221WeWz+qjDSmRx5RUCPallcDZ6SbEN2zF8fvK+tdWg9ynMgRogg2Zd51DA==}
     peerDependencies:
       vite: '>=4'
     peerDependenciesMeta:
       vite:
         optional: true
 
-  sax-design-vue@2.3.0:
-    resolution: {integrity: sha512-0UJOdw2fis3QJC0UDKk+AsxNEhDC2k7GCquAyf9DVHzo8Zq9gh3MMlBkko88pkFb604m4XM/NOPI1nXXsPayRw==}
+  sax-design-vue@2.3.1:
+    resolution: {integrity: sha512-QsLMv6ZFn9K4THOojSE5avx1Xx0szWYIUNqm/YgNi+jNhP7TFdo5CwW/Wb0vC51qsUKl/5qx+0oVa8ASA88WXQ==}
     peerDependencies:
       vue: ^3.5.0
 
@@ -3095,14 +3095,14 @@ snapshots:
       '@parcel/watcher': 2.6.0
     optional: true
 
-  sax-design-vue-iconify@1.0.1(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)):
+  sax-design-vue-iconify@1.0.2(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)):
     dependencies:
       '@iconify/types': 2.0.0
       '@iconify/utils': 3.1.7
     optionalDependencies:
       vite: 8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)
 
-  sax-design-vue@2.3.0(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3)):
+  sax-design-vue@2.3.1(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3)):
     dependencies:
       '@ctrl/tinycolor': 4.2.1
       '@types/lodash': 4.17.26
@@ -3116,7 +3116,7 @@ snapshots:
       lodash-unified: 1.0.3(@types/lodash-es@4.17.12)(lodash-es@4.18.1)(lodash@4.18.1)
       memoize-one: 6.0.0
       normalize-wheel-es: 1.2.0
-      sax-design-vue-iconify: 1.0.1(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))
+      sax-design-vue-iconify: 1.0.2(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))
       vue: 3.5.43(typescript@5.9.3)
       vue-router: 5.4.0(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
     transitivePeerDependencies:
