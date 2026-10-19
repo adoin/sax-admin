@@ -21,7 +21,7 @@ import type { WorkspaceTab } from "@/stores/workspace";
 import { usePageWindows } from "./page-windows";
 import { t } from "@/i18n";
 
-const props = defineProps<{ tab: WorkspaceTab }>();
+const props = defineProps<{ tab: WorkspaceTab; windowLayer: HTMLElement | null }>();
 const windows = usePageWindows();
 const state = computed(() => windows.state(props.tab.fullPath));
 const route = useRoute(),
@@ -115,41 +115,43 @@ watch(visible, async (value) => {
     class="relative z-0 h-full min-h-0"
     :data-main-page="tab.fullPath"
   />
-  <SWindow
-    ref="window"
-    v-show="state.pinned"
-    v-model:rect="state.rect"
-    :title="windows.title(tab)"
-    :active="windows.isActive(tab.fullPath)"
-    :z-index="state.zIndex + 5"
-    :min-width="320"
-    :min-height="220"
-    title-editable
-    :data-page-window="tab.fullPath"
-    @update:title="state.alias = $event"
-    @activate="windows.activate(tab.fullPath)"
-  >
-    <template #actions>
-      <SButton
-        type="transparent"
-        icon
-        :debounce="false"
-        :aria-label="t('workspace.restoreWindow')"
-        :title="t('workspace.restoreWindow')"
-        @click="windows.restore(tab.fullPath)"
-        ><PanelsTopLeft :size="17"
-      /></SButton>
-      <SButton
-        type="transparent"
-        icon
-        :debounce="false"
-        :aria-label="t('workspace.closeWindow')"
-        @click="windows.close(tab.fullPath)"
-        ><X :size="17"
-      /></SButton>
-    </template>
-    <div ref="windowBody" class="h-full min-h-0 px-2 box-border" />
-  </SWindow>
+  <Teleport v-if="windowLayer" :to="windowLayer">
+    <SWindow
+      ref="window"
+      v-show="state.pinned"
+      v-model:rect="state.rect"
+      :title="windows.title(tab)"
+      :active="windows.isActive(tab.fullPath)"
+      :z-index="state.zIndex + 5"
+      :min-width="320"
+      :min-height="220"
+      title-editable
+      :data-page-window="tab.fullPath"
+      @update:title="state.alias = $event"
+      @activate="windows.activate(tab.fullPath)"
+    >
+      <template #actions>
+        <SButton
+          type="transparent"
+          icon
+          :debounce="false"
+          :aria-label="t('workspace.restoreWindow')"
+          :title="t('workspace.restoreWindow')"
+          @click="windows.restore(tab.fullPath)"
+          ><PanelsTopLeft :size="17"
+        /></SButton>
+        <SButton
+          type="transparent"
+          icon
+          :debounce="false"
+          :aria-label="t('workspace.closeWindow')"
+          @click="windows.close(tab.fullPath)"
+          ><X :size="17"
+        /></SButton>
+      </template>
+      <div ref="windowBody" class="h-full min-h-0 px-2 box-border" />
+    </SWindow>
+  </Teleport>
   <Teleport
     v-if="mainBody && windowBody && pageRoute"
     :to="state.pinned ? windowBody : mainBody"

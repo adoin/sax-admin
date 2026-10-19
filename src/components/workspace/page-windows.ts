@@ -22,6 +22,7 @@ export interface PageWindowState {
   rect: WindowRect;
   zIndex: number;
   focusVersion: number;
+  viewportPositioned: boolean;
 }
 export function createPageWindowManager(
   workspace: Pick<ReturnType<typeof workspaceStore>, 'tabs' | 'remove'>,
@@ -33,6 +34,7 @@ export function createPageWindowManager(
   let sequence = 1;
   const activePath = shallowRef("");
   let restoringPath: string | undefined;
+  let workspaceOrigin = (): Pick<WindowRect, 'x' | 'y'> => ({ x: 0, y: 0 });
   const state = (path: string): PageWindowState => {
     if (!states.has(path)) {
       const offset = (states.size % 6) * 28;
@@ -42,6 +44,7 @@ export function createPageWindowManager(
         rect: { x: 20 + offset, y: 20 + offset, width: 760, height: 520 },
         zIndex: 1,
         focusVersion: 0,
+        viewportPositioned: false,
       });
     }
     return states.get(path)!;
@@ -70,7 +73,13 @@ export function createPageWindowManager(
       focus(path);
       return;
     }
-    state(path).pinned = true;
+    const item = state(path);
+    if (!item.viewportPositioned) {
+      const origin = workspaceOrigin();
+      item.rect = { ...item.rect, x: item.rect.x + origin.x, y: item.rect.y + origin.y };
+      item.viewportPositioned = true;
+    }
+    item.pinned = true;
     activate(path);
     await nextTick();
     if (route.fullPath === path) await router.push(nextPage(path));
@@ -114,6 +123,7 @@ export function createPageWindowManager(
     }),
   );
   const api = {
+    setWorkspaceOrigin: (getOrigin: () => Pick<WindowRect, 'x' | 'y'>) => { workspaceOrigin = getOrigin; },
     routeTabs,
     state,
     states,

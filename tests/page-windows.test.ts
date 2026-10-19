@@ -25,6 +25,20 @@ async function fixture() {
   return { workspace, router, windows };
 }
 describe('page window lifecycle', () => {
+  it('starts in the workspace and keeps viewport coordinates across restores and refreshes', async () => {
+    const { workspace, windows } = await fixture();
+    const path = workspace.tabs[0].fullPath;
+    windows.setWorkspaceOrigin(() => ({ x: 272, y: 162 }));
+    await windows.pin(path);
+    expect(windows.state(path).rect).toMatchObject({ x: 292, y: 182 });
+    windows.state(path).rect = { ...windows.state(path).rect, x: 40, y: 50 };
+    await windows.restore(path);
+    windows.setWorkspaceOrigin(() => ({ x: 100, y: 120 }));
+    workspace.refresh(path);
+    await windows.pin(path);
+    expect(windows.state(path).rect).toMatchObject({ x: 40, y: 50 });
+    expect(workspace.tabs[0].revision).toBe(1);
+  });
   it('removes pinned pages from route tabs and bulk close targets, then restores their original position', async () => {
     const { workspace, router, windows } = await fixture();
     const first = workspace.tabs[0];

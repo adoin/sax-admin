@@ -267,11 +267,7 @@ function navigate(path: string) {
 .admin-menu.s-menu { width: 100%; }
 .admin-shell :deep(.s-layout__content > .s-layout-body) { display: flex; flex-direction: column; gap: 12px; padding: 0; overflow: visible; background: transparent; box-shadow: none; border-radius: 0; }
 .workspace-tab-surface { flex-shrink: 0; }
-.admin-shell :deep(.admin-page-scroll) { flex: 1; min-height: 0; width: calc(100% + 9px); max-width: none; overflow: visible; }
-.admin-shell :deep(.admin-page-scroll.is-outside) { grid-template-columns: minmax(0, 1fr) 9px; }
-.admin-shell :deep(.admin-page-scroll > .s-scrollbar__wrap) { padding: 0; }
 .admin-header { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 16px; }
-.admin-shell :deep(.admin-page) { width: 100%; padding-inline: 20px; padding-bottom: 64px; }
 @media (max-width: 1023px) {
   .admin-shell :deep(.s-layout__content > .s-layout-aside) { position: fixed; inset: 12px auto 12px 12px; height: calc(100dvh - 24px); width: 248px !important; z-index: 40; visibility: hidden; transform: translateX(calc(-100% - 180px)); }
   .admin-shell.is-mobile-open :deep(.s-layout__content > .s-layout-aside) { visibility: visible; transform: translateX(0); }
