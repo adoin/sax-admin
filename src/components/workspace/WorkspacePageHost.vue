@@ -108,10 +108,11 @@ watch(visible, async (value) => {
 </script>
 
 <template>
+  <!-- Contain page sticky/fixed layers below the sibling windows. -->
   <div
     v-show="active"
     ref="mainBody"
-    class="h-full min-h-0"
+    class="relative z-0 h-full min-h-0"
     :data-main-page="tab.fullPath"
   />
   <SWindow

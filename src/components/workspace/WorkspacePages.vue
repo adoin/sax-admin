@@ -18,7 +18,7 @@ const tabless = computed(() => !!route.meta.tabless);
     />
     <SScrollbar
       v-if="tabless"
-      class="admin-page-scroll"
+      class="admin-page-scroll relative z-0"
       wrap-class="s-layout-body"
       height="100%"
       placement="outside"

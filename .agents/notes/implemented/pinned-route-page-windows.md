@@ -60,3 +60,7 @@ supersedes: []
 - 使用公开 sax-design-vue 2.4.2、vue-smart-router 5.4.1，vue-router alias 指向同一版本，Iconify 保持 1.0.2。
 - 34 项测试、类型检查、生产构建通过。IAB 生产预览验证多个独立输入、同一原生输入 ID、params/query、重命名/恢复、聚焦、刷新/关闭、launchpad、双语和浅/深色。
 - Table 缩到最小窗口仍有数据视图；十万条虚拟列表缩放后仍只渲染少量行；WebGPU 就绪，三层 Canvas 的 CSS 宽度随容器从 657px 更新为 397px。
+## 窗口层叠边界
+
+- 普通页面宿主（含 tabless）使用 relative + z-index: 0 建立层叠上下文，将吸顶导航等页面内部层级限制在窗口下方；窗口保持既有激活排序，Teleport 页面树不变。
+- 已复验图标页吸顶导航 z-index: 12 与工单窗口 z-index: 7 重叠时，elementFromPoint 命中窗口内部；34 项测试、类型检查、生产构建通过。
