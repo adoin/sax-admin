@@ -131,8 +131,8 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3))
       sax-design-vue:
-        specifier: ^2.3.1
-        version: 2.3.1(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
+        specifier: 2.4.2
+        version: 2.4.2(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
       sax-design-vue-iconify:
         specifier: ^1.0.2
         version: 1.0.2(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))
@@ -143,11 +143,11 @@ importers:
         specifier: ^11.4.14
         version: 11.4.14(vue@3.5.43(typescript@5.9.3))
       vue-router:
-        specifier: npm:vue-smart-router@^5.3.1
-        version: vue-smart-router@5.3.1(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
+        specifier: npm:vue-smart-router@5.4.1
+        version: vue-smart-router@5.4.1(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
       vue-smart-router:
-        specifier: ^5.3.1
-        version: 5.3.1(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
+        specifier: ^5.4.1
+        version: 5.4.1(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
     devDependencies:
       '@iconify-json/lucide':
         specifier: 1.2.143
@@ -959,10 +959,6 @@ packages:
     resolution: {integrity: sha512-KzvoxDfXNz2Gm8KYLh47K3qcY3Zza3WKOuh2xoqa7LBu6MDKWAZLovJtU9DuAd/Er+rhQHCRn619lHS5U+qmhw==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
-  ast-walker-scope@0.9.0:
-    resolution: {integrity: sha512-IJdzo2vLiElBxKzwS36VsCue/62d6IdWjnPB2v3nuPKeWGynp6FF/CYoLa5i/3jXH/z97ZDdsXz6abpgM6w07A==}
-    engines: {node: '>=20.19.0'}
-
   birpc@2.9.0:
     resolution: {integrity: sha512-KrayHS5pBi69Xi9JmvoqrIgYGDkD6mcSe/i6YKi3w5kekCLzrX4+nawcXqrj2tIp50Kw/mT/s3p+GVK0A0sKxw==}
 
@@ -993,9 +989,6 @@ packages:
 
   confbox@0.1.8:
     resolution: {integrity: sha512-RMtmw0iFkeR4YV+fUOSucriAQNb9g8zFR52MWCtl+cCZOFRNL6zeB395vPzFhEjjn4fMxXudmELnl/KF/WrK6w==}
-
-  confbox@0.2.4:
-    resolution: {integrity: sha512-ysOGlgTFbN2/Y6Cg3Iye8YKulHw+R2fNXHrgSmXISQdMnomY6eNDprVdW9R5xBguEqI954+S6709UyiO7B+6OQ==}
 
   confbox@0.3.1:
     resolution: {integrity: sha512-cKUSoKa8YxFZZSmraVi7onONx3amu77ngK3kGpsYHDH7drPwCRkQE1RYMPlLRrMtnciRj274XNRxcHxnKmDSnA==}
@@ -1519,8 +1512,8 @@ packages:
       vite:
         optional: true
 
-  sax-design-vue@2.3.1:
-    resolution: {integrity: sha512-QsLMv6ZFn9K4THOojSE5avx1Xx0szWYIUNqm/YgNi+jNhP7TFdo5CwW/Wb0vC51qsUKl/5qx+0oVa8ASA88WXQ==}
+  sax-design-vue@2.4.2:
+    resolution: {integrity: sha512-dQaL9w5M8L24CL54XClaqlRK/IKa4zZ+X7lQhMBx3DntO/D0jTwRfD5c6HlCnBjhfUlCRIPP4BDpvNiFjeCsTA==}
     peerDependencies:
       vue: ^3.5.0
 
@@ -1775,8 +1768,8 @@ packages:
       vite:
         optional: true
 
-  vue-smart-router@5.3.1:
-    resolution: {integrity: sha512-BOag9NZsS/2vpTSjBQKLwt7GJvQU7HEh5fwMQLaRY9/z/UV+wWSS3ZiEJyAduBNT4D+G/+AtWgEUlpCNvph7tQ==}
+  vue-smart-router@5.4.1:
+    resolution: {integrity: sha512-FUIgHrJjUKR7EuiiOx3KEZrX1OTWwyrbMcDbGL6kkE5ZB7yo19mfA6ZO9xw8TMWwrzYsZJigcY4TXlg9bUaYFQ==}
     peerDependencies:
       '@pinia/colada': '>=0.21.2'
       '@vue/compiler-sfc': ^3.5.34 || ^4.0.0
@@ -2630,12 +2623,6 @@ snapshots:
       '@babel/types': 8.0.6
       ast-kit: 3.0.0
 
-  ast-walker-scope@0.9.0:
-    dependencies:
-      '@babel/parser': 7.29.9
-      '@babel/types': 7.29.8
-      ast-kit: 2.2.0
-
   birpc@2.9.0: {}
 
   cac@7.1.0: {}
@@ -2655,8 +2642,6 @@ snapshots:
   commander@15.0.0: {}
 
   confbox@0.1.8: {}
-
-  confbox@0.2.4: {}
 
   confbox@0.3.1: {}
 
@@ -3102,7 +3087,7 @@ snapshots:
     optionalDependencies:
       vite: 8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)
 
-  sax-design-vue@2.3.1(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3)):
+  sax-design-vue@2.4.2(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3)):
     dependencies:
       '@ctrl/tinycolor': 4.2.1
       '@types/lodash': 4.17.26
@@ -3333,15 +3318,15 @@ snapshots:
       - unloader
       - webpack
 
-  vue-smart-router@5.3.1(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3)):
+  vue-smart-router@5.4.1(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3)):
     dependencies:
       '@vue-macros/common': 3.1.4(vue@3.5.43(typescript@5.9.3))
       '@vue/devtools-api': 8.2.1
-      ast-walker-scope: 0.9.0
+      ast-walker-scope: 0.10.0
       chokidar: 5.0.0
-      confbox: 0.2.4
+      confbox: 0.3.1
       local-pkg: 1.2.1
-      magic-string: 0.30.21
+      magic-string: 1.4.3
       mlly: 1.8.2
       muggle-string: 0.4.1
       nostics: 1.3.0

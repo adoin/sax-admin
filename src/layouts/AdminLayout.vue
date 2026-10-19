@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const baseUrl = import.meta.env.BASE_URL;
 import { t } from "@/i18n";
-import { computed, shallowRef, watch, nextTick, onMounted } from "vue";
-import { RouterLink, RouterView, useRoute, useRouter } from "vue-smart-router";
+import { computed, shallowRef, watch, onMounted } from "vue";
+import { RouterLink, useRoute, useRouter } from "vue-smart-router";
 import {
   SButton,
   SDialog,
@@ -28,20 +28,19 @@ import { navigation } from "@/router";
 import { sessionStore } from "@/stores/session";
 import { preferencesStore } from "@/stores/preferences";
 import WorkspaceTabs from "@/components/common/WorkspaceTabs.vue";
+import WorkspacePages from "@/components/workspace/WorkspacePages.vue";
+import { createPageWindows } from "@/components/workspace/page-windows";
 import AsideTools from "@/components/common/AsideTools.vue";
 import { workspaceStore } from "@/stores/workspace";
 import { menusStore, menuLabel } from "@/stores/menus";
-import type { RouteLocationNormalizedLoaded } from "vue-smart-router";
-import type { ScrollbarInstance, MenuKey } from "sax-design-vue";
+import type { MenuKey } from "sax-design-vue";
 const workspace = workspaceStore();
+createPageWindows();
 const menus = menusStore();
 const menuOpenKeys = shallowRef<MenuKey[]>(menus.records.filter((row) => row.kind === 'group').map((row) => row.id));
 let inlineMenuKeys = [...menuOpenKeys.value];
 onMounted(() => menus.refresh());
-const pageScrollbar = shallowRef<ScrollbarInstance>();
 const outsideCollapsed = shallowRef(false);
-const scrollPositions = new globalThis.Map<string, number>();
-const cacheName = (page: RouteLocationNormalizedLoaded) => workspace.cacheName(page.fullPath);
 const route = useRoute(),
   router = useRouter(),
   session = sessionStore(),
@@ -69,21 +68,6 @@ function selectMenu(value: string | number) {
   const row = menus.records.find((row) => row.id === String(value));
   if (row?.kind === 'page') { menus.selectedId = row.id; navigate(row.path); }
 }
-let displayedPath = route.fullPath, restoringScroll = false, scrollRevision = 0;
-function rememberScroll({ scrollTop }: { scrollTop: number }) {
-  if (!restoringScroll) scrollPositions.set(displayedPath, scrollTop);
-}
-watch(() => route.fullPath, async (path) => {
-  const revision = ++scrollRevision;
-  restoringScroll = true;
-  await nextTick();
-  if (revision !== scrollRevision) return;
-  displayedPath = path;
-  pageScrollbar.value?.setScrollTop(scrollPositions.get(path) || 0);
-  pageScrollbar.value?.update();
-  await nextTick();
-  if (revision === scrollRevision) restoringScroll = false;
-}, { flush: 'sync' });
 function logout() {
   session.clear();
   workspace.reset();
@@ -223,15 +207,7 @@ function navigate(path: string) {
       <SLayoutHeader v-if="workspace.tabs.length" class="workspace-tab-surface" :padding="0">
         <WorkspaceTabs />
       </SLayoutHeader>
-      <SScrollbar ref="pageScrollbar" class="admin-page-scroll" wrap-class="s-layout-body" height="100%" placement="outside" :gap="3" :always="false" :wrap-style="{ overscrollBehavior: 'contain' }" @scroll="rememberScroll">
-      <div class="py-7 md:py-8 admin-page">
-        <RouterView v-slot="{ Component }" :cache-component-name="cacheName">
-          <KeepAlive :include="workspace.cacheNames">
-            <component :is="Component" />
-          </KeepAlive>
-        </RouterView>
-      </div>
-      </SScrollbar>
+      <WorkspacePages />
     </SLayout>
     <SDialog v-model="searchOpen" :title="t('shell.searchTitle')" width="520px"
       ><SInput
@@ -291,11 +267,11 @@ function navigate(path: string) {
 .admin-menu.s-menu { width: 100%; }
 .admin-shell :deep(.s-layout__content > .s-layout-body) { display: flex; flex-direction: column; gap: 12px; padding: 0; overflow: visible; background: transparent; box-shadow: none; border-radius: 0; }
 .workspace-tab-surface { flex-shrink: 0; }
-.admin-page-scroll { flex: 1; min-height: 0; width: calc(100% + 9px); max-width: none; overflow: visible; }
-.admin-page-scroll.is-outside { grid-template-columns: minmax(0, 1fr) 9px; }
-.admin-page-scroll :deep(> .s-scrollbar__wrap) { padding: 0; }
+.admin-shell :deep(.admin-page-scroll) { flex: 1; min-height: 0; width: calc(100% + 9px); max-width: none; overflow: visible; }
+.admin-shell :deep(.admin-page-scroll.is-outside) { grid-template-columns: minmax(0, 1fr) 9px; }
+.admin-shell :deep(.admin-page-scroll > .s-scrollbar__wrap) { padding: 0; }
 .admin-header { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 16px; }
-.admin-page { width: 100%; padding-inline: 20px; padding-bottom: 64px; }
+.admin-shell :deep(.admin-page) { width: 100%; padding-inline: 20px; padding-bottom: 64px; }
 @media (max-width: 1023px) {
   .admin-shell :deep(.s-layout__content > .s-layout-aside) { position: fixed; inset: 12px auto 12px 12px; height: calc(100dvh - 24px); width: 248px !important; z-index: 40; visibility: hidden; transform: translateX(calc(-100% - 180px)); }
   .admin-shell.is-mobile-open :deep(.s-layout__content > .s-layout-aside) { visibility: visible; transform: translateX(0); }

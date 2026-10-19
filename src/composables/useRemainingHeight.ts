@@ -22,7 +22,17 @@ export function useRemainingHeight(target: Ref<HTMLElement | ComponentPublicInst
     if (!el || !viewport || !page || !el.getClientRects().length || !viewport.clientHeight) return;
     const top = el.getBoundingClientRect().top - viewport.getBoundingClientRect().top + viewport.scrollTop;
     const bottom = options.bottomGap ?? (parseFloat(getComputedStyle(page).paddingBottom) || 0);
-    const next = Math.max(options.minHeight ?? 240, Math.floor(viewport.clientHeight - top - bottom));
+    // Narrow windows wrap query/toolbar/pagination controls. Keep enough
+    // content height for a usable virtual viewport and let the page scroll.
+    const windowed = !!viewport.closest('[data-page-window]');
+    let minimum = options.minHeight ?? (windowed ? 400 : 240);
+    const table = windowed ? el.querySelector<HTMLElement>('[role="table"]') : null;
+    if (table) {
+      // Measure the actual non-data content instead of assuming filters and
+      // pagination occupy one row. Reserve a small readable data viewport.
+      minimum = Math.max(minimum, Math.ceil(el.scrollHeight - table.getBoundingClientRect().height + 160));
+    }
+    const next = Math.max(minimum, Math.floor(viewport.clientHeight - top - bottom));
     if (height.value !== next) height.value = next;
   }
   function refresh() {

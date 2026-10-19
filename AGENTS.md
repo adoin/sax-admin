@@ -3,7 +3,7 @@
 ## 项目规格入口
 
 - 实施功能前阅读相关 `.agents/notes/active/` 与 `.agents/notes/prohibited/`；`proposed/` 中的建议不作为已批准需求。完成实现与验证后才能将 active 规格移至 implemented。
-- 页面窗口化需求见 `.agents/notes/active/pinned-route-page-windows.md`。下列既有跨任务规则继续适用。
+- 页面窗口化需求见 `.agents/notes/implemented/pinned-route-page-windows.md`。下列既有跨任务规则继续适用。
 
 - Vue 3 SFC 使用 `<script setup lang="ts">`。
 - 业务页面优先使用 Sax Design Vue 的配置式 Table/Form，不创建 `useTable`、`useForm` 等业务包装。

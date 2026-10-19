@@ -7,12 +7,15 @@ import { registerDraftRoute, removeDraftRoute } from "@/router/workspace";
 import { t } from "@/i18n";
 const router = useRouter(), workspace = workspaceStore();
 function enable() { registerDraftRoute(router); workspace.editorEnabled = true; }
-function open(id: number) { if (!workspace.editorEnabled) enable(); router.push(`/drafts/${id}`); }
+function open(id: number) { if (!workspace.editorEnabled) enable(); router.push({ path: `/drafts/${id}`, query: { channel: id % 2 ? 'sales' : 'support' } }); }
 function create() { open(workspace.nextDraft++); }
 </script>
 <template>
   <PageHeading :title="t('nav.workspace')" :caption="t('workspace.caption')" eyebrow="WORKSPACE" />
   <div class="grid gap-5">
+    <SCard class="admin-card" :title="t('workspace.windowTitle')" :subtitle="t('workspace.windowCaption')">
+      <p class="text-sm text-muted leading-7">{{ t('workspace.windowHelp') }}</p>
+    </SCard>
     <SCard class="admin-card" :title="t('workspace.instances')" :subtitle="t('workspace.instancesCaption')">
       <ol class="grid gap-3 pl-5 leading-7"><li>{{ t('workspace.stepOne') }}</li><li>{{ t('workspace.stepTwo') }}</li><li>{{ t('workspace.stepThree') }}</li></ol>
       <div class="flex flex-wrap gap-3 my-5">

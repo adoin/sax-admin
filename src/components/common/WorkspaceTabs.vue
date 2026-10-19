@@ -2,7 +2,8 @@
 import { STabs, STab, SButton, SContextMenu } from "sax-design-vue";
 import type { ContextMenuInstance, ContextMenuItem } from "sax-design-vue";
 import { computed, shallowRef, nextTick } from "vue";
-import { RefreshCw } from "lucide-vue-next";
+import { RefreshCw, Pin } from "lucide-vue-next";
+import { usePageWindows } from '@/components/workspace/page-windows';
 import { useRoute, useRouter } from "vue-smart-router";
 import { workspaceStore, tabCloseTargets } from "@/stores/workspace";
 import type { TabCloseAction } from "@/stores/workspace";
@@ -12,12 +13,14 @@ const workspace = workspaceStore(),
   route = useRoute(),
   router = useRouter();
 const preferences = preferencesStore();
+const windows = usePageWindows();
 const contextMenu = shallowRef<ContextMenuInstance>();
 const contextPath = shallowRef("");
 const closing = shallowRef(false);
 function selectTab(value: unknown) {
   if (typeof value !== 'string' && typeof value !== 'number') return;
   const path = String(value);
+  if (windows.states.get(path)?.pinned) { windows.focus(path); return; }
   if (!closing.value && workspace.tabs.some((tab) => tab.fullPath === path))
     router.push(path);
 }
@@ -29,6 +32,7 @@ const closeActions: TabCloseAction[] = [
   "all",
 ];
 const menuItems = computed<ContextMenuItem[]>(() => [
+  { label: t(windows.states.get(contextPath.value)?.pinned ? 'workspace.restoreWindow' : 'workspace.pinPage'), value: 'pin' },
   { label: t("workspace.refreshTab"), value: "refresh" },
   ...closeActions.map((action) => ({
     label: t(
@@ -81,7 +85,8 @@ async function close(value: string | number) {
   closing.value = true;
   try {
     if (route.fullPath === path) {
-      const next = workspace.tabs[index - 1] || workspace.tabs[index + 1];
+      const next = workspace.tabs.slice(0, index).reverse().find(tab => !windows.states.get(tab.fullPath)?.pinned)
+        || workspace.tabs.slice(index + 1).find(tab => !windows.states.get(tab.fullPath)?.pinned);
       const failure = await router.push(next?.fullPath || "/launchpad");
       if (failure) return;
     }
@@ -92,6 +97,11 @@ async function close(value: string | number) {
   }
 }
 async function selectContext(item: ContextMenuItem) {
+  if (item.value === 'pin') {
+    if (windows.states.get(contextPath.value)?.pinned) await windows.restore(contextPath.value);
+    else await windows.pin(contextPath.value);
+    return;
+  }
   if (item.value === "refresh") {
     workspace.refresh(contextPath.value);
     return;
@@ -106,9 +116,8 @@ async function selectContext(item: ContextMenuItem) {
       (tab) => !paths.includes(tab.fullPath),
     );
     if (paths.includes(route.fullPath)) {
-      const next =
-        remaining.find((tab) => tab.fullPath === contextPath.value) ||
-        remaining[remaining.length - 1];
+      const normal = remaining.filter(tab => !windows.states.get(tab.fullPath)?.pinned);
+      const next = normal.find((tab) => tab.fullPath === contextPath.value) || normal.at(-1);
       const failure = await router.push(next?.fullPath || "/launchpad");
       if (failure) return;
     }
@@ -140,17 +149,16 @@ async function selectContext(item: ContextMenuItem) {
         v-for="tab in workspace.tabs"
         :key="tab.fullPath"
         :name="tab.fullPath"
-        :label="t(tab.title, tab.titleId ? { id: tab.titleId } : {})"
+        :label="windows.title(tab)"
         closable
       >
         <template #label
-          ><span :data-workspace-tab="tab.fullPath">{{
-            t(tab.title, tab.titleId ? { id: tab.titleId } : {})
-          }}</span></template
+          ><span class="inline-flex items-center gap-1" :data-workspace-tab="tab.fullPath"><Pin v-if="windows.states.get(tab.fullPath)?.pinned" :size="12" :aria-label="t('workspace.pinned')" />{{ windows.title(tab) }}</span></template
         >
       </STab>
     </STabs>
     <div class="workspace-actions">
+      <SButton v-if="workspace.tabs.some(tab => tab.fullPath === route.fullPath)" icon type="transparent" :debounce="false" :aria-label="t('workspace.pinPage')" @click="windows.pin(route.fullPath)"><Pin :size="16" /></SButton>
       <SButton
         icon
         type="transparent"

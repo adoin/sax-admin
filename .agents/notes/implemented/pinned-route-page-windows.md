@@ -1,5 +1,6 @@
 ---
-status: active
+status: implemented
+completed_at: 2026-10-19
 kind: project-specification
 updated_at: 2026-10-19
 modules:
@@ -32,7 +33,7 @@ supersedes: []
 
 ## 与组件库的协同
 
-- 跨仓库功能需求见相邻组件库仓库 `.agents/notes/active/window-and-pinned-route-pages.md`。
+- 跨仓库功能需求见相邻组件库仓库 `.agents/notes/implemented/window-and-pinned-route-pages.md`。
 - 通用 `SWindow`、稳定 `WorkspacePageHost`、保留固定 Tab、恢复后沿用窗口别名等是讨论中的建议，见组件库 `.agents/notes/proposed/window-component-and-admin-boundary.md`，不属于已逐项确认的用户要求。
 - 通用 UI 与路由业务的最终边界、页面内导航策略及标题行为应在设计阶段厘清。
 
@@ -42,8 +43,20 @@ supersedes: []
 - `src/stores/workspace.ts` 以 fullPath 与 revision 组成缓存名称；关闭移除对应 Tab，刷新增加 revision。
 - `src/components/common/WorkspaceTabs.vue` 承担页面标签交互。
 
-## 尚待完成的项目目标
+## 已完成的项目目标
 
 - 实现多页面窗口化、重命名和恢复普通路由页面。
 - 建立可验证的页面状态保持与路由上下文隔离方案。
 - 完成边界、最小尺寸、多窗口、布局变化、双语和键盘交互验证。
+
+## 实现与已通过验证
+
+- WorkspacePages 组合稳定的 WorkspacePageHost；每个 fullPath::revision 仅有一个页面承载树，固定/恢复仅改变 Teleport 目标及 RouterView detached 状态。
+- 布局作用域内的 page-windows 管理器保存 pinned、别名、rect、激活层级和聚焦请求，不改变全局 route.meta，不持久化输入或布局。
+- 固定 Tab 保留并显示标记；点击或普通导航到固定页面聚焦现有窗口。恢复先成功导航再移回主区域；被守卫阻止时继续保留窗口。
+- 保留原生输入、选择与滚动；新视口无法保留原滚动偏移时按可滚动边界夹取。关闭释放对应宿主和元数据；刷新只变更该 Tab 的 revision。最后一个普通 Tab 关闭进入 launchpad，固定窗口继续存在。
+- 内部浮层仍由既有 Popper/Dialog 处理。窗口滚动条在内容边缘留出空间，与缩放手柄分离。
+- useRemainingHeight 按实际窗口容器测量；筛选、工具栏、分页换行时，根据实际非数据区域保留至少 160px 的 Table 数据视图（含表头），通过外层页面滚动承载剩余内容。
+- 使用公开 sax-design-vue 2.4.2、vue-smart-router 5.4.1，vue-router alias 指向同一版本，Iconify 保持 1.0.2。
+- 34 项测试、类型检查、生产构建通过。IAB 生产预览验证多个独立输入、同一原生输入 ID、params/query、重命名/恢复、聚焦、刷新/关闭、launchpad、双语和浅/深色。
+- Table 缩到最小窗口仍有数据视图；十万条虚拟列表缩放后仍只渲染少量行；WebGPU 就绪，三层 Canvas 的 CSS 宽度随容器从 657px 更新为 397px。
