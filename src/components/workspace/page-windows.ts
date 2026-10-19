@@ -16,6 +16,9 @@ import type { WorkspaceTab } from "@/stores/workspace";
 import type { WindowRect } from "sax-design-vue";
 import { t } from "@/i18n";
 
+export const PAGE_WINDOW_MIN_WIDTH = 320;
+export const PAGE_WINDOW_MIN_HEIGHT = 220;
+
 export interface PageWindowState {
   pinned: boolean;
   alias: string;
@@ -34,7 +37,7 @@ export function createPageWindowManager(
   let sequence = 1;
   const activePath = shallowRef("");
   let restoringPath: string | undefined;
-  let workspaceOrigin = (): Pick<WindowRect, 'x' | 'y'> => ({ x: 0, y: 0 });
+  let workspaceBounds = (): WindowRect | undefined => undefined;
   const state = (path: string): PageWindowState => {
     if (!states.has(path)) {
       const offset = (states.size % 6) * 28;
@@ -75,8 +78,17 @@ export function createPageWindowManager(
     }
     const item = state(path);
     if (!item.viewportPositioned) {
-      const origin = workspaceOrigin();
-      item.rect = { ...item.rect, x: item.rect.x + origin.x, y: item.rect.y + origin.y };
+      const bounds = workspaceBounds();
+      if (bounds && bounds.width > 0 && bounds.height > 0) {
+        const width = Math.max(PAGE_WINDOW_MIN_WIDTH, bounds.width * 0.9);
+        const height = Math.max(PAGE_WINDOW_MIN_HEIGHT, bounds.height * 0.9);
+        item.rect = {
+          x: bounds.x + Math.max(0, (bounds.width - width) / 2),
+          y: bounds.y + Math.max(0, (bounds.height - height) / 2),
+          width,
+          height,
+        };
+      }
       item.viewportPositioned = true;
     }
     item.pinned = true;
@@ -123,7 +135,7 @@ export function createPageWindowManager(
     }),
   );
   const api = {
-    setWorkspaceOrigin: (getOrigin: () => Pick<WindowRect, 'x' | 'y'>) => { workspaceOrigin = getOrigin; },
+    setWorkspaceBounds: (getBounds: () => WindowRect | undefined) => { workspaceBounds = getBounds; },
     routeTabs,
     state,
     states,

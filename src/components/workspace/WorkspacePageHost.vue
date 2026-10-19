@@ -18,7 +18,7 @@ import { SButton, SScrollbar, SWindow } from "sax-design-vue";
 import type { WindowInstance, ScrollbarInstance } from "sax-design-vue";
 import { PanelsTopLeft, X } from "lucide-vue-next";
 import type { WorkspaceTab } from "@/stores/workspace";
-import { usePageWindows } from "./page-windows";
+import { usePageWindows, PAGE_WINDOW_MIN_WIDTH, PAGE_WINDOW_MIN_HEIGHT } from "./page-windows";
 import { t } from "@/i18n";
 
 const props = defineProps<{ tab: WorkspaceTab; windowLayer: HTMLElement | null }>();
@@ -123,8 +123,8 @@ watch(visible, async (value) => {
       :title="windows.title(tab)"
       :active="windows.isActive(tab.fullPath)"
       :z-index="state.zIndex + 5"
-      :min-width="320"
-      :min-height="220"
+      :min-width="PAGE_WINDOW_MIN_WIDTH"
+      :min-height="PAGE_WINDOW_MIN_HEIGHT"
       title-editable
       :data-page-window="tab.fullPath"
       @update:title="state.alias = $event"

@@ -11,11 +11,11 @@ const tabless = computed(() => !!route.meta.tabless);
 const windows = usePageWindows();
 const workspaceElement = useTemplateRef<HTMLElement>("workspaceElement");
 const windowLayer = useTemplateRef<HTMLElement>("windowLayer");
-onMounted(() => windows.setWorkspaceOrigin(() => {
+onMounted(() => windows.setWorkspaceBounds(() => {
   const rect = workspaceElement.value?.getBoundingClientRect();
-  return { x: rect?.left ?? 0, y: rect?.top ?? 0 };
+  return rect ? { x: rect.left, y: rect.top, width: rect.width, height: rect.height } : undefined;
 }));
-onBeforeUnmount(() => windows.setWorkspaceOrigin(() => ({ x: 0, y: 0 })));
+onBeforeUnmount(() => windows.setWorkspaceBounds(() => undefined));
 </script>
 
 <template>

@@ -28,16 +28,29 @@ describe('page window lifecycle', () => {
   it('starts in the workspace and keeps viewport coordinates across restores and refreshes', async () => {
     const { workspace, windows } = await fixture();
     const path = workspace.tabs[0].fullPath;
-    windows.setWorkspaceOrigin(() => ({ x: 272, y: 162 }));
+    windows.setWorkspaceBounds(() => ({ x: 272, y: 162, width: 1000, height: 600 }));
     await windows.pin(path);
-    expect(windows.state(path).rect).toMatchObject({ x: 292, y: 182 });
+    expect(windows.state(path).rect).toEqual({ x: 322, y: 192, width: 900, height: 540 });
     windows.state(path).rect = { ...windows.state(path).rect, x: 40, y: 50 };
     await windows.restore(path);
-    windows.setWorkspaceOrigin(() => ({ x: 100, y: 120 }));
+    windows.state(path).rect = { ...windows.state(path).rect, width: 600, height: 400 };
+    windows.setWorkspaceBounds(() => ({ x: 100, y: 120, width: 800, height: 500 }));
     workspace.refresh(path);
     await windows.pin(path);
-    expect(windows.state(path).rect).toMatchObject({ x: 40, y: 50 });
+    expect(windows.state(path).rect).toEqual({ x: 40, y: 50, width: 600, height: 400 });
     expect(workspace.tabs[0].revision).toBe(1);
+  });
+  it('uses the current content area on first pin and keeps minimum window dimensions', async () => {
+    const { workspace, router, windows } = await fixture();
+    const first = workspace.tabs[0].fullPath;
+    let bounds = { x: 272, y: 162, width: 1000, height: 600 };
+    windows.setWorkspaceBounds(() => bounds);
+    await windows.pin(first);
+    await router.push('/drafts/2');
+    bounds = { x: 0, y: 80, width: 300, height: 200 };
+    await windows.pin('/drafts/2');
+    expect(windows.state('/drafts/2').rect).toEqual({ x: 0, y: 80, width: 320, height: 220 });
+    expect(windows.state(first).rect).toEqual({ x: 322, y: 192, width: 900, height: 540 });
   });
   it('removes pinned pages from route tabs and bulk close targets, then restores their original position', async () => {
     const { workspace, router, windows } = await fixture();
