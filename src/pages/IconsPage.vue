@@ -16,7 +16,7 @@ const options = computed(() => [
 const iconTag = "SIcon";
 const quickUsageCode = `<${iconTag} name="demo:rocket" :size="32" />
 <${iconTag} name="demo:badge-check" :size="32" color="success" />
-<${iconTag} :name="selected" :size="32" />`;
+<${iconTag} :name="selected" :size="32" morph />`;
 const usageCode = computed(() => [
   '<script setup lang="ts">',
   "import { ref } from 'vue';",
@@ -29,7 +29,7 @@ const usageCode = computed(() => [
   `  <${iconTag} name="demo:rocket" :size="32" />`,
   `  <${iconTag} name="demo:badge-check" :size="32" color="success" />`,
   '  <SSelect v-model="selected" :options="options" />',
-  `  <${iconTag} :name="selected" :size="32" />`,
+  `  <${iconTag} :name="selected" :size="32" morph />`,
   '</template>',
 ].join('\n'));
 const dockerCode =

@@ -131,8 +131,8 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3))
       sax-design-vue:
-        specifier: 2.5.0
-        version: 2.5.0(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
+        specifier: 2.6.0
+        version: 2.6.0(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
       sax-design-vue-iconify:
         specifier: ^1.0.2
         version: 1.0.2(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))
@@ -1512,8 +1512,8 @@ packages:
       vite:
         optional: true
 
-  sax-design-vue@2.5.0:
-    resolution: {integrity: sha512-rJodJGryFsjNSQog5P7qwqaS58ReVncewUgaF0xFvMoYLAAEDJacS8bPdS5V9Vz3kZkNjRcmD1Q7FwzcBqHqOw==}
+  sax-design-vue@2.6.0:
+    resolution: {integrity: sha512-TONldUFaJwCWctWXfP2BC4s1ScXqbSL74Z0SDW2qk2joeZRZZkZFgZgkuAK/vz1FNrNWTv2iVFZngq4RU0fTHA==}
     peerDependencies:
       vue: ^3.5.0
 
@@ -1549,6 +1549,10 @@ packages:
   supports-color@8.1.1:
     resolution: {integrity: sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==}
     engines: {node: '>=10'}
+
+  svg-morpheus-ts@1.5.3:
+    resolution: {integrity: sha512-hbYqmBtpJG7lExS0juIE8K1+3cn6UsretR9GH0lpNET5oO4bQxL0q5SkrKyqRIQjSA0IttecJEr9Y+7BGP7wNg==}
+    engines: {node: '>=18.0.0', pnpm: '>=9.0.0'}
 
   sync-child-process@1.0.2:
     resolution: {integrity: sha512-8lD+t2KrrScJ/7KXCSyfhT3/hRq78rC0wBFqNJXv3mZyn6hW2ypM05JmlSvtqRbeq6jqA94oHbxAr2vYsJ8vDA==}
@@ -3087,7 +3091,7 @@ snapshots:
     optionalDependencies:
       vite: 8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)
 
-  sax-design-vue@2.5.0(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3)):
+  sax-design-vue@2.6.0(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3)):
     dependencies:
       '@ctrl/tinycolor': 4.2.1
       '@types/lodash': 4.17.26
@@ -3102,6 +3106,7 @@ snapshots:
       memoize-one: 6.0.0
       normalize-wheel-es: 1.2.0
       sax-design-vue-iconify: 1.0.2(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))
+      svg-morpheus-ts: 1.5.3
       vue: 3.5.43(typescript@5.9.3)
       vue-router: 5.4.0(@vue/compiler-sfc@3.5.43)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.13)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1))(vue@3.5.43(typescript@5.9.3))
     transitivePeerDependencies:
@@ -3140,6 +3145,8 @@ snapshots:
   supports-color@8.1.1:
     dependencies:
       has-flag: 4.0.0
+
+  svg-morpheus-ts@1.5.3: {}
 
   sync-child-process@1.0.2:
     dependencies:

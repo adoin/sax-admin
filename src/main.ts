@@ -15,4 +15,4 @@ watchEffect(() => {
   document.documentElement.lang = locale.value;
   document.title = `${t((router.currentRoute.value.meta.title || "section.workspace") as MessageKey, { id: String(router.currentRoute.value.params.id || "") })} · Sax Admin`;
 });
-createApp(App).use(pinia).use(i18n).use(router).use(SaxDesign).mount("#app");
+createApp(App).use(pinia).use(i18n).use(router).use(SaxDesign, { icon: { morph: { duration: 360, spring: "snappy" } } }).mount("#app");

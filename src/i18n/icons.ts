@@ -4,7 +4,7 @@ export const iconsZh = {
     "从按名称使用图标，到内网 Docker 部署与完全离线的 SVG 用法。",
   "icons.use": "1. 日常使用：写图标名称即可",
   "icons.useCaption":
-    "本项目使用 API 模式。下面可以切换图标，代码可直接用于页面。",
+    "切换下拉选项可观察图标变形。本项目已全局开启动画，按钮和标签等组件的图标也会继承；局部可用 morph 配置或关闭。",
   "icons.apiTiming":
     "图标服务由开发机或 CI 在开发、构建时访问；上线后的浏览器使用打包的 SVG，不需要连接公网图标服务。",
   "icons.names":
@@ -54,7 +54,7 @@ export const iconsEn: Record<keyof typeof iconsZh, string> = {
     "Use icon names, host an intranet API with Docker, or supply SVG data completely offline.",
   "icons.use": "1. Everyday use: provide an icon name",
   "icons.useCaption":
-    "This project uses API mode. Switch the preview below and use the same SIcon syntax in your pages.",
+    "Change the selection to see icon morphing. Animations are enabled globally, including button and tab icons; local morph options can customize or disable them.",
   "icons.apiTiming":
     "The development machine or CI contacts the icon service during development and builds. Deployed browsers use bundled SVGs without connecting to a public icon service.",
   "icons.names":
