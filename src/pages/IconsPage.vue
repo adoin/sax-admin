@@ -141,7 +141,7 @@ const svgCode = [
       >
         <ol class="grid gap-5 pl-5 leading-7">
           <li>
-            <p>{{ t("icons.dockerStart") }}</p>
+            <p>{{ t("icons.dockerStart", { package: "@iconify-json/lucide" }) }}</p>
             <SCodeBlock
               :code="dockerCode"
               language="bash"

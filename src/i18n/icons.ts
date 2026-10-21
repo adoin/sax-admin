@@ -27,7 +27,7 @@ export const iconsZh = {
   "icons.privateApiCaption":
     "使用 Iconify 官方镜像 iconify/api。先部署服务，再让开发机和 CI 使用内网地址。",
   "icons.dockerStart":
-    "先准备镜像，并将 @iconify-json/lucide 的 icons.json 保存为服务器 /srv/iconify/icon-sets/lucide.json，prefix 须为 lucide。以下命令只读本地 JSON，不拉取镜像或远程图标；生产环境请固定验证过的镜像标签或摘要。",
+    "先准备镜像，并将 {package} 的 icons.json 保存为服务器 /srv/iconify/icon-sets/lucide.json，prefix 须为 lucide。以下命令只读本地 JSON，不拉取镜像或远程图标；生产环境请固定验证过的镜像标签或摘要。",
   "icons.dockerImage": "Docker Hub：iconify/api",
   "icons.deployDocs": "官方部署说明",
   "icons.dockerOffline":
@@ -77,7 +77,7 @@ export const iconsEn: Record<keyof typeof iconsZh, string> = {
   "icons.privateApiCaption":
     "Use the official iconify/api Docker image, then point development machines and CI at its internal address.",
   "icons.dockerStart":
-    "Prepare the image and save icons.json from @iconify-json/lucide as /srv/iconify/icon-sets/lucide.json on the server, with prefix lucide. This command reads local JSON without pulling images or remote icon data. Pin a verified image tag or digest for production.",
+    "Prepare the image and save icons.json from {package} as /srv/iconify/icon-sets/lucide.json on the server, with prefix lucide. This command reads local JSON without pulling images or remote icon data. Pin a verified image tag or digest for production.",
   "icons.dockerImage": "Docker Hub: iconify/api",
   "icons.deployDocs": "Official deployment guide",
   "icons.dockerOffline":
