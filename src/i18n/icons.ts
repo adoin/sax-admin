@@ -22,16 +22,16 @@ export const iconsZh = {
   "icons.dynamicNote":
     "直接写在模板里的图标名称会自动识别。通过变量、菜单数据或后端返回的名称，要提前列入 safelist；它只是“需要预先准备的图标名称列表”。打包时只带上实际使用或列出的图标，不会带入整个图标集。",
   "icons.menuNote":
-    "例如菜单管理里可选的 nav 图标已经列在项目配置中。增加新的动态图标时，补充名称后重启开发服务或重新构建；未知名称不会让浏览器自动联网找图标。",
+    "菜单管理与构建 safelist 共用 menuIcons，选择器使用 api: false，候选 SVG 由 Admin 预打包。增加动态名称后重启开发服务或重新构建；未知名称不会让浏览器自动联网找图标。",
   "icons.privateApi": "3. 内网使用：部署自己的图标服务",
   "icons.privateApiCaption":
     "使用 Iconify 官方镜像 iconify/api。先部署服务，再让开发机和 CI 使用内网地址。",
   "icons.dockerStart":
-    "在图标服务器上启动容器，将宿主机 3000 端口映射到容器。以下为部署命令。",
+    "先准备镜像，并将 @iconify-json/lucide 的 icons.json 保存为服务器 /srv/iconify/icon-sets/lucide.json，prefix 须为 lucide。以下命令只读本地 JSON，不拉取镜像或远程图标；生产环境请固定验证过的镜像标签或摘要。",
   "icons.dockerImage": "Docker Hub：iconify/api",
   "icons.deployDocs": "官方部署说明",
   "icons.dockerOffline":
-    "服务器无法联网拉镜像时：先在联网机器执行前两行，将 tar 文件带入内网，在服务器执行最后一行，再运行上面的启动命令。",
+    "隔离网络须先在联网机器执行前两行，将镜像 tar 和准备好的 lucide.json 一起带入内网。导入镜像并放好 JSON 后，再运行上面的启动命令；仅导入镜像不足以提供离线图标。",
   "icons.setEndpoint":
     "在 Admin 项目根目录的 .env.local 设置服务地址。将 icons.intranet 换成开发机和 CI 都能访问的服务器地址；远程服务器不能写 localhost。",
   "icons.verifyEndpoint":
@@ -72,16 +72,16 @@ export const iconsEn: Record<keyof typeof iconsZh, string> = {
   "icons.dynamicNote":
     "Literal icon names in templates are detected automatically. Names supplied through variables, menu data, or backend responses must be listed in safelist: the list of icons to prepare ahead of time. Only used or listed icons are bundled, rather than the entire collection.",
   "icons.menuNote":
-    "The nav icons available in menu management are already listed in this project. Add any new dynamic names and restart development or rebuild. Unknown names do not trigger browser downloads.",
+    "Menu management and the build safelist share menuIcons. The picker uses api: false and Admin prebundles its candidates. Add dynamic names and restart development or rebuild; unknown names never trigger browser downloads.",
   "icons.privateApi": "3. Intranet: host your own icon service",
   "icons.privateApiCaption":
     "Use the official iconify/api Docker image, then point development machines and CI at its internal address.",
   "icons.dockerStart":
-    "Start the container on the icon server and map host port 3000 to the container using this command.",
+    "Prepare the image and save icons.json from @iconify-json/lucide as /srv/iconify/icon-sets/lucide.json on the server, with prefix lucide. This command reads local JSON without pulling images or remote icon data. Pin a verified image tag or digest for production.",
   "icons.dockerImage": "Docker Hub: iconify/api",
   "icons.deployDocs": "Official deployment guide",
   "icons.dockerOffline":
-    "If the server cannot pull images: run the first two lines on a connected machine, transfer the tar file to the intranet, and run the last line on the server. Then use the start command above.",
+    "For isolated networks, run the first two lines on a connected machine and transfer both the image tar and prepared lucide.json. Import the image and place the JSON before starting the container. The image alone does not supply offline icons.",
   "icons.setEndpoint":
     "Set the service URL in .env.local at the Admin project root. Replace icons.intranet with a server address reachable from both development machines and CI. Do not use localhost for a remote server.",
   "icons.verifyEndpoint":

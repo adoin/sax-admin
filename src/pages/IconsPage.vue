@@ -32,8 +32,11 @@ const usageCode = computed(() => [
   `  <${iconTag} :name="selected" :size="32" morph />`,
   '</template>',
 ].join('\n'));
-const dockerCode =
-  "docker run -d --name iconify-api --restart unless-stopped -p 3000:3000 iconify/api";
+const dockerCode = `docker run -d --name iconify-api --restart unless-stopped \\
+  --pull never -p 3000:3000 \\
+  -e ICONIFY_SOURCE=none -e ALLOW_UPDATE=false \\
+  --mount type=bind,source=/srv/iconify/icon-sets,target=/data/iconify-api/icons,readonly \\
+  iconify/api`;
 const offlineDockerCode = `docker pull iconify/api
 docker save -o iconify-api.tar iconify/api
 
