@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.5 — 2026-10-21
+
+- Upgrade `sax-design-vue` to 2.8.1 with File Manager, nested context menus and compact public declarations.
+- Pin the versioned GitHub Release archive and its integrity in the dependency lockfile.
+- Preserve model-specific Form fields, validators, events and slot IDs through the compact public types.
+- Put File Manager first in File Center, with local folder/file operations, thumbnails, hidden entries and grid/list views.
+- Open sibling image previews from file entries; remove the standalone three-image gallery and keep upload/picker/watermark examples below the manager.
+- Preserve base-path-aware media URLs and matching Chinese/English copy.
+
+
 ## 0.1.4 — 2026-10-21
 
 - Upgrade `sax-design-vue` to 2.7.0 and `sax-design-vue-iconify` to 1.1.0, retaining the shared morph core and globally enabled icon morphing.
