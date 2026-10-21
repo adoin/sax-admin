@@ -126,6 +126,7 @@ const items = computed<FormItemConfig<MenuInput>[]>(() => [
 async function pickIcon() {
   if (props.busy) return;
   const selection = await SIconPicker({
+    api: false,
     output: "code",
     iconList: menuIcons,
     initialIcon: model.icon,

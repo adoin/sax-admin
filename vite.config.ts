@@ -2,7 +2,7 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 import Vue from "@vitejs/plugin-vue";
 import UnoCSS from "unocss/vite";
-import { saxIcons } from "sax-design-vue-iconify/vite";
+import { saxIcons, signSvgs } from "sax-design-vue-iconify/vite";
 import iconConfig from "./sax-icons.config.ts";
 import { iconBuildAudit } from "./scripts/icon-build-audit.ts";
 export default defineConfig(({ mode }) => {
@@ -16,7 +16,13 @@ export default defineConfig(({ mode }) => {
   };
   return {
     base: env.SAX_BASE_URL || "/",
-    plugins: [saxIcons(icons), Vue(), UnoCSS(), iconBuildAudit()],
+    plugins: [
+      saxIcons(icons),
+      signSvgs([{ preset: "lo", url: "src/assets/svgs/**/*.svg" }]),
+      Vue(),
+      UnoCSS(),
+      iconBuildAudit(),
+    ],
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),

@@ -35,6 +35,12 @@ pnpm preview
 
 ## 目录与配置式开发
 
+### 图标数据与离线运行
+
+组件库只内置内部控件需要的图标。菜单候选由 `src/api/menu-contracts.ts` 的 `menuIcons` 同时提供给构建 safelist 和选择器；Admin 构建时取得这些 SVG，菜单选择器使用 `api: false`，运行时不依赖公网图标 API。`SAX_ICON_API_URL` 配置应用构建阶段的图标服务，可指向内网自建 Iconify API。
+
+项目本地 SVG 放在 `src/assets/svgs/`，例如 `home.svg` 可通过 `lo-home` 使用。`signSvgs` 只输出源码固定引用或 safelist 中的图标，未使用文件不打包；相同数据共用一个模块。运行时拼接的 `lo-` 名称请加入 `sax-icons.config.ts` 的 safelist。
+
 ### 扩展业务与特色页面
 
 | 页面 | 路径 | 可操作能力 |

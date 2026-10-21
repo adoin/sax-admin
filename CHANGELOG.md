@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.4 — 2026-10-21
+
+- Upgrade `sax-design-vue` to 2.7.0 and `sax-design-vue-iconify` to 1.1.0, retaining the shared morph core and globally enabled icon morphing.
+- Prebundle the menu picker candidates in the admin application through the shared menu icon list; disable runtime picker API requests for intranet/offline use.
+- Register `src/assets/svgs/**/*.svg` through `signSvgs` with the `lo-` namespace, emitting only referenced/safelisted SVGs and sharing identical data.
+- Consume library bundles containing only internal control SVG fallbacks, and retain application-side Iconify extraction without shipping full collections.
+
 ## 0.1.3 — 2026-10-20
 
 - Upgrade `sax-design-vue` to 2.6.1, using the shared `svg-morpheus-ts/core` 2.0.0 geometry and paint pipeline.
