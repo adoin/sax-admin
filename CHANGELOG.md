@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.6 — 2026-10-27
+
+- Upgrade `sax-design-vue` to 2.8.2, fixing floating Select labels overlapping the text of selected empty-string options.
+- Pin the versioned GitHub Release archive and its integrity in the dependency lockfile.
+
 ## 0.1.5 — 2026-10-21
 
 - Upgrade `sax-design-vue` to 2.8.1 with File Manager, nested context menus and compact public declarations.
