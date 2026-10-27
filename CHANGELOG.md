@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.7 — 2026-10-27
+
+- Pin `sax-design-vue` to 2.8.3, including the Cascader custom-display placeholder fix and the Select floating-label fix.
+
 ## 0.1.6 — 2026-10-27
 
 - Upgrade `sax-design-vue` to 2.8.2, fixing floating Select labels overlapping the text of selected empty-string options.

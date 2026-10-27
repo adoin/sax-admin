@@ -1,6 +1,6 @@
 {
   "name": "sax-admin",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@12.3.4",
@@ -22,7 +22,7 @@
     "lucide-vue-next": "^0.468.0",
     "mockjs": "^1.1.0",
     "pinia": "^3.0.4",
-    "sax-design-vue": "https://github.com/adoin/sax-design-vue/releases/download/v2.8.2/sax-design-vue-2.8.2.tgz",
+    "sax-design-vue": "2.8.3",
     "sax-design-vue-iconify": "1.1.0",
     "vue": "^3.5.34",
     "vue-i18n": "^11.4.14",
