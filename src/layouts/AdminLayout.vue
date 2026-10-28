@@ -40,7 +40,6 @@ const menus = menusStore();
 const menuOpenKeys = shallowRef<MenuKey[]>(menus.records.filter((row) => row.kind === 'group').map((row) => row.id));
 let inlineMenuKeys = [...menuOpenKeys.value];
 onMounted(() => menus.refresh());
-const outsideCollapsed = shallowRef(true);
 const route = useRoute(),
   router = useRouter(),
   session = sessionStore(),
@@ -96,7 +95,8 @@ function navigate(path: string) {
       :header-height="64"
       min-height="100dvh"
       :responsive="false"
-      v-model:aside-outside-collapsed="outsideCollapsed"
+      :aside-outside-collapsed="preferences.asideToolsCollapsed"
+      @update:aside-outside-collapsed="preferences.setAsideToolsCollapsed($event)"
       @keydown.esc="preferences.mobileOpen = false"
     >
       <template #aside>

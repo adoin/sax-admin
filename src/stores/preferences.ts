@@ -15,11 +15,16 @@ export const preferencesStore = defineStore("preferences", {
   state: () => ({
     collapsed: false,
     mobileOpen: false,
+    asideToolsCollapsed: localStorage.getItem("sax-aside-tools-collapsed") !== "false",
     dark: localStorage.getItem("sax-dark") === "true",
     tabStyle: readTabStyle(),
     tabSize: readTabSize(),
   }),
   actions: {
+    setAsideToolsCollapsed(value: boolean) {
+      this.asideToolsCollapsed = value;
+      localStorage.setItem("sax-aside-tools-collapsed", String(value));
+    },
     setTabStyle(value: unknown) {
       const style = tabStyles.find((style) => style === value);
       if (!style) return;

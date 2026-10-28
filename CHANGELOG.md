@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Start the sidebar's attached tools tray collapsed while retaining its manual toggle.
+- Persist the attached sidebar tools tray's visibility in global preferences: start collapsed on first use and restore the user's last choice.
 
 ## 0.1.8 — 2026-10-28
 
