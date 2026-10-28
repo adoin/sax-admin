@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Start the sidebar's attached tools tray collapsed while retaining its manual toggle.
+
 ## 0.1.8 — 2026-10-28
 
 - Double-click dynamic route tab labels or use their context menu to rename the displayed page title, with the current title prefilled.

@@ -40,7 +40,7 @@ const menus = menusStore();
 const menuOpenKeys = shallowRef<MenuKey[]>(menus.records.filter((row) => row.kind === 'group').map((row) => row.id));
 let inlineMenuKeys = [...menuOpenKeys.value];
 onMounted(() => menus.refresh());
-const outsideCollapsed = shallowRef(false);
+const outsideCollapsed = shallowRef(true);
 const route = useRoute(),
   router = useRouter(),
   session = sessionStore(),
