@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.8 — 2026-10-28
+
+- Double-click dynamic route tab labels or use their context menu to rename the displayed page title, with the current title prefilled.
+- Share aliases with pinned windows without changing route/cache identity; cancel and empty names preserve the existing title.
+- Upgrade Sax Design Vue to 2.8.5, including Table's shared empty state and loading Button content/border fading.
+- Pin the versioned GitHub Release archive and its integrity in the dependency lockfile.
+
 ## 0.1.7 — 2026-10-27
 
 - Pin `sax-design-vue` to 2.8.3, including the Cascader custom-display placeholder fix and the Select floating-label fix.

@@ -4,6 +4,7 @@ import { effectScope, nextTick } from 'vue';
 import { createMemoryHistory, createRouter, isNavigationFailure } from 'vue-smart-router';
 import { workspaceStore, tabCloseTargets } from '../src/stores/workspace';
 import { createPageWindowManager } from '../src/components/workspace/page-windows';
+import { canRenameRouteTab } from '../src/components/workspace/tab-title';
 
 const scopes: ReturnType<typeof effectScope>[] = [];
 beforeEach(() => setActivePinia(createPinia()));
@@ -25,6 +26,37 @@ async function fixture() {
   return { workspace, router, windows };
 }
 describe('page window lifecycle', () => {
+  it('distinguishes path parameters from static and escaped-colon paths', () => {
+    expect(canRenameRouteTab([{ path: '/drafts/:id' }])).toBe(true);
+    expect(canRenameRouteTab([{ path: '/case-:id?' }])).toBe(true);
+    expect(canRenameRouteTab([{ path: '/users' }])).toBe(false);
+    expect(canRenameRouteTab([{ path: '/literal\\:name' }])).toBe(false);
+  });
+  it('renames one route instance without changing its cache identity and shares the alias with its window', async () => {
+    const { workspace, router, windows } = await fixture();
+    const path = workspace.tabs[0].fullPath;
+    const first = workspace.tabs[0];
+    const cacheName = workspace.cacheName(path);
+    await router.push('/drafts/2?channel=support');
+    expect(canRenameRouteTab(router.resolve(path).matched)).toBe(true);
+    expect(canRenameRouteTab(router.resolve('/launchpad?draft=1').matched)).toBe(false);
+    expect(windows.rename(path, '  Sales review  ')).toBe(true);
+    expect(windows.title(first)).toBe('Sales review');
+    expect(windows.title(workspace.tabs[1])).not.toBe('Sales review');
+    expect(workspace.cacheName(path)).toBe(cacheName);
+    expect(workspace.tabs[0]).toBe(first);
+    expect(windows.rename(path, '   ')).toBe(false);
+    expect(windows.title(first)).toBe('Sales review');
+    await windows.pin(path);
+    await windows.restore(path);
+    expect(windows.title(first)).toBe('Sales review');
+    workspace.refresh(path);
+    expect(windows.title(first)).toBe('Sales review');
+    workspace.remove(path);
+    await nextTick();
+    expect(windows.rename(path, 'Closed')).toBe(false);
+    expect(windows.states.has(path)).toBe(false);
+  });
   it('starts in the workspace and keeps viewport coordinates across restores and refreshes', async () => {
     const { workspace, windows } = await fixture();
     const path = workspace.tabs[0].fullPath;

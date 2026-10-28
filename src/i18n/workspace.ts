@@ -1,4 +1,6 @@
 export const workspaceZh = {
+  'workspace.renameTab': '重命名标签',
+  'workspace.tabName': '展示名称',
   'workspace.pinPage': '固定为窗口',
   'workspace.restoreWindow': '恢复为路由页面',
   'workspace.closeWindow': '关闭窗口及页面',
@@ -59,6 +61,8 @@ export const workspaceZh = {
   "workspace.implementationCaption": "vue-smart-router 按 /drafts/1、/drafts/2 区分实例，再配合 KeepAlive 保留各自状态。路由移除时同步关闭标签并释放缓存。",
 } as const;
 export const workspaceEn: Record<keyof typeof workspaceZh, string> = {
+  'workspace.renameTab': 'Rename tab',
+  'workspace.tabName': 'Display name',
   'workspace.pinPage': 'Pin as window',
   'workspace.restoreWindow': 'Restore as route page',
   'workspace.closeWindow': 'Close window and page',

@@ -4,6 +4,8 @@ import type { ContextMenuInstance, ContextMenuItem } from "sax-design-vue";
 import { computed, shallowRef, nextTick } from "vue";
 import { RefreshCw, Pin } from "lucide-vue-next";
 import { usePageWindows } from '@/components/workspace/page-windows';
+import WorkspaceTabRenameDialog from '@/components/workspace/WorkspaceTabRenameDialog.vue';
+import { canRenameRouteTab } from '@/components/workspace/tab-title';
 import { useRoute, useRouter } from "vue-smart-router";
 import { workspaceStore, tabCloseTargets } from "@/stores/workspace";
 import type { TabCloseAction } from "@/stores/workspace";
@@ -18,6 +20,20 @@ const routeTabs = windows.routeTabs;
 const contextMenu = shallowRef<ContextMenuInstance>();
 const contextPath = shallowRef("");
 const closing = shallowRef(false);
+const renamingPath = shallowRef('');
+const renamingTab = computed(() => workspace.tabs.find(tab => tab.fullPath === renamingPath.value));
+const canRename = (path: string) => Boolean(path) && canRenameRouteTab(router.resolve(path).matched);
+function startRename(path: string) {
+  if (canRename(path) && workspace.tabs.some(tab => tab.fullPath === path)) renamingPath.value = path;
+}
+function renameFromDoubleClick(event: MouseEvent) {
+  const target = event.target instanceof Element ? event.target.closest('[role="tab"]') : null;
+  const path = target?.querySelector('[data-workspace-tab]')?.getAttribute('data-workspace-tab');
+  if (path) startRename(path);
+}
+function saveRename(value: string) {
+  if (renamingTab.value && canRename(renamingTab.value.fullPath)) windows.rename(renamingTab.value.fullPath, value);
+}
 function sortTabs(order: (string | number)[]) {
   workspace.reorder(order.map(String));
 }
@@ -36,6 +52,7 @@ const closeActions: TabCloseAction[] = [
   "all",
 ];
 const menuItems = computed<ContextMenuItem[]>(() => [
+  ...(canRename(contextPath.value) ? [{ label: t('workspace.renameTab'), value: 'rename' }] : []),
   { label: t(windows.states.get(contextPath.value)?.pinned ? 'workspace.restoreWindow' : 'workspace.pinPage'), value: 'pin' },
   { label: t("workspace.refreshTab"), value: "refresh" },
   ...closeActions.map((action) => ({
@@ -105,6 +122,7 @@ async function toggleWindow(path: string) {
   else await windows.pin(path);
 }
 async function selectContext(item: ContextMenuItem) {
+  if (item.value === 'rename') { startRename(contextPath.value); return; }
   if (item.value === 'pin') {
     await toggleWindow(contextPath.value);
     return;
@@ -136,7 +154,7 @@ async function selectContext(item: ContextMenuItem) {
 }
 </script>
 <template>
-  <div class="workspace-bar">
+  <div class="workspace-bar" @dblclick="renameFromDoubleClick">
     <STabs
       class="workspace-tabs"
       :model-value="route.fullPath"
@@ -195,6 +213,7 @@ async function selectContext(item: ContextMenuItem) {
     </div>
   </div>
   <SContextMenu ref="contextMenu" :items="menuItems" @select="selectContext" />
+  <WorkspaceTabRenameDialog :open="Boolean(renamingTab)" :title="renamingTab ? windows.title(renamingTab) : ''" @update:open="(open) => { if (!open) renamingPath = ''; }" @rename="saveRename" />
 </template>
 <style scoped>
 .workspace-bar {

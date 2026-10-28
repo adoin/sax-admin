@@ -2,7 +2,7 @@
 status: implemented
 completed_at: 2026-10-19
 kind: project-specification
-updated_at: 2026-10-19
+updated_at: 2026-10-28
 modules:
   - src/layouts/AdminLayout.vue
   - src/stores/workspace.ts
@@ -15,6 +15,13 @@ supersedes: []
 ## 项目目标
 
 让已打开的多个路由页面可以固定成可移动、可缩放、可重命名的窗口，并可恢复普通路由页面，同时保留原页面内容和输入状态。
+
+## 动态页签别名（2026-10-28）
+
+- 匹配记录含路径参数的动态页签可双击标题区域或从右键菜单重命名；静态页签不提供该入口。
+- 弹窗使用 SDialog 内置确认/取消按钮区与 SInput。每次打开预填并选中当前展示名；空白名称不可保存，Enter 保存且避开 IME 组合输入，取消和 Escape 不改变名称。
+- 路由页签和固定窗口共享按 fullPath 保存的 alias，改名不修改路由、记录身份、缓存键或 revision。关闭后清除别名，刷新和固定/恢复保留别名。
+- 页签双击事件从 workspace bar 统一委托，兼容 Tabs 拖拽排序的 pointer capture，不依赖文字 slot 内的双击事件。
 
 ## 用户原始需求
 

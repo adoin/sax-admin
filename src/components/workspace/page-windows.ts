@@ -140,6 +140,12 @@ export function createPageWindowManager(
     state,
     states,
     title,
+    rename: (path: string, value: string) => {
+      const alias = value.trim();
+      if (!alias || !workspace.tabs.some(tab => tab.fullPath === path)) return false;
+      state(path).alias = alias;
+      return true;
+    },
     activate,
     focus,
     pin,

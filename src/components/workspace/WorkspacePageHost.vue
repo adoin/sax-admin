@@ -127,7 +127,7 @@ watch(visible, async (value) => {
       :min-height="PAGE_WINDOW_MIN_HEIGHT"
       title-editable
       :data-page-window="tab.fullPath"
-      @update:title="state.alias = $event"
+      @update:title="windows.rename(tab.fullPath, $event)"
       @activate="windows.activate(tab.fullPath)"
     >
       <template #actions>
